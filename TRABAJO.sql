@@ -1,4 +1,5 @@
 --Borramos las tablas
+DROP TABLE FOTOVEHICULO;
 DROP TABLE DESCUENTOS;
 DROP TABLE PROPIEDADESVEHICULOS;
 DROP TABLE PROPIEDADES;
@@ -6,6 +7,7 @@ DROP TABLE TIPOPROPIEDADES;
 DROP TABLE VEHICULOS;
 DROP TABLE FINANCIACIONES;
 DROP TABLE TIPOVEHICULOS;
+
 
 
 --Borramos las secuencias
@@ -87,6 +89,15 @@ CREATE TABLE DESCUENTOS(
     nombre varchar2(40) not null ,
     unique(nombre),
     foreign key (id_fin) REFERENCES FINANCIACIONES
+);
+
+--Creación de tabla Foto Vehículo
+CREATE TABLE FOTOVEHICULO(
+    id_ft number(12) primary key,
+    id_veh number(10),
+    posicion number(12),
+    unique(id_veh,posicion),
+    foreign key(id_veh) references vehiculos
 );
 
     
@@ -195,5 +206,3 @@ SELECT tp.nombre, p.nombre
 FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
 WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=4;
 
-select pro.nombre,tp.nombre from propiedades pro NATURAL JOIN tipopropiedades tp;
-/* where exist select id_tpro idtp, id_pro idpr from propiedadesvehiculos where id_veh = 1;*/
