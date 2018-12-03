@@ -1,5 +1,5 @@
 --Borramos las tablas
-DROP TABLE FOTOVEHICULO;
+DROP TABLE FOTOVEHICULOS;
 DROP TABLE DESCUENTOS;
 DROP TABLE PROPIEDADESVEHICULOS;
 DROP TABLE PROPIEDADES;
@@ -95,7 +95,7 @@ CREATE TABLE DESCUENTOS(
 );
 
 --Creación de tabla Foto Vehículo
-CREATE TABLE FOTOVEHICULO(
+CREATE TABLE FOTOVEHICULOS(
     id_ft number(12) primary key,
     id_veh number(10),
     posicion number(12),
@@ -142,6 +142,15 @@ CREATE TABLE FOTOVEHICULO(
     end;
     / 
     
+    
+        --Creación de Trigger Vehículo (secuencia)
+    create or replace trigger Sec_FV_
+    before insert on FOTOVEHICULOS
+    for each row
+    begin
+        :new.id_ft := seq_fotosVehiculos.nextval;   
+    end;
+    / 
     
     
     --Creación de Trigger Descuento(secuencia)
