@@ -1,5 +1,4 @@
 --Borramos las tablas
-DROP TABLE FOTO;
 DROP TABLE FOTOVEHICULO;
 DROP TABLE DESCUENTOS;
 DROP TABLE PROPIEDADESVEHICULOS;
@@ -13,6 +12,7 @@ DROP TABLE TIPOVEHICULOS;
 
 
 --Borramos las secuencias
+drop sequence seq_fotosVehiculos;
 drop sequence seq_propiedades;
 drop sequence seq_tipopropiedades;
 drop sequence seq_vehiculo;
@@ -21,6 +21,7 @@ drop sequence seq_descuento;
 drop sequence seq_tipovehiculos;
 
 --Creamos las secuencias
+create sequence seq_fotosVehiculos;
 create sequence seq_tipovehiculos;
 create sequence seq_financiacion;
 create sequence seq_vehiculo;
@@ -101,6 +102,8 @@ CREATE TABLE FOTOVEHICULO(
     unique(id_veh,posicion),
     foreign key(id_veh) references vehiculos
 );
+
+
 
     
     --Creación de Trigger Financiación (secuencia)
