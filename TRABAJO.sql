@@ -247,6 +247,13 @@ Create table Concesionario(
     commit work;
     end actualizar_tipo_propiedades;
     /
+    
+     create or replace procedure eliminar_tipo_propiedades 
+    (idt_pro in tipopropiedades.id_tpro%type)is
+    begin delete from TIPOPROPIEDADES where id_tpro = idt_pro;
+    commit work;
+    end eliminar_tipo_propiedades;
+    /
 
 
 
@@ -256,7 +263,7 @@ Create table Concesionario(
     execute insertar_tipo_propiedades('Combustible');
     execute insertar_tipo_propiedades('Etiqueta Eficiencia');
     execute actualizar_tipo_propiedades(1,'Nº Puertas');
-
+    --execute eliminar_tipo_propiedades(2);
   
     
 
