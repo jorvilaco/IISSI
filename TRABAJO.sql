@@ -332,6 +332,30 @@ create sequence seq_vehiculosvendidos;
     /
     
     
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR PROPIEDADES
+    create or replace procedure insertar_propiedad
+    (nombre_pro in propiedades.nombre%type,cod_tpro in propiedades.id_tpro%type)is
+    begin insert into propiedades(nombre,id_tpro) values (nombre_pro,cod_tpro);
+    commit work;
+    end insertar_propiedad;
+    /
+    
+    create or replace procedure actualizar_propiedad
+    (cod_pro in propiedades.id_pro%type, nombre_pro in propiedades.nombre%type ,cod_tpro in propiedades.id_tpro%type )is
+    begin     
+    update propiedades set  nombre = nombre_pro, id_tpro = cod_tpro where cod_pro = id_pro;
+    commit work;
+    end actualizar_propiedad;
+    /
+    
+     create or replace procedure eliminar_propiedad
+    (cod_pro in propiedades.id_pro%type)is
+    begin 
+    delete from propiedadesvehiculos where cod_pro = id_pro;
+    delete from propiedades where cod_pro = id_pro;
+    commit work;
+    end eliminar_propiedad;
+    /
 
 /************************************************************************
                        FUNCIONES
