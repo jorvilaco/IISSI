@@ -307,7 +307,17 @@ create sequence seq_vehiculosvendidos;
                        FUNCIONES
 *************************************************************************/
 
-
+CREATE OR REPLACE FUNCTION BOOLEAN_TO_CHAR(STATUS IN BOOLEAN)
+RETURN VARCHAR2 IS
+BEGIN
+  RETURN
+   CASE STATUS
+     WHEN TRUE THEN 'TRUE'
+     WHEN FALSE THEN 'FALSE'
+     ELSE 'NULL'
+   END;
+END;
+/
 
 CREATE OR REPLACE FUNCTION ASSERT_EQUALS (salida BOOLEAN, salida_esperada BOOLEAN) RETURN VARCHAR2 AS 
 BEGIN
@@ -341,9 +351,9 @@ END PRUEBAS_TIPOPROPIEDADES;
   BEGIN
 
     /* Borrar contenido de la tabla */
-      DELETE FROM propiedades;
       DELETE FROM propiedadesvehiculos;
-      DELETE FROM tipovehiculos;
+      DELETE FROM propiedades;
+      DELETE FROM tipopropiedades;
     NULL;
   END inicializar;
 
@@ -351,7 +361,7 @@ END PRUEBAS_TIPOPROPIEDADES;
   PROCEDURE insertar (nombre_prueba VARCHAR2, w_nom VARCHAR2,salidaEsperada BOOLEAN) AS
     salida BOOLEAN := true;
     tipopropiedad tipopropiedades%ROWTYPE;
-    w_cod INTEGER;
+    w_cod NUMBER(12);
   BEGIN
     
     /* Insertar fila*/
@@ -360,19 +370,22 @@ END PRUEBAS_TIPOPROPIEDADES;
     /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
     w_cod := seq_tipopropiedades.currval;
     SELECT * INTO tipopropiedad FROM tipopropiedades WHERE id_tpro=w_cod;
-    IF (tipopropiedad.id_tpro<>w_nom) THEN
+    IF (tipopropiedad.nombre<>w_nom) THEN
       salida := false;
     END IF;
-    COMMIT WORK;
     
-    --Mostrar resultado de la prueba 
-    
-    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
     
     EXCEPTION
-    WHEN OTHERS THEN
+        WHEN OTHERS THEN
+          
           DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
           ROLLBACK;
+    
+    
+    COMMIT WORK;
+      
+    
   END insertar;
 
 /* PRUEBA PARA LA ACTUALIZACIÓN DE DEPARTAMENTOS */
@@ -386,7 +399,7 @@ END PRUEBAS_TIPOPROPIEDADES;
     
     /* Seleccionar departamento y comprobar que los campos se actualizaron correctamente */
     SELECT * INTO tipopropiedad FROM tipopropiedades WHERE id_tpro=w_cod;
-    IF (tipopropiedad.id_tpro<>w_nom) THEN
+    IF (tipopropiedad.nombre<>w_nom) THEN
       salida := false;
     END IF;
     COMMIT WORK;
@@ -434,15 +447,12 @@ END PRUEBAS_TIPOPROPIEDADES;
 /************************************************************************
                         PRUEBAS
 *************************************************************************/
-
     execute insertar_tipo_propiedades('Puertas');
     execute insertar_tipo_propiedades('Color');
     execute insertar_tipo_propiedades('Combustible');
     execute insertar_tipo_propiedades('Etiqueta Eficiencia');
     execute actualizar_tipo_propiedades(1,'Nº Puertas');
     --execute eliminar_tipo_propiedades(2);
-
-
 
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0178ZQJ',TO_DATE(SYSDATE),'COCHE C3 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',8500,1);
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0179ZQJ',TO_DATE(SYSDATE),'COCHE C3 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',8000,1);
@@ -507,4 +517,3 @@ WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=3;
 SELECT tp.nombre, p.nombre 
 FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
 WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=4;
-
