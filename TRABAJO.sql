@@ -44,7 +44,7 @@ create sequence seq_concesionario;
 
 
 
---CreaciÛn de tabla Financiacion
+--Creaci√≥n de tabla Financiacion
 CREATE TABLE TIPOVEHICULOS(
     id_tveh number(10) primary key,
     nombre varchar2(40) not null,
@@ -52,21 +52,21 @@ CREATE TABLE TIPOVEHICULOS(
 );
 
 
---CreaciÛn de tabla Financiacion
+--Creaci√≥n de tabla Financiacion
 CREATE TABLE FINANCIACIONES(
     id_fin number(10) primary key,
     nombre varchar2(40) not null,
     unique (nombre)
 );
 
---CreaciÛn de tabla Tipo Propiedades
+--Creaci√≥n de tabla Tipo Propiedades
 CREATE TABLE TIPOPROPIEDADES(
     id_tpro number(10) primary key,
     nombre varchar2(40) not null,
     unique (nombre)
 );
 
---CreaciÛn de tabla VehÌculo
+--Creaci√≥n de tabla Veh√≠culo
 CREATE TABLE VEHICULOS(
     id_veh number(10) primary key,
     matricula varchar2(7) not null,
@@ -78,7 +78,7 @@ CREATE TABLE VEHICULOS(
     UNIQUE (matricula)
 );
 
---CreaciÛn de tabla Propiedades
+--Creaci√≥n de tabla Propiedades
 CREATE TABLE PROPIEDADES(
     id_pro number(10) primary key,
     id_tpro number(10),
@@ -87,7 +87,7 @@ CREATE TABLE PROPIEDADES(
     foreign key (id_tpro) REFERENCES TIPOPROPIEDADES
 );
 
---CreaciÛn de tabla relaciÛn propiedades y vehÌculo
+--Creaci√≥n de tabla relaci√≥n propiedades y veh√≠culo
 CREATE TABLE PROPIEDADESVEHICULOS(
     id_tpro number(10),
     id_pro number(10),
@@ -98,7 +98,7 @@ CREATE TABLE PROPIEDADESVEHICULOS(
     foreign key (id_veh) REFERENCES VEHICULOS
 );
 
---CreaciÛn de tabla Descuento
+--Creaci√≥n de tabla Descuento
 CREATE TABLE DESCUENTOS(
     id_des number(10) primary key,
     id_fin number(10),
@@ -107,7 +107,7 @@ CREATE TABLE DESCUENTOS(
     foreign key (id_fin) REFERENCES FINANCIACIONES
 );
 
---CreaciÛn de tabla Foto VehÌculo
+--Creaci√≥n de tabla Foto Veh√≠culo
 CREATE TABLE FOTOVEHICULOS(
     id_ft number(12) primary key,
     id_veh number(10),
@@ -116,7 +116,7 @@ CREATE TABLE FOTOVEHICULOS(
     foreign key(id_veh) references vehiculos
 );
 
---CreaciÛn Tabla de Cliente
+--Creaci√≥n Tabla de Cliente
 Create table Cliente(
    id_cli number(10) primary key,
    email varchar2(50) not null,
@@ -128,14 +128,14 @@ Create table Cliente(
    unique(dni, email)
 );
 
---CreaciÛn Tabla Citas
+--Creaci√≥n Tabla Citas
 Create table Citas(
    id_cit number(10) primary key,
    Fecha date not null,
    Hora number(2) not null, check ((Hora = 10) or (Hora=12) or (Hora = 16) or (Hora = 18))
 );
 
---CreaciÛn Tabla Concesionario
+--Creaci√≥n Tabla Concesionario
 Create table Concesionario(
    id_conces number(10) primary key,
    Nombre varchar(40) not null,
@@ -148,7 +148,7 @@ Create table Concesionario(
 
 
 
-    --CreaciÛn de Trigger FinanciaciÛn (secuencia)
+    --Creaci√≥n de Trigger Financiaci√≥n (secuencia)
     create or replace trigger Sec_FI_
     before insert on FINANCIACIONES
     for each row
@@ -157,7 +157,7 @@ Create table Concesionario(
     end;
     /
     
-    --CreaciÛn de Trigger Tipo Propiedades (secuencia)
+    --Creaci√≥n de Trigger Tipo Propiedades (secuencia)
     create or replace trigger Sec_TP_
     before insert on TIPOPROPIEDADES
     for each row
@@ -166,7 +166,7 @@ Create table Concesionario(
     end;
     /
     
-    --CreaciÛn de Trigger Propiedades (secuencia)
+    --Creaci√≥n de Trigger Propiedades (secuencia)
     create or replace trigger Sec_P_
     before insert on PROPIEDADES
     for each row
@@ -175,7 +175,7 @@ Create table Concesionario(
     end;
     / 
     
-    --CreaciÛn de Trigger VehÌculo (secuencia)
+    --Creaci√≥n de Trigger Veh√≠culo (secuencia)
     create or replace trigger Sec_V_
     before insert on VEHICULOS
     for each row
@@ -185,7 +185,7 @@ Create table Concesionario(
     / 
     
     
-        --CreaciÛn de Trigger VehÌculo (secuencia)
+        --Creaci√≥n de Trigger Veh√≠culo (secuencia)
     create or replace trigger Sec_FV_
     before insert on FOTOVEHICULOS
     for each row
@@ -195,7 +195,7 @@ Create table Concesionario(
     / 
     
     
-    --CreaciÛn de Trigger Descuento(secuencia)
+    --Creaci√≥n de Trigger Descuento(secuencia)
     create or replace trigger Sec_DE_
     before insert on DESCUENTOS
     for each row
@@ -204,7 +204,7 @@ Create table Concesionario(
     end;
     /
     
-    --CreaciÛn de Trigger Cliente (secuencia)
+    --Creaci√≥n de Trigger Cliente (secuencia)
     create or replace trigger Sec_Cl_
     before insert on Cliente
     for each row
@@ -213,7 +213,7 @@ Create table Concesionario(
     end;
     /
     
-    --CreaciÛn de Trigger Citas (secuencia)
+    --Creaci√≥n de Trigger Citas (secuencia)
     create or replace trigger Sec_Ci_
     before insert on Citas
     for each row
@@ -222,7 +222,7 @@ Create table Concesionario(
     end;
     /
     
-    --CreaciÛn de Trigger Concesionario (secuencia)
+    --Creaci√≥n de Trigger Concesionario (secuencia)
     create or replace trigger Sec_Con_
     before insert on Concesionario
     for each row
@@ -262,7 +262,7 @@ Create table Concesionario(
     execute insertar_tipo_propiedades('Color');
     execute insertar_tipo_propiedades('Combustible');
     execute insertar_tipo_propiedades('Etiqueta Eficiencia');
-    execute actualizar_tipo_propiedades(1,'N∫ Puertas');
+    execute actualizar_tipo_propiedades(1,'N¬∫ Puertas');
     --execute eliminar_tipo_propiedades(2);
   
     
@@ -281,8 +281,8 @@ Create table Concesionario(
     insert into propiedades(id_tpro,nombre) values (1,'5 Puertas');
     insert into propiedades(id_tpro,nombre) values (3,'Gasolina');
     insert into propiedades(id_tpro,nombre) values (3,'Diesel');
-    insert into propiedades(id_tpro,nombre) values (3,'HÌbrido');
-    insert into propiedades(id_tpro,nombre) values (3,'ElÈctrico');
+    insert into propiedades(id_tpro,nombre) values (3,'H√≠brido');
+    insert into propiedades(id_tpro,nombre) values (3,'El√©ctrico');
     insert into propiedades(id_tpro,nombre) values (4,'0 Emisiones');
     insert into propiedades(id_tpro,nombre) values (4,'Eco');
     insert into propiedades(id_tpro,nombre) values (4,'C');
@@ -331,3 +331,63 @@ WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=3;
 SELECT tp.nombre, p.nombre 
 FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
 WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=4;
+
+
+
+--"EMPLEADOS" 
+
+--Borrado de tablas
+DROP TABLE Empleado;
+DROP TABLE Concesionario;
+
+--Borrado de secuencias
+DROP SEQUENCE SEQ_Empleado;
+DROP SEQUENCE SEQ_Concesionario;
+CREATE SEQUENCE SEQ_Empleado;
+CREATE SEQUENCE SEQ_Concesionario;
+
+--TABLA EMPLEADO
+CREATE TABLE Empleado(
+id_empleado number(50) primary key,
+nombre varchar(50) not null,
+rol varchar (50) not null,
+usuario varchar (10)not null,
+contrase√±a varchar(24) not null,
+dni varchar2 (9) not null,
+UNIQUE (usuario)
+);
+
+--TABLA CONCESIONARIO
+CREATE TABLE Concesionario(
+id_concesionario number(50) primary key,
+nombre varchar(50) not null,
+direccion varchar2 (50) not null,
+telefono number (9)not null,
+email varchar2(50) not null,
+numCitas number (50) not null 
+check(numCitas!=0)
+);
+
+--CREACION DE TRIGGER EMPLEADO
+CREATE OR REPLACE TRIGGER SEQ_E BEFORE INSERT ON Empleado FOR EACH ROW BEGIN :NEW.id_empleado := SEQ_Empleado.NEXTVAL;
+END;
+/
+
+--CREACION DE TRIGGER CONCESIONARIO
+CREATE OR REPLACE TRIGGER SEQ_C BEFORE INSERT ON Concesionario FOR EACH ROW BEGIN :NEW.id_concesionario := SEQ_Concesionario.NEXTVAL;
+END;
+/
+
+--INSERCION DE DATOS EN TABLA EMPLEADO
+INSERT INTO Empleado(nombre, rol, usuario, contrase√±a, dni)
+VALUES('Rosa M√°rquez', 'Jefa de Marketing','rosmar','1904rm','48592056B');
+
+INSERT INTO Empleado(nombre, rol, usuario, contrase√±a, dni)
+VALUES('Manuel Mar√≠n', 'Administrativo','manumr','manu100385','32096400Y');
+
+INSERT INTO Empleado(nombre, rol, usuario, contrase√±a, dni)
+VALUES('Mar√≠a Mart√≠nez', 'Jefa de Ventas','marimar','mmz18890','01724748R');
+
+--INSERCION DE DATOS EN TABLA CONCESIONARIO
+INSERT INTO Concesionario (Nombre, Direccion, Telefono, Email, NumCitas)
+VALUES('Viuda de Terry', 'Calle √Ålava',967345678,'pruebacon@gmail.com',10 );
