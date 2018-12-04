@@ -7,6 +7,10 @@ DROP TABLE TIPOPROPIEDADES;
 DROP TABLE VEHICULOS;
 DROP TABLE FINANCIACIONES;
 DROP TABLE TIPOVEHICULOS;
+DROP TABLE Cliente;
+DROP TABLE Citas;
+DROP TABLE Concesionario;
+
 
 
 
@@ -19,6 +23,12 @@ drop sequence seq_vehiculo;
 drop sequence seq_financiacion;
 drop sequence seq_descuento;
 drop sequence seq_tipovehiculos;
+drop sequence seq_cliente;
+drop sequence seq_citas;
+drop sequence seq_concesionario;
+
+
+
 
 --Creamos las secuencias
 create sequence seq_fotosVehiculos;
@@ -28,6 +38,9 @@ create sequence seq_vehiculo;
 create sequence seq_tipopropiedades;
 create sequence seq_propiedades;
 create sequence seq_descuento;
+create sequence seq_cliente;
+create sequence seq_citas;
+create sequence seq_concesionario;
 
 
 
@@ -103,9 +116,38 @@ CREATE TABLE FOTOVEHICULOS(
     foreign key(id_veh) references vehiculos
 );
 
+--Creación Tabla de Cliente
+Create table Cliente(
+   id_cli number(10) primary key,
+   email varchar2(50) not null,
+   dni varchar2(9) not null,
+   nombre varchar(40) not null,
+   telef number(9) not null,
+   movil number(9) not null,
+   FechAlta date not null,
+   unique(dni, email)
+);
+
+--Creación Tabla Citas
+Create table Citas(
+   id_cit number(10) primary key,
+   Fecha date not null,
+   Hora number(2) not null, check ((Hora = 10) or (Hora=12) or (Hora = 16) or (Hora = 18))
+);
+
+--Creación Tabla Concesionario
+Create table Concesionario(
+   id_conces number(10) primary key,
+   Nombre varchar(40) not null,
+   Direccion varchar2(40) not null,
+   Telef number(9) not null,
+   Email varchar2(50) not null,
+   NoCitas number(10) not null, check (NoCitas!=0)
+);
 
 
-    
+
+
     --Creación de Trigger Financiación (secuencia)
     create or replace trigger Sec_FI_
     before insert on FINANCIACIONES
@@ -162,22 +204,49 @@ CREATE TABLE FOTOVEHICULOS(
     end;
     /
     
+    --Creación de Trigger Cliente (secuencia)
+    create or replace trigger Sec_Cl_
+    before insert on Cliente
+    for each row
+    begin
+    :new.id_cli := seq_cliente.nextval;
+    end;
+    /
+    
+    --Creación de Trigger Citas (secuencia)
+    create or replace trigger Sec_Ci_
+    before insert on Citas
+    for each row
+    begin
+    :new.id_cit := seq_citas.nextval;
+    end;
+    /
+    
+    --Creación de Trigger Concesionario (secuencia)
+    create or replace trigger Sec_Con_
+    before insert on Concesionario
+    for each row
+    begin
+    :new.id_conces := seq_concesionario.nextval;
+    end;
+    /
 
---PROCEDURES
-
---PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR 
-create or replace procedure insertar_tipo_propiedades (t_pro in tipopropiedades.nombre%type)is
-begin insert into tipopropiedades(nombre) values (t_pro);
-commit work;
-end insertar_tipo_propiedades;
-/
-
-create or replace procedure actualizar_tipo_propiedades 
-(idt_pro in tipopropiedades.id_tpro%type,t_pro_act in tipopropiedades.nombre%type )is
-begin update TIPOPROPIEDADES set nombre = t_pro_act where id_tpro = idt_pro;
-commit work;
-end actualizar_tipo_propiedades;
-/
+  
+    --PROCEDURES
+    
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR 
+    create or replace procedure insertar_tipo_propiedades (t_pro in tipopropiedades.nombre%type)is
+    begin insert into tipopropiedades(nombre) values (t_pro);
+    commit work;
+    end insertar_tipo_propiedades;
+    /
+    
+    create or replace procedure actualizar_tipo_propiedades 
+    (idt_pro in tipopropiedades.id_tpro%type,t_pro_act in tipopropiedades.nombre%type )is
+    begin update TIPOPROPIEDADES set nombre = t_pro_act where id_tpro = idt_pro;
+    commit work;
+    end actualizar_tipo_propiedades;
+    /
 
 
 
@@ -187,6 +256,11 @@ end actualizar_tipo_propiedades;
     execute insertar_tipo_propiedades('Combustible');
     execute insertar_tipo_propiedades('Etiqueta Eficiencia');
     execute actualizar_tipo_propiedades(1,'Nº Puertas');
+
+  
+    
+
+
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0178ZQJ',TO_DATE(SYSDATE),'COCHE C3 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',8500,1);
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0179ZQJ',TO_DATE(SYSDATE),'COCHE C3 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',8000,1);
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0171ZQJ',TO_DATE(SYSDATE),'COCHE C4 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',7400,1);
@@ -220,10 +294,21 @@ end actualizar_tipo_propiedades;
     insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (2,2,4);
     insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (1,4,4);
     insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (3,6,4);
+    insert into Cliente (email,dni,nombre,telef,movil,FechAlta) 
+    values ('prueba@prueba.com','66606660w','Juan',666666666,999999999,TO_DATE('12/12/2012'));
+    insert into Cliente (email,dni,nombre,telef,movil,FechAlta) 
+    values ('prueba2@prueba2.com','66606660T','Juon',666606666,999909999,TO_DATE('12/2/2012'));
+    insert into Citas (Fecha, Hora) values (TO_DATE('12/12/2020'),13);
+    insert into Citas (Fecha, Hora) values (TO_DATE('12/12/2020'),13);
+    insert into Concesionario (Nombre, Direccion, Telef, Email, NoCitas) 
+    values ('Con','calle',756493498,'prueba@prueba.com',10);
+    insert into Concesionario (Nombre, Direccion, Telef, Email, NoCitas) 
+    values ('Con2','calle2',756493499,'prueba2@prueba2',11);
     
-    
-    
-    
+   
+   
+   
+   
     SELECT tp.nombre, p.nombre 
 FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
 WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=1;
@@ -239,4 +324,3 @@ WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=3;
 SELECT tp.nombre, p.nombre 
 FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
 WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=4;
-
