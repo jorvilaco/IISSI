@@ -360,6 +360,24 @@ create sequence seq_vehiculosvendidos;
     commit work;
     end eliminar_propiedad;
     /
+    
+    
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR VEHICULO
+    create or replace procedure insertar_vehiculo
+    (matricula_vhe in vehiculos.matricula%type,
+    fecha_alta_vhe in vehiculos.fechaalta%type,
+    nombre_vhe in vehiculos.nombre%type,
+    descripcion_vhe in vehiculos.descripcion%type,
+    precio_vhe in vehiculos.precio%type,
+    disponible_vhe in vehiculos.disponible%type,
+    id_conces_vhe in vehiculos.id_conces%type,
+    id_tveh_vhe in vehiculos.id_tveh%type)is
+    begin 
+    insert into vehiculos(matricula,fechaalta,nombre,descripcion,precio,disponible,id_conces,id_tveh) 
+    values (matricula_vhe,fecha_alta_vhe,nombre_vhe,descripcion_vhe,precio_vhe,disponible_vhe,id_conces_vhe,id_tveh_vhe);
+    commit work;
+    end insertar_vehiculo;
+    /
 
 /************************************************************************
                        FUNCIONES
