@@ -307,17 +307,6 @@ create sequence seq_vehiculosvendidos;
                        FUNCIONES
 *************************************************************************/
 
-CREATE OR REPLACE FUNCTION BOOLEAN_TO_CHAR(STATUS IN BOOLEAN)
-RETURN VARCHAR2 IS
-BEGIN
-  RETURN
-   CASE STATUS
-     WHEN TRUE THEN 'TRUE'
-     WHEN FALSE THEN 'FALSE'
-     ELSE 'NULL'
-   END;
-END;
-/
 
 CREATE OR REPLACE FUNCTION ASSERT_EQUALS (salida BOOLEAN, salida_esperada BOOLEAN) RETURN VARCHAR2 AS 
 BEGIN
@@ -374,6 +363,7 @@ END PRUEBAS_TIPOPROPIEDADES;
       salida := false;
     END IF;
     
+    /* Mostrar resultado de la prueba */
     DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
     
     EXCEPTION
