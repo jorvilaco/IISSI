@@ -163,10 +163,30 @@ CREATE TABLE FOTOVEHICULOS(
     /
     
 
-    insert into tipopropiedades(nombre) values ('Nº Puertas');
-    insert into tipopropiedades(nombre) values ('Color');
-    insert into tipopropiedades(nombre) values ('Combustible');
-    insert into tipopropiedades(nombre) values ('Etiqueta Eficiencia');
+--PROCEDURES
+
+--PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR 
+create or replace procedure insertar_tipo_propiedades (t_pro in tipopropiedades.nombre%type)is
+begin insert into tipopropiedades(nombre) values (t_pro);
+commit work;
+end insertar_tipo_propiedades;
+/
+
+create or replace procedure actualizar_tipo_propiedades 
+(idt_pro in tipopropiedades.id_tpro%type,t_pro_act in tipopropiedades.nombre%type )is
+begin update TIPOPROPIEDADES set nombre = t_pro_act where id_tpro = idt_pro;
+commit work;
+end actualizar_tipo_propiedades;
+/
+
+
+
+
+    execute insertar_tipo_propiedades('Puertas');
+    execute insertar_tipo_propiedades('Color');
+    execute insertar_tipo_propiedades('Combustible');
+    execute insertar_tipo_propiedades('Etiqueta Eficiencia');
+    execute actualizar_tipo_propiedades(1,'Nº Puertas');
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0178ZQJ',TO_DATE(SYSDATE),'COCHE C3 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',8500,1);
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0179ZQJ',TO_DATE(SYSDATE),'COCHE C3 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',8000,1);
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0171ZQJ',TO_DATE(SYSDATE),'COCHE C4 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',7400,1);
