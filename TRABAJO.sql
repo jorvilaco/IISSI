@@ -14,6 +14,7 @@ DROP TABLE TIPOVEHICULOS;
 DROP TABLE Clientes;
 DROP TABLE Citas;
 DROP TABLE Concesionarios;
+DROP TABLE VEHICULOS_VENDIDOS;
 
 
 
@@ -24,6 +25,14 @@ CREATE TABLE TIPOVEHICULOS(
     unique (nombre)
 );
 
+--Creación de tabla Venta de Vehículo
+CREATE TABLE VEHICULOS_VENDIDOS(
+    id_vhv number(10) primary key,
+    matricula varchar2(40) not null,
+    fechaAlta date not null,
+    fechaVenta date not null,
+    unique (matricula)
+);
 
 --Creación de tabla Financiacion
 CREATE TABLE FINANCIACIONES(
