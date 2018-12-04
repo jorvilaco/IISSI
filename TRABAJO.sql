@@ -281,7 +281,7 @@ create sequence seq_vehiculosvendidos;
 
 
     
-    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR 
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR TIPO PROPIEDADES
     create or replace procedure insertar_tipo_propiedades (t_pro in tipopropiedades.nombre%type)is
     begin insert into tipopropiedades(nombre) values (t_pro);
     commit work;
