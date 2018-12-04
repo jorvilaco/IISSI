@@ -59,7 +59,10 @@ CREATE TABLE VEHICULOS(
     descripcion varchar(400) not null,
     precio number(10,2) not null,
     disponible number(1) not null,
+    id_conces number(10), 
+    FOREIGN KEY (id_conces) REFERENCES CONCESIONARIOS, 
     UNIQUE (matricula)
+    
 );
 
 --Creación de tabla Propiedades
