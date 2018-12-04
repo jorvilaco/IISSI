@@ -297,7 +297,10 @@ create sequence seq_vehiculosvendidos;
     
      create or replace procedure eliminar_tipo_propiedades 
     (idt_pro in tipopropiedades.id_tpro%type)is
-    begin delete from TIPOPROPIEDADES where id_tpro = idt_pro;
+    begin 
+    delete from propiedadesvehiculos where id_tpro = idt_pro;
+    delete from propiedades where id_tpro = idt_pro;
+    delete from TIPOPROPIEDADES where id_tpro = idt_pro;
     commit work;
     end eliminar_tipo_propiedades;
     /
