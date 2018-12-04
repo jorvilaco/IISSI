@@ -304,13 +304,131 @@ create sequence seq_vehiculosvendidos;
 
 
 /************************************************************************
-                       PAQUETES
+                       FUNCIONES
 *************************************************************************/
 
 
 
-
+CREATE OR REPLACE FUNCTION ASSERT_EQUALS (salida BOOLEAN, salida_esperada BOOLEAN) RETURN VARCHAR2 AS 
+BEGIN
+  IF (salida = salida_esperada) THEN
+    RETURN 'EXITO';
+  ELSE
+    RETURN 'FALLO';
+  END IF;
+END ASSERT_EQUALS;
+/
     
+/************************************************************************
+                       PAQUETES
+*************************************************************************/
+
+
+ CREATE OR REPLACE PACKAGE PRUEBAS_TIPOPROPIEDADES AS 
+
+   PROCEDURE inicializar;
+   PROCEDURE insertar (nombre_prueba VARCHAR2, w_nom VARCHAR2,salidaEsperada BOOLEAN);
+   PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2, salidaEsperada BOOLEAN);
+   PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN);
+
+END PRUEBAS_TIPOPROPIEDADES;
+/
+
+ CREATE OR REPLACE PACKAGE BODY PRUEBAS_TIPOPROPIEDADES AS
+
+  /* INICIALIZACIÓN */
+  PROCEDURE inicializar AS
+  BEGIN
+
+    /* Borrar contenido de la tabla */
+      DELETE FROM propiedades;
+      DELETE FROM propiedadesvehiculos;
+      DELETE FROM tipovehiculos;
+    NULL;
+  END inicializar;
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba VARCHAR2, w_nom VARCHAR2,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    tipopropiedad tipopropiedades%ROWTYPE;
+    w_cod INTEGER;
+  BEGIN
+    
+    /* Insertar fila*/
+    insertar_tipo_propiedades(w_nom);
+    
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_tipopropiedades.currval;
+    SELECT * INTO tipopropiedad FROM tipopropiedades WHERE id_tpro=w_cod;
+    IF (tipopropiedad.id_tpro<>w_nom) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    --Mostrar resultado de la prueba 
+    
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END insertar;
+
+/* PRUEBA PARA LA ACTUALIZACIÓN DE DEPARTAMENTOS */
+  PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    tipopropiedad tipopropiedades%ROWTYPE;
+  BEGIN
+    
+    /* Actualizar empleado */
+    actualizar_tipo_propiedades(w_cod,w_nom);
+    
+    /* Seleccionar departamento y comprobar que los campos se actualizaron correctamente */
+    SELECT * INTO tipopropiedad FROM tipopropiedades WHERE id_tpro=w_cod;
+    IF (tipopropiedad.id_tpro<>w_nom) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END actualizar;
+
+
+/* PRUEBA PARA LA ELIMINACIÓN DE DEPARTAMENTOS */
+  PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    n INTEGER;
+  BEGIN
+    
+    /* Eliminar empleado */
+    eliminar_tipo_propiedades(w_cod);
+    
+    /* Verificar que el departamento no se encuentra en la BD */
+    SELECT COUNT(*) INTO n FROM tipopropiedades WHERE id_tpro=w_cod;
+    IF (n <> 0) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END eliminar;
+
+END PRUEBAS_TIPOPROPIEDADES;
+/
+
     
     
 /************************************************************************
