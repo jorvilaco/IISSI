@@ -129,11 +129,15 @@ Create table CLIENTES(
 );
 
 --Creación Tabla Citas
-Create table CITAS(
+Create table Citas(
    id_cit number(10) primary key,
    Fecha date not null,
-   Hora number(2) not null, check ((Hora = 10) or (Hora=12) or (Hora = 16) or (Hora = 18))
-);
+   Hora number(2) not null, check ((Hora = 10) or (Hora=12) or (Hora = 16) or (Hora = 18)),
+   id_cli number(10),
+   id_conces number(10),
+   FOREIGN KEY (id_conces) REFERENCES CONCESIONARIOS,
+   FOREIGN KEY (id_cli) REFERENCES CLIENTES
+   );
 
 
 
