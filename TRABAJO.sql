@@ -60,7 +60,9 @@ CREATE TABLE VEHICULOS(
     precio number(10,2) not null,
     disponible number(1) not null,
     id_conces number(10), 
+    id_tveh number(10),
     FOREIGN KEY (id_conces) REFERENCES CONCESIONARIOS, 
+    FOREIGN KEY (id_tveh) REFERENCES TIPOVEHICULOS, 
     UNIQUE (matricula)
     
 );
