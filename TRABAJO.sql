@@ -288,7 +288,7 @@ create sequence seq_concesionarios;
     execute insertar_tipo_propiedades('Color');
     execute insertar_tipo_propiedades('Combustible');
     execute insertar_tipo_propiedades('Etiqueta Eficiencia');
-    execute actualizar_tipo_propiedades(1,'NÂº Puertas');
+    execute actualizar_tipo_propiedades(1,'Nº Puertas');
     --execute eliminar_tipo_propiedades(2);
 
 
@@ -306,8 +306,8 @@ create sequence seq_concesionarios;
     insert into propiedades(id_tpro,nombre) values (1,'5 Puertas');
     insert into propiedades(id_tpro,nombre) values (3,'Gasolina');
     insert into propiedades(id_tpro,nombre) values (3,'Diesel');
-    insert into propiedades(id_tpro,nombre) values (3,'HÃ­brido');
-    insert into propiedades(id_tpro,nombre) values (3,'ElÃ©ctrico');
+    insert into propiedades(id_tpro,nombre) values (3,'Híbrido');
+    insert into propiedades(id_tpro,nombre) values (3,'Eléctrico');
     insert into propiedades(id_tpro,nombre) values (4,'0 Emisiones');
     insert into propiedades(id_tpro,nombre) values (4,'Eco');
     insert into propiedades(id_tpro,nombre) values (4,'C');
