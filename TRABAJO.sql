@@ -321,7 +321,9 @@ create sequence seq_vehiculosvendidos;
     
      create or replace procedure eliminar_financiacion 
     (cod_fin in financiaciones.id_fin%type)is
-    begin delete from financiaciones where cod_fin = id_fin;
+    begin 
+    delete from descuentos where cod_fin = id_fin;
+    delete from financiaciones where cod_fin = id_fin;
     commit work;
     end eliminar_financiacion ;
     /
