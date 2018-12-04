@@ -302,6 +302,31 @@ create sequence seq_vehiculosvendidos;
     end eliminar_tipo_propiedades;
     /
 
+    
+    
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR FINACIACION
+    create or replace procedure insertar_financiacion 
+    (nombre_fin in financiaciones.nombre%type)is
+    begin insert into financiaciones(nombre) values (nombre_fin);
+    commit work;
+    end insertar_financiacion ;
+    /
+    
+    create or replace procedure actualizar_financiacion 
+    (cod_fin in financiaciones.id_fin%type, nombre_fin in financiaciones.nombre%type )is
+    begin update financiaciones set  nombre = nombre_fin where cod_fin = id_fin;
+    commit work;
+    end actualizar_financiacion ;
+    /
+    
+     create or replace procedure eliminar_financiacion 
+    (cod_fin in financiaciones.id_fin%type)is
+    begin delete from financiaciones where cod_fin = id_fin;
+    commit work;
+    end eliminar_financiacion ;
+    /
+    
+    
 
 /************************************************************************
                        FUNCIONES
