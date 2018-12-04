@@ -1,3 +1,7 @@
+/************************************************************************
+                        TABLAS
+*************************************************************************/
+
 --Borramos las tablas
 DROP TABLE FOTOVEHICULOS;
 DROP TABLE DESCUENTOS;
@@ -7,40 +11,9 @@ DROP TABLE TIPOPROPIEDADES;
 DROP TABLE VEHICULOS;
 DROP TABLE FINANCIACIONES;
 DROP TABLE TIPOVEHICULOS;
-DROP TABLE Cliente;
+DROP TABLE Clientes;
 DROP TABLE Citas;
-DROP TABLE Concesionario;
-
-
-
-
-
---Borramos las secuencias
-drop sequence seq_fotosVehiculos;
-drop sequence seq_propiedades;
-drop sequence seq_tipopropiedades;
-drop sequence seq_vehiculo;
-drop sequence seq_financiacion;
-drop sequence seq_descuento;
-drop sequence seq_tipovehiculos;
-drop sequence seq_cliente;
-drop sequence seq_citas;
-drop sequence seq_concesionario;
-
-
-
-
---Creamos las secuencias
-create sequence seq_fotosVehiculos;
-create sequence seq_tipovehiculos;
-create sequence seq_financiacion;
-create sequence seq_vehiculo;
-create sequence seq_tipopropiedades;
-create sequence seq_propiedades;
-create sequence seq_descuento;
-create sequence seq_cliente;
-create sequence seq_citas;
-create sequence seq_concesionario;
+DROP TABLE Concesionarios;
 
 
 
@@ -50,7 +23,6 @@ CREATE TABLE TIPOVEHICULOS(
     nombre varchar2(40) not null,
     unique (nombre)
 );
-
 
 --Creación de tabla Financiacion
 CREATE TABLE FINANCIACIONES(
@@ -64,6 +36,16 @@ CREATE TABLE TIPOPROPIEDADES(
     id_tpro number(10) primary key,
     nombre varchar2(40) not null,
     unique (nombre)
+);
+
+--Creación Tabla Concesionario
+Create table CONCESIONARIOS(
+   id_conces number(10) primary key,
+   Nombre varchar(40) not null,
+   Direccion varchar2(40) not null,
+   Telef number(9) not null,
+   Email varchar2(50) not null,
+   NoCitas number(10) not null, check (NoCitas!=0)
 );
 
 --Creación de tabla Vehículo
@@ -117,7 +99,7 @@ CREATE TABLE FOTOVEHICULOS(
 );
 
 --Creación Tabla de Cliente
-Create table Cliente(
+Create table Clientes(
    id_cli number(10) primary key,
    email varchar2(50) not null,
    dni varchar2(9) not null,
@@ -135,30 +117,55 @@ Create table Citas(
    Hora number(2) not null, check ((Hora = 10) or (Hora=12) or (Hora = 16) or (Hora = 18))
 );
 
---Creación Tabla Concesionario
-Create table Concesionario(
-   id_conces number(10) primary key,
-   Nombre varchar(40) not null,
-   Direccion varchar2(40) not null,
-   Telef number(9) not null,
-   Email varchar2(50) not null,
-   NoCitas number(10) not null, check (NoCitas!=0)
-);
+
+
+/************************************************************************
+                        SECUENCIAS
+*************************************************************************/
+
+
+
+--Borramos las secuencias
+drop sequence seq_fotoVehiculos;
+drop sequence seq_tipovehiculos;
+drop sequence seq_finaciaciones;
+drop sequence seq_vehiculos;
+drop sequence seq_tipopropiedades;
+drop sequence seq_propiedades;
+drop sequence seq_descuentos;
+drop sequence seq_clientes;
+drop sequence seq_citas;
+drop sequence seq_concesionarios;
+
+
+
+
+--Creamos las secuencias
+create sequence seq_fotoVehiculos;
+create sequence seq_tipovehiculos;
+create sequence seq_finaciaciones;
+create sequence seq_vehiculos;
+create sequence seq_tipopropiedades;
+create sequence seq_propiedades;
+create sequence seq_descuentos;
+create sequence seq_clientes;
+create sequence seq_citas;
+create sequence seq_concesionarios;
 
 
 
 
     --Creación de Trigger Financiación (secuencia)
-    create or replace trigger Sec_FI_
+    create or replace trigger SECUENCIA_FINANCIACIONES
     before insert on FINANCIACIONES
     for each row
     begin
-        :new.id_fin := seq_financiacion.nextval;    
+        :new.id_fin := seq_finaciaciones.nextval;    
     end;
     /
     
     --Creación de Trigger Tipo Propiedades (secuencia)
-    create or replace trigger Sec_TP_
+    create or replace trigger SECUENCIA_TIPO_PROPIEDADES
     before insert on TIPOPROPIEDADES
     for each row
     begin
@@ -167,7 +174,7 @@ Create table Concesionario(
     /
     
     --Creación de Trigger Propiedades (secuencia)
-    create or replace trigger Sec_P_
+    create or replace trigger SECUENCIA_PROPIEDADES
     before insert on PROPIEDADES
     for each row
     begin
@@ -176,45 +183,43 @@ Create table Concesionario(
     / 
     
     --Creación de Trigger Vehículo (secuencia)
-    create or replace trigger Sec_V_
+    create or replace trigger SECUENCIA_VEHICULOS
     before insert on VEHICULOS
     for each row
     begin
-        :new.id_veh := seq_vehiculo.nextval;   
+        :new.id_veh := seq_vehiculos.nextval;   
     end;
     / 
-    
-    
+        
         --Creación de Trigger Vehículo (secuencia)
-    create or replace trigger Sec_FV_
+    create or replace trigger SECUENCIA_FOTOS_VEHICULOS
     before insert on FOTOVEHICULOS
     for each row
     begin
-        :new.id_ft := seq_fotosVehiculos.nextval;   
+        :new.id_ft := seq_fotoVehiculos.nextval;   
     end;
     / 
-    
-    
+        
     --Creación de Trigger Descuento(secuencia)
-    create or replace trigger Sec_DE_
+    create or replace trigger SECUENCIA_DESCUENTOS
     before insert on DESCUENTOS
     for each row
     begin
-        :new.id_des := seq_descuento.nextval;    
+        :new.id_des := seq_descuentos.nextval;    
     end;
     /
     
     --Creación de Trigger Cliente (secuencia)
-    create or replace trigger Sec_Cl_
-    before insert on Cliente
+    create or replace trigger SECUENCIA_CLIENTES
+    before insert on Clientes
     for each row
     begin
-    :new.id_cli := seq_cliente.nextval;
+    :new.id_cli := seq_clientes.nextval;
     end;
     /
     
     --Creación de Trigger Citas (secuencia)
-    create or replace trigger Sec_Ci_
+    create or replace trigger SECUENCIA_CITAS
     before insert on Citas
     for each row
     begin
@@ -223,16 +228,21 @@ Create table Concesionario(
     /
     
     --Creación de Trigger Concesionario (secuencia)
-    create or replace trigger Sec_Con_
-    before insert on Concesionario
+    create or replace trigger SECUENCIA_CONCESIONARIOS
+    before insert on Concesionarios
     for each row
     begin
-    :new.id_conces := seq_concesionario.nextval;
+    :new.id_conces := seq_concesionarios.nextval;
     end;
     /
 
-  
-    --PROCEDURES
+
+
+/************************************************************************
+                        PROCEDURES
+*************************************************************************/
+
+
     
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR 
     create or replace procedure insertar_tipo_propiedades (t_pro in tipopropiedades.nombre%type)is
@@ -257,6 +267,12 @@ Create table Concesionario(
 
 
 
+    
+    
+    
+/************************************************************************
+                        PRUEBAS
+*************************************************************************/
 
     execute insertar_tipo_propiedades('Puertas');
     execute insertar_tipo_propiedades('Color');
@@ -264,8 +280,7 @@ Create table Concesionario(
     execute insertar_tipo_propiedades('Etiqueta Eficiencia');
     execute actualizar_tipo_propiedades(1,'Nº Puertas');
     --execute eliminar_tipo_propiedades(2);
-  
-    
+
 
 
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0178ZQJ',TO_DATE(SYSDATE),'COCHE C3 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',8500,1);
@@ -301,15 +316,15 @@ Create table Concesionario(
     insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (2,2,4);
     insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (1,4,4);
     insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (3,6,4);
-    insert into Cliente (email,dni,nombre,telef,movil,FechAlta) 
+    insert into Clientes (email,dni,nombre,telef,movil,FechAlta) 
     values ('prueba@prueba.com','66606660w','Juan',666666666,999999999,TO_DATE('12/12/2012'));
-    insert into Cliente (email,dni,nombre,telef,movil,FechAlta) 
+    insert into Clientes (email,dni,nombre,telef,movil,FechAlta) 
     values ('prueba2@prueba2.com','66606660T','Juon',666606666,999909999,TO_DATE('12/2/2012'));
     insert into Citas (Fecha, Hora) values (TO_DATE('12/12/2020'),13);
     insert into Citas (Fecha, Hora) values (TO_DATE('12/12/2020'),13);
-    insert into Concesionario (Nombre, Direccion, Telef, Email, NoCitas) 
+    insert into Concesionarios (Nombre, Direccion, Telef, Email, NoCitas) 
     values ('Con','calle',756493498,'prueba@prueba.com',10);
-    insert into Concesionario (Nombre, Direccion, Telef, Email, NoCitas) 
+    insert into Concesionarios (Nombre, Direccion, Telef, Email, NoCitas) 
     values ('Con2','calle2',756493499,'prueba2@prueba2',11);
     
    
