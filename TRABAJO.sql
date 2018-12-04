@@ -156,6 +156,7 @@ drop sequence seq_descuentos;
 drop sequence seq_clientes;
 drop sequence seq_citas;
 drop sequence seq_concesionarios;
+drop sequence seq_vehiculosvendidos;
 
 
 
@@ -171,6 +172,17 @@ create sequence seq_descuentos;
 create sequence seq_clientes;
 create sequence seq_citas;
 create sequence seq_concesionarios;
+create sequence seq_vehiculosvendidos;
+
+    
+    --Creación de Trigger Vehículo Vendido (secuencia)
+    create or replace trigger SECUENCIA_VEHICULOS_VENDIDOS
+    before insert on VEHICULOSVENDIDOS
+    for each row
+    begin
+        :new.id_vhv := seq_vehiculosvendidos.nextval;    
+    end;
+    /
 
 
     --Creación de Trigger Financiación (secuencia)
