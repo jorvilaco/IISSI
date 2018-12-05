@@ -403,6 +403,22 @@ END;
     end insertar_vehiculo;
     /
     
+    create or replace procedure actualizar_vehiculo
+    (cod_vhe in vehiculos.id_veh%type,
+    matricula_vhe in vehiculos.matricula%type,
+    fecha_alta_vhe in vehiculos.fechaalta%type,
+    nombre_vhe in vehiculos.nombre%type,
+    descripcion_vhe in vehiculos.descripcion%type,
+    precio_vhe in vehiculos.precio%type,
+    disponible_vhe in vehiculos.disponible%type,
+    id_conces_vhe in vehiculos.id_conces%type,
+    id_tveh_vhe in vehiculos.id_tveh%type)is
+    begin 
+    update vehiculos set  matricula = matricula_vhe, fechaalta=fecha_alta_vhe,nombre=nombre_vhe,descripcion=descripcion_vhe,
+    precio=precio_vhe,disponible=disponible_vhe,id_conces=id_conces_vhe,id_tveh=id_tveh_vhe where cod_vhe = id_veh;
+    commit work;
+    end actualizar_vehiculo;
+    /
     
      --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR VEHICULO
     create or replace procedure insertar_vehiculo_vendido
