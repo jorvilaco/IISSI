@@ -228,7 +228,14 @@ create sequence seq_vehiculosvendidos;
     end;
     / 
 
-        
+    --Creación de Trigger TipoVehículo (secuencia)
+    create or replace trigger SECUENCIA_TIPO_VEHICULOS
+    before insert on TipoVehiculos
+    for each row
+    begin
+        :new.id_tveh := seq_TipoVehiculos.nextval;    
+    end;
+    /    
         --CreaciÃ³n de Trigger VehÃ­culo (secuencia)
     create or replace trigger SECUENCIA_FOTOS_VEHICULOS
     before insert on FOTOVEHICULOS
