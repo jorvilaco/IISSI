@@ -528,16 +528,15 @@ END PRUEBAS_TIPOPROPIEDADES;
     
   END insertar;
 
-/* PRUEBA PARA LA ACTUALIZACIÓN DE DEPARTAMENTOS */
+/* ACTUALIZACIÓN*/
   PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2, salidaEsperada BOOLEAN) AS
     salida BOOLEAN := true;
     tipopropiedad tipopropiedades%ROWTYPE;
   BEGIN
-    
-    /* Actualizar empleado */
+ 
     actualizar_tipo_propiedades(w_cod,w_nom);
     
-    /* Seleccionar departamento y comprobar que los campos se actualizaron correctamente */
+
     SELECT * INTO tipopropiedad FROM tipopropiedades WHERE id_tpro=w_cod;
     IF (tipopropiedad.nombre<>w_nom) THEN
       salida := false;
@@ -554,16 +553,16 @@ END PRUEBAS_TIPOPROPIEDADES;
   END actualizar;
 
 
-/* PRUEBA PARA LA ELIMINACIÃN DE DEPARTAMENTOS */
+/* ELIMINACIÓN */
   PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN) AS
     salida BOOLEAN := true;
     n INTEGER;
   BEGIN
     
-    /* Eliminar empleado */
+
     eliminar_tipo_propiedades(w_cod);
     
-    /* Verificar que el departamento no se encuentra en la BD */
+
     SELECT COUNT(*) INTO n FROM tipopropiedades WHERE id_tpro=w_cod;
     IF (n <> 0) THEN
       salida := false;
