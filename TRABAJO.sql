@@ -433,6 +433,16 @@ END;
     end eliminar_vehiculos;
     /
     
+     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR PROPIEDADES VEHICULOS
+    create or replace procedure insertar_propiedad_vehiculo
+    (cod_tpro in propiedadesvehiculos.id_tpro%type,
+    cod_pro in propiedadesvehiculos.id_pro%type,
+    cod_veh in propiedadesvehiculos.id_veh%type)is
+    begin insert into propiedadesvehiculos values (cod_tpro,cod_pro,cod_veh);
+    commit work;
+    end insertar_propiedad_vehiculo;
+    /
+    
      --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR VEHICULO
     create or replace procedure insertar_vehiculo_vendido
     (matricula_vhv in vehiculosvendidos.matricula%type,
