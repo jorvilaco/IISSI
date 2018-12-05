@@ -92,6 +92,7 @@ CREATE TABLE PROPIEDADESVEHICULOS(
     id_pro number(10),
     id_veh number(10),
     PRIMARY KEY (id_tpro,id_pro,id_veh),
+    unique(id_tpro,id_veh),
     foreign key (id_veh) REFERENCES TIPOPROPIEDADES,
     foreign key (id_pro) REFERENCES PROPIEDADES,
     foreign key (id_veh) REFERENCES VEHICULOS
