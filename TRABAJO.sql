@@ -443,7 +443,7 @@ END;
     end insertar_propiedad_vehiculo;
     /
     
-     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR VEHICULO
+     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR VEHICULO VENDIDO
     create or replace procedure insertar_vehiculo_vendido
     (matricula_vhv in vehiculosvendidos.matricula%type,
     fecha_alta_vhv in vehiculosvendidos.fechaalta%type,
