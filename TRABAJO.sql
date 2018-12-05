@@ -19,14 +19,14 @@ DROP TABLE VEHICULOSVENDIDOS;
 
 
 
---CreaciÃ³n de tabla TipoVehiculos
+--Creación de tabla TipoVehiculos
 CREATE TABLE TIPOVEHICULOS(
     id_tveh number(10) primary key,
     nombre varchar2(40) not null,
     unique (nombre)
 );
 
---CreaciÃ³n de tabla Venta de VehÃ­culo
+--Creación de tabla Venta de Vehículo
 CREATE TABLE VEHICULOSVENDIDOS(
     id_vhv number(10) primary key,
     matricula varchar2(40) not null,
@@ -35,14 +35,14 @@ CREATE TABLE VEHICULOSVENDIDOS(
     unique (matricula)
 );
 
---CreaciÃ³n de tabla Financiacion
+--Creación de tabla Financiacion
 CREATE TABLE FINANCIACIONES(
     id_fin number(10) primary key,
     nombre varchar2(40) not null,
     unique (nombre)
 );
 
---CreaciÃ³n de tabla Tipo Propiedades
+--Creación de tabla Tipo Propiedades
 CREATE TABLE TIPOPROPIEDADES(
     id_tpro number(10) primary key,
     nombre varchar2(40) not null,
@@ -50,7 +50,7 @@ CREATE TABLE TIPOPROPIEDADES(
 );
 
 
---CreaciÃ³n Tabla Concesionario
+--Creación Tabla Concesionario
 Create table CONCESIONARIOS(
    id_conces number(10) primary key,
    Nombre varchar(40) not null,
@@ -60,7 +60,7 @@ Create table CONCESIONARIOS(
    NoCitas number(10) not null, check (NoCitas!=0)
 );
 
---CreaciÃ³n de tabla VehÃ­culo
+--Creación de tabla Vehículo
 CREATE TABLE VEHICULOS(
     id_veh number(10) primary key,
     matricula varchar2(7) not null,
@@ -77,7 +77,7 @@ CREATE TABLE VEHICULOS(
     
 );
 
---CreaciÃ³n de tabla Propiedades
+--Creación de tabla Propiedades
 CREATE TABLE PROPIEDADES(
     id_pro number(10) primary key,
     id_tpro number(10),
@@ -86,7 +86,7 @@ CREATE TABLE PROPIEDADES(
     foreign key (id_tpro) REFERENCES TIPOPROPIEDADES
 );
 
---CreaciÃ³n de tabla relaciÃ³n propiedades y vehÃ­culo
+--Creación de tabla relación propiedades y vehículo
 CREATE TABLE PROPIEDADESVEHICULOS(
     id_tpro number(10),
     id_pro number(10),
@@ -97,7 +97,7 @@ CREATE TABLE PROPIEDADESVEHICULOS(
     foreign key (id_veh) REFERENCES VEHICULOS
 );
 
---CreaciÃ³n de tabla Descuento
+--Creación de tabla Descuento
 CREATE TABLE DESCUENTOS(
     id_des number(10) primary key,
     id_fin number(10),
@@ -106,7 +106,7 @@ CREATE TABLE DESCUENTOS(
     foreign key (id_fin) REFERENCES FINANCIACIONES
 );
 
---CreaciÃ³n de tabla Foto VehÃ­culo
+--Creación de tabla Foto VehÃ­culo
 CREATE TABLE FOTOVEHICULOS(
     id_ft number(12) primary key,
     id_veh number(10),
@@ -116,7 +116,7 @@ CREATE TABLE FOTOVEHICULOS(
 );
 
 
---CreaciÃ³n Tabla de Cliente
+--Creación Tabla de Cliente
 Create table CLIENTES(
    id_cli number(10) primary key,
    email varchar2(50) not null,
@@ -128,7 +128,7 @@ Create table CLIENTES(
    unique(dni, email)
 );
 
---CreaciÃ³n Tabla Citas
+--Creación Tabla Citas
 Create table Citas(
    id_cit number(10) primary key,
    Fecha date not null,
@@ -179,7 +179,7 @@ create sequence seq_concesionarios;
 create sequence seq_vehiculosvendidos;
 
     
-    --CreaciÃ³n de Trigger VehÃ­culo Vendido (secuencia)
+    --Creación de Trigger Vehículo Vendido (secuencia)
     create or replace trigger SECUENCIA_VEHICULOS_VENDIDOS
     before insert on VEHICULOSVENDIDOS
     for each row
@@ -189,7 +189,7 @@ create sequence seq_vehiculosvendidos;
     /
 
 
-    --CreaciÃ³n de Trigger FinanciaciÃ³n (secuencia)
+    --Creación de Trigger Financiación (secuencia)
     create or replace trigger SECUENCIA_FINANCIACIONES
     before insert on FINANCIACIONES
     for each row
@@ -199,7 +199,7 @@ create sequence seq_vehiculosvendidos;
     /
     
 
-    --CreaciÃ³n de Trigger Tipo Propiedades (secuencia)
+    --Creación de Trigger Tipo Propiedades (secuencia)
     create or replace trigger SECUENCIA_TIPO_PROPIEDADES
     before insert on TIPOPROPIEDADES
     for each row
@@ -209,7 +209,7 @@ create sequence seq_vehiculosvendidos;
     /
     
 
-    --CreaciÃ³n de Trigger Propiedades (secuencia)
+    --Creación de Trigger Propiedades (secuencia)
     create or replace trigger SECUENCIA_PROPIEDADES
     before insert on PROPIEDADES
     for each row
@@ -219,7 +219,7 @@ create sequence seq_vehiculosvendidos;
     / 
     
 
-    --CreaciÃ³n de Trigger VehÃ­culo (secuencia)
+    --Creación de Trigger Vehículo (secuencia)
     create or replace trigger SECUENCIA_VEHICULOS
     before insert on VEHICULOS
     for each row
@@ -236,7 +236,7 @@ create sequence seq_vehiculosvendidos;
         :new.id_tveh := seq_TipoVehiculos.nextval;    
     end;
     /    
-        --CreaciÃ³n de Trigger VehÃ­culo (secuencia)
+        --Creación de Trigger Vehículo (secuencia)
     create or replace trigger SECUENCIA_FOTOS_VEHICULOS
     before insert on FOTOVEHICULOS
     for each row
@@ -245,7 +245,7 @@ create sequence seq_vehiculosvendidos;
     end;
     / 
 
-    --CreaciÃ³n de Trigger Descuento(secuencia)
+    --Creación de Trigger Descuento(secuencia)
     create or replace trigger SECUENCIA_DESCUENTOS
     before insert on DESCUENTOS
     for each row
@@ -255,7 +255,7 @@ create sequence seq_vehiculosvendidos;
     /
     
 
-    --CreaciÃ³n de Trigger Cliente (secuencia)
+    --Creación de Trigger Cliente (secuencia)
     create or replace trigger SECUENCIA_CLIENTES
     before insert on CLIENTES
     for each row
@@ -265,7 +265,7 @@ create sequence seq_vehiculosvendidos;
     /
     
 
-    --CreaciÃ³n de Trigger Citas (secuencia)
+    --Creación de Trigger Citas (secuencia)
     create or replace trigger SECUENCIA_CITAS
     before insert on CITAS
     for each row
@@ -275,7 +275,7 @@ create sequence seq_vehiculosvendidos;
     /
     
 
-    --CreaciÃ³n de Trigger Concesionario (secuencia)
+    --Creación de Trigger Concesionario (secuencia)
     create or replace trigger SECUENCIA_CONCESIONARIOS
     before insert on CONCESIONARIOS
     for each row
@@ -446,7 +446,7 @@ END PRUEBAS_TIPOPROPIEDADES;
 
  CREATE OR REPLACE PACKAGE BODY PRUEBAS_TIPOPROPIEDADES AS
 
-  /* INICIALIZACIÃN */
+  /* INICIALIZACIÓN */
   PROCEDURE inicializar AS
   BEGIN
 
@@ -457,7 +457,7 @@ END PRUEBAS_TIPOPROPIEDADES;
     NULL;
   END inicializar;
 
-/* PRUEBA PARA LA INSERCIÃN*/
+/* PRUEBA PARA LA INSERCIÓN*/
   PROCEDURE insertar (nombre_prueba VARCHAR2, w_nom VARCHAR2,salidaEsperada BOOLEAN) AS
     salida BOOLEAN := true;
     tipopropiedad tipopropiedades%ROWTYPE;
@@ -489,7 +489,7 @@ END PRUEBAS_TIPOPROPIEDADES;
     
   END insertar;
 
-/* PRUEBA PARA LA ACTUALIZACIÃN DE DEPARTAMENTOS */
+/* PRUEBA PARA LA ACTUALIZACIÓN DE DEPARTAMENTOS */
   PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2, salidaEsperada BOOLEAN) AS
     salida BOOLEAN := true;
     tipopropiedad tipopropiedades%ROWTYPE;
@@ -552,7 +552,7 @@ END PRUEBAS_TIPOPROPIEDADES;
     execute insertar_tipo_propiedades('Color');
     execute insertar_tipo_propiedades('Combustible');
     execute insertar_tipo_propiedades('Etiqueta Eficiencia');
-    execute actualizar_tipo_propiedades(1,'NÂº Puertas');
+    execute actualizar_tipo_propiedades(1,'Nº Puertas');
     --execute eliminar_tipo_propiedades(2);
 
     insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0178ZQJ',TO_DATE(SYSDATE),'COCHE C3 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',8500,1);
