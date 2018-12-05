@@ -100,10 +100,12 @@ CREATE TABLE PROPIEDADESVEHICULOS(
 --Creación de tabla Descuento
 CREATE TABLE DESCUENTOS(
     id_des number(10) primary key,
-    id_fin number(10),
+    id_fin number(10)not null,
     nombre varchar2(40) not null ,
+    id_veh number(10)not null,
     unique(nombre),
-    foreign key (id_fin) REFERENCES FINANCIACIONES
+    foreign key (id_fin) REFERENCES FINANCIACIONES,
+    foreign key (id_veh) REFERENCES VEHICULOS
 );
 
 --Creación de tabla Foto VehÃ­culo
@@ -418,6 +420,16 @@ END;
     precio=precio_vhe,disponible=disponible_vhe,id_conces=id_conces_vhe,id_tveh=id_tveh_vhe where cod_vhe = id_veh;
     commit work;
     end actualizar_vehiculo;
+    /
+    
+     create or replace procedure eliminar_vehiculos
+    (cod_veh in vehiculos.id_veh%type)is
+    begin 
+    delete from propiedadesvehiculos where cod_veh = id_veh;
+    delete from descuentos where cod_veh = id_veh;
+    delete from vehiculos where cod_veh = id_veh;
+    commit work;
+    end eliminar_vehiculos;
     /
     
      --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR VEHICULO
