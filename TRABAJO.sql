@@ -100,11 +100,10 @@ CREATE TABLE PROPIEDADESVEHICULOS(
 
 --Creación de tabla Descuento
 CREATE TABLE DESCUENTOS(
-    id_des number(10) primary key,
     id_fin number(10)not null,
     descuento number(10,2) not null,
     id_veh number(10)not null,
-    unique(id_fin,id_veh),
+    primary key(id_fin,id_veh),
     foreign key (id_fin) REFERENCES FINANCIACIONES,
     foreign key (id_veh) REFERENCES VEHICULOS
 );
@@ -239,6 +238,8 @@ create sequence seq_vehiculosvendidos;
         :new.id_tveh := seq_TipoVehiculos.nextval;    
     end;
     /    
+    
+    
         --Creación de Trigger Vehículo (secuencia)
     create or replace trigger SECUENCIA_FOTOS_VEHICULOS
     before insert on FOTOVEHICULOS
@@ -248,14 +249,7 @@ create sequence seq_vehiculosvendidos;
     end;
     / 
 
-    --Creación de Trigger Descuento(secuencia)
-    create or replace trigger SECUENCIA_DESCUENTOS
-    before insert on DESCUENTOS
-    for each row
-    begin
-        :new.id_des := seq_descuentos.nextval;    
-    end;
-    /
+  
     
 
     --Creación de Trigger Cliente (secuencia)
