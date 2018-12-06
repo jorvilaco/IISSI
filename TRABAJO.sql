@@ -102,9 +102,9 @@ CREATE TABLE PROPIEDADESVEHICULOS(
 CREATE TABLE DESCUENTOS(
     id_des number(10) primary key,
     id_fin number(10)not null,
-    nombre varchar2(40) not null ,
+    descuento number(10,2) not null,
     id_veh number(10)not null,
-    unique(nombre),
+    unique(id_fin,id_veh),
     foreign key (id_fin) REFERENCES FINANCIACIONES,
     foreign key (id_veh) REFERENCES VEHICULOS
 );
