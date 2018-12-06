@@ -306,6 +306,24 @@ END;
 /
 
 
+ --TRIGGER PARA AÑADIR VEHICULO VENDIDO AL BORRAR UN VEHICULO
+CREATE OR REPLACE TRIGGER PROPIEDADA_TIPOPROPIEDAD
+BEFORE INSERT OR UPDATE ON PROPIEDADESVEHICULOS
+FOR EACH ROW
+DECLARE 
+ COD_TPRO INTEGER;
+BEGIN
+
+    SELECT ID_TPRO INTO COD_TPRO FROM PROPIEDADES WHERE :NEW.ID_PRO=ID_PRO ;
+    IF (:NEW.ID_TPRO <> COD_TPRO) THEN
+     RAISE_APPLICATION_ERROR(-20400,cod_tpro|| ' TIPO DE PROPIEDAD ERRONEA');
+    
+    END IF;
+
+END;
+/
+
+
 /************************************************************************
                         PROCEDURES
 *************************************************************************/
@@ -441,6 +459,20 @@ END;
     begin insert into propiedadesvehiculos values (cod_tpro,cod_pro,cod_veh);
     commit work;
     end insertar_propiedad_vehiculo;
+    /
+    
+     create or replace procedure actualizar_propiedad_vehiculo
+    (cod_tpro in propiedadesvehiculos.id_tpro%type,
+     cod_pro_nuevo in propiedadesvehiculos.id_pro%type,
+     cod_veh in propiedadesvehiculos.id_veh%type)is
+    begin     
+    if (cod_pro_nuevo <> 0)then
+    update propiedadesvehiculos set id_pro = cod_pro_nuevo where id_tpro = cod_tpro and id_veh = cod_veh;
+    else 
+    delete from propiedadesvehiculos where id_tpro = cod_tpro and id_veh = cod_veh;
+    end if;
+    commit work;
+    end actualizar_propiedad_vehiculo;
     /
     
      --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR VEHICULO VENDIDO
