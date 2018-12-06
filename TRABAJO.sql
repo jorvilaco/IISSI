@@ -314,11 +314,11 @@ DECLARE
  COD_TPRO INTEGER;
 BEGIN
 
-    SELECT ID_TPRO INTO COD_TPRO FROM PROPIEDADES WHERE :NEW.ID_PRO=ID_PRO ;
-    IF (:NEW.ID_TPRO <> COD_TPRO) THEN
-     RAISE_APPLICATION_ERROR(-20400,cod_tpro|| ' TIPO DE PROPIEDAD ERRONEA');
-    
-    END IF;
+SELECT ID_TPRO INTO COD_TPRO FROM PROPIEDADES WHERE :NEW.ID_PRO=ID_PRO ;
+IF (:NEW.ID_TPRO <> COD_TPRO) THEN
+    RAISE_APPLICATION_ERROR(-20400,cod_tpro|| ' TIPO DE PROPIEDAD ERRONEA');
+
+END IF;
 
 END;
 /
@@ -331,14 +331,16 @@ END;
 
     
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR TIPO PROPIEDADES
-    create or replace procedure insertar_tipo_propiedades (t_pro in tipopropiedades.nombre%type)is
+    create or replace procedure insertar_tipo_propiedades 
+    (t_pro in tipopropiedades.nombre%type)is
     begin insert into tipopropiedades(nombre) values (t_pro);
     commit work;
     end insertar_tipo_propiedades;
     /
     
     create or replace procedure actualizar_tipo_propiedades 
-    (idt_pro in tipopropiedades.id_tpro%type,t_pro_act in tipopropiedades.nombre%type )is
+    (idt_pro in tipopropiedades.id_tpro%type,
+    t_pro_act in tipopropiedades.nombre%type )is
     begin update TIPOPROPIEDADES set nombre = t_pro_act where id_tpro = idt_pro;
     commit work;
     end actualizar_tipo_propiedades;
@@ -365,7 +367,8 @@ END;
     /
     
     create or replace procedure actualizar_financiacion 
-    (cod_fin in financiaciones.id_fin%type, nombre_fin in financiaciones.nombre%type )is
+    (cod_fin in financiaciones.id_fin%type, 
+    nombre_fin in financiaciones.nombre%type )is
     begin update financiaciones set  nombre = nombre_fin where cod_fin = id_fin;
     commit work;
     end actualizar_financiacion ;
@@ -383,14 +386,17 @@ END;
     
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR PROPIEDADES
     create or replace procedure insertar_propiedad
-    (nombre_pro in propiedades.nombre%type,cod_tpro in propiedades.id_tpro%type)is
+    (nombre_pro in propiedades.nombre%type,
+    cod_tpro in propiedades.id_tpro%type)is
     begin insert into propiedades(nombre,id_tpro) values (nombre_pro,cod_tpro);
     commit work;
     end insertar_propiedad;
     /
     
     create or replace procedure actualizar_propiedad
-    (cod_pro in propiedades.id_pro%type, nombre_pro in propiedades.nombre%type ,cod_tpro in propiedades.id_tpro%type )is
+    (cod_pro in propiedades.id_pro%type, 
+    nombre_pro in propiedades.nombre%type,
+    cod_tpro in propiedades.id_tpro%type )is
     begin     
     update propiedades set  nombre = nombre_pro, id_tpro = cod_tpro where cod_pro = id_pro;
     commit work;
