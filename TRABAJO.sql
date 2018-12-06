@@ -480,6 +480,36 @@ END;
     end eliminar_descuento;
     /
     
+    
+     --PROCEDURES INSERTAR Y BORRAR FOTO VEHICULO Y ACTUALIZAR POSICION
+    create or replace procedure insertar_foto_vehiculo
+    (cod_veh in fotovehiculos.id_veh%type,
+    valor_posicion in fotovehiculos.posicion%type)is
+    begin 
+    insert into fotovehiculos(id_veh,posicion) values (cod_veh,valor_posicion);
+    commit work;
+    end insertar_foto_vehiculo;
+    /
+    
+    create or replace procedure actualizar_ft_veh_posición 
+    (cod_ft in fotovehiculos.id_ft%type,
+    valor_posicion in fotovehiculos.posicion%type)is
+    begin 
+    update fotovehiculos set posicion = valor_posicion where id_ft=cod_ft;
+    commit work;
+    end actualizar_ft_veh_posición;
+    /
+    
+    
+     create or replace procedure eliminar_foto_vehiculo 
+    (cod_ft in fotovehiculos.id_ft%type)is
+    begin 
+    delete from fotovehiculos where id_ft=cod_ft;
+    commit work;
+    end eliminar_foto_vehiculo;
+    /
+    
+    
      --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR PROPIEDADES VEHICULOS
     create or replace procedure insertar_propiedad_vehiculo
     (cod_tpro in propiedadesvehiculos.id_tpro%type,
