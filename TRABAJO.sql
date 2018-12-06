@@ -451,6 +451,35 @@ END;
     end eliminar_vehiculos;
     /
     
+     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR DESCUENTOS
+    create or replace procedure insertar_descuento
+    (cod_fin in descuentos.id_fin%type,
+    valor_descuento in descuentos.descuento%type,
+    cod_veh in descuentos.id_veh%type)is
+    begin insert into descuentos(id_fin,descuento,id_veh) values (cod_fin,valor_descuento,cod_veh);
+    commit work;
+    end insertar_descuento;
+    /
+    
+    create or replace procedure actualizar_descuento
+    (cod_fin in descuentos.id_fin%type,
+    valor_descuento in descuentos.descuento%type,
+    cod_veh in descuentos.id_veh%type)is
+    begin     
+    update descuentos set  descuento = valor_descuento where cod_fin = id_fin  and cod_veh = id_veh;
+    commit work;
+    end actualizar_descuento;
+    /
+    
+     create or replace procedure eliminar_descuento 
+    (cod_fin in descuentos.id_fin%type,
+    cod_veh in descuentos.id_veh%type)is
+    begin 
+    delete from descuentos where cod_fin = id_fin  and cod_veh = id_veh;
+    commit work;
+    end eliminar_descuento;
+    /
+    
      --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR PROPIEDADES VEHICULOS
     create or replace procedure insertar_propiedad_vehiculo
     (cod_tpro in propiedadesvehiculos.id_tpro%type,
