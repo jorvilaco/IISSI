@@ -68,7 +68,7 @@ CREATE TABLE VEHICULOS(
     nombre varchar2(80) not null,
     descripcion varchar2(400) not null,
     precio number(10,2) not null,
-    disponible number(1) not null,
+    disponible number(1) not null, check ((disponible=0) or (disponible = 1)),
     id_conces number(10), 
     id_tveh number(10),
     FOREIGN KEY (id_conces) REFERENCES CONCESIONARIOS, 
@@ -420,18 +420,18 @@ END;
     /
     
     create or replace procedure actualizar_vehiculo
-    (cod_vhe in vehiculos.id_veh%type,
-    matricula_vhe in vehiculos.matricula%type,
-    fecha_alta_vhe in vehiculos.fechaalta%type,
-    nombre_vhe in vehiculos.nombre%type,
-    descripcion_vhe in vehiculos.descripcion%type,
-    precio_vhe in vehiculos.precio%type,
-    disponible_vhe in vehiculos.disponible%type,
-    id_conces_vhe in vehiculos.id_conces%type,
-    id_tveh_vhe in vehiculos.id_tveh%type)is
+    (cod_veh in vehiculos.id_veh%type,
+    matricula_veh in vehiculos.matricula%type,
+    fecha_alta_veh in vehiculos.fechaalta%type,
+    nombre_veh in vehiculos.nombre%type,
+    descripcion_veh in vehiculos.descripcion%type,
+    precio_veh in vehiculos.precio%type,
+    disponible_veh in vehiculos.disponible%type,
+    id_conces_veh in vehiculos.id_conces%type,
+    id_tveh_veh in vehiculos.id_tveh%type)is
     begin 
-    update vehiculos set  matricula = matricula_vhe, fechaalta=fecha_alta_vhe,nombre=nombre_vhe,descripcion=descripcion_vhe,
-    precio=precio_vhe,disponible=disponible_vhe,id_conces=id_conces_vhe,id_tveh=id_tveh_vhe where cod_vhe = id_veh;
+    update vehiculos set  matricula = matricula_veh, fechaalta = fecha_alta_veh , nombre = nombre_veh , descripcion = descripcion_veh,
+    precio = precio_veh , disponible = disponible_veh , id_conces = id_conces_veh , id_tveh=id_tveh_veh where cod_veh = id_veh;
     commit work;
     end actualizar_vehiculo;
     /
