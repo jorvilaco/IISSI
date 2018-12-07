@@ -669,6 +669,150 @@ END PRUEBAS_TIPOPROPIEDADES;
 END PRUEBAS_TIPOPROPIEDADES;
 /
 
+
+
+
+ CREATE OR REPLACE PACKAGE PRUEBAS_VEHICULOS AS 
+
+   PROCEDURE inicializar;
+   
+   PROCEDURE insertar (
+   nombre_prueba VARCHAR2, 
+   w_matricula VARCHAR2,
+   w_fechaAlta date,
+   w_nombre varchar2,
+   w_descripcion varchar2,
+   w_precio number,
+   w_disponible number,
+   cod_conces number,
+   cod_tveh number,
+   salidaEsperada BOOLEAN);
+   
+   PROCEDURE actualizar (
+   nombre_prueba VARCHAR2,
+   cod_veh INTEGER,
+   w_matricula VARCHAR2,
+   w_fechaAlta date,
+   w_nombre varchar2,
+   w_descripcion varchar2,
+   w_precio number,
+   w_disponible number,
+   cod_conces number,
+   cod_tveh number,
+   salidaEsperada BOOLEAN);
+   
+   PROCEDURE eliminar (nombre_prueba VARCHAR2,cod_veh INTEGER, salidaEsperada BOOLEAN);
+
+END PRUEBAS_VEHICULOS;
+/
+
+ CREATE OR REPLACE PACKAGE BODY PRUEBAS_VEHICULOS AS
+
+  /* INICIALIZACIÓN */
+  PROCEDURE inicializar AS
+  BEGIN
+
+    /* Borrar contenido de la tabla */
+      DELETE FROM propiedadesvehiculos;
+      DELETE FROM descuentos;
+      delete from vehiculosvendidos;
+      DELETE FROM vehiculos;
+    NULL;
+  END inicializar;
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba VARCHAR2, w_matricula VARCHAR2, w_fechaAlta date, w_nombre varchar2, w_descripcion varchar2, 
+  w_precio number, w_disponible number, cod_conces number, cod_tveh number, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    vehiculo vehiculos%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+    
+    /* Insertar fila*/
+    insertar_vehiculo(w_matricula,w_fechaAlta,w_nombre,w_descripcion,w_precio,w_disponible,cod_conces,cod_tveh);
+    
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_vehiculos.currval;
+    SELECT * INTO vehiculo FROM vehiculos WHERE id_veh=w_cod;
+    
+    IF ((vehiculo.matricula<>w_matricula) or (vehiculo.fechaAlta<>w_fechaAlta) or (vehiculo.nombre<>w_nombre) or 
+    (vehiculo.descripcion<>w_descripcion) or (vehiculo.precio<>w_precio) or (vehiculo.disponible<>w_disponible) or
+    (vehiculo.id_conces<>cod_conces) or (vehiculo.id_tveh<>cod_tveh)) THEN
+      salida := false;
+    END IF;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+    
+    
+    COMMIT WORK;
+      
+    
+  END insertar;
+
+/* ACTUALIZACIÓN*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2, cod_veh INTEGER, w_matricula VARCHAR2, w_fechaAlta date, w_nombre varchar2,
+   w_descripcion varchar2, w_precio number, w_disponible number, cod_conces number, cod_tveh number, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    vehiculo vehiculos%ROWTYPE;
+  BEGIN
+ 
+    actualizar_vehiculo(cod_veh,w_matricula,w_fechaAlta,w_nombre,w_descripcion,w_precio,w_disponible,cod_conces,cod_tveh);
+    
+
+   SELECT * INTO vehiculo FROM vehiculos WHERE id_veh=cod_veh;
+   
+    IF ((vehiculo.matricula<>w_matricula) or (vehiculo.fechaAlta<>w_fechaAlta) or (vehiculo.nombre<>w_nombre) or 
+    (vehiculo.descripcion<>w_descripcion) or (vehiculo.precio<>w_precio) or (vehiculo.disponible<>w_disponible) or
+    (vehiculo.id_conces<>cod_conces) or (vehiculo.id_tveh<>cod_tveh)) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    /*EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;*/
+  END actualizar;
+
+
+/* ELIMINACIÓN */
+  PROCEDURE eliminar (nombre_prueba VARCHAR2,cod_veh INTEGER, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    n INTEGER;
+  BEGIN
+    
+
+    eliminar_vehiculos(cod_veh);
+    
+
+    SELECT COUNT(*) INTO n FROM vehiculos WHERE id_veh=cod_veh;
+    IF (n <> 0) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    /*EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;*/
+  END eliminar;
+
+END PRUEBAS_VEHICULOS;
+/
+
     
     
 /************************************************************************
