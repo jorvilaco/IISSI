@@ -778,10 +778,10 @@ END PRUEBAS_VEHICULOS;
     /* Mostrar resultado de la prueba */
     DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
     
-    /*EXCEPTION
+    EXCEPTION
     WHEN OTHERS THEN
           DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
-          ROLLBACK;*/
+          ROLLBACK;
   END actualizar;
 
 
@@ -804,10 +804,10 @@ END PRUEBAS_VEHICULOS;
     /* Mostrar resultado de la prueba */
     DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
     
-    /*EXCEPTION
+    EXCEPTION
     WHEN OTHERS THEN
           DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
-          ROLLBACK;*/
+          ROLLBACK;
   END eliminar;
 
 END PRUEBAS_VEHICULOS;
@@ -818,46 +818,8 @@ END PRUEBAS_VEHICULOS;
 /************************************************************************
                         PRUEBAS
 *************************************************************************/
-    execute insertar_tipo_propiedades('Puertas');
-    execute insertar_tipo_propiedades('Color');
-    execute insertar_tipo_propiedades('Combustible');
-    execute insertar_tipo_propiedades('Etiqueta Eficiencia');
-    execute actualizar_tipo_propiedades(1,'Nº Puertas');
-    --execute eliminar_tipo_propiedades(2);
 
-    insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0178ZQJ',TO_DATE(SYSDATE),'COCHE C3 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',8500,1);
-    insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0179ZQJ',TO_DATE(SYSDATE),'COCHE C3 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',8000,1);
-    insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0171ZQJ',TO_DATE(SYSDATE),'COCHE C4 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',7400,1);
-    insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0172ZQJ',TO_DATE(SYSDATE),'COCHE C4 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',9400,1);
-    insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0173ZQJ',TO_DATE(SYSDATE),'COCHE C5 NEGRO SEGUNDA MANO','ESTO ES UNA PRUEBA',9800,1);
-    insert into vehiculoS(matricula,fechaAlta,nombre,descripcion,precio,disponible) values ('0174ZQJ',TO_DATE(SYSDATE),'COCHE C5 BLANCO SEGUNDA MANO','ESTO ES UNA PRUEBA',12000,1);
-    insert into propiedades(id_tpro,nombre) values (2,'Negro');
-    insert into propiedades(id_tpro,nombre) values (2,'Blanco');
-    insert into propiedades(id_tpro,nombre) values (1,'3 Puertas');
-    insert into propiedades(id_tpro,nombre) values (1,'4 Puertas');
-    insert into propiedades(id_tpro,nombre) values (1,'5 Puertas');
-    insert into propiedades(id_tpro,nombre) values (3,'Gasolina');
-    insert into propiedades(id_tpro,nombre) values (3,'Diesel');
-    insert into propiedades(id_tpro,nombre) values (3,'HÃ­brido');
-    insert into propiedades(id_tpro,nombre) values (3,'ElÃ©ctrico');
-    insert into propiedades(id_tpro,nombre) values (4,'0 Emisiones');
-    insert into propiedades(id_tpro,nombre) values (4,'Eco');
-    insert into propiedades(id_tpro,nombre) values (4,'C');
-    insert into propiedades(id_tpro,nombre) values (4,'B');
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (2,2,1);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (1,3,1);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (3,6,1);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (4,12,1);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (2,1,2);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (1,3,2);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (3,9,2);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (4,10,2);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (2,1,3);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (1,4,3);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (3,6,3);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (2,2,4);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (1,4,4);
-    insert into propiedadesvehiculos(id_tpro,id_pro,id_veh) values (3,6,4);
+
     insert into Clientes (email,dni,nombre,telef,movil,FechAlta) 
     values ('prueba@prueba.com','66606660w','Juan',666666666,999999999,TO_DATE('12/12/2012'));
     insert into Clientes (email,dni,nombre,telef,movil,FechAlta) 
@@ -870,21 +832,4 @@ END PRUEBAS_VEHICULOS;
     values ('Con2','calle2',756493499,'prueba2@prueba2',11);
     
    
-   
-   
-   
-    SELECT tp.nombre, p.nombre 
-FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
-WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=1;
 
-SELECT tp.nombre, p.nombre 
-FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
-WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=2;
-
-SELECT tp.nombre, p.nombre 
-FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
-WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=3;
-
-SELECT tp.nombre, p.nombre 
-FROM propiedadesvehiculos PT, tipopropiedades TP, propiedades P 
-WHERE pt.id_pro=p.id_pro AND pt.id_tpro=tp.id_tpro and pt.id_veh=4;
