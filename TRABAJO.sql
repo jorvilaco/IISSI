@@ -286,16 +286,11 @@ create sequence seq_vehiculosvendidos;
                         TRIGGER
 *************************************************************************/
 
-
-
-
-
---TRIGGER PARA AÑADIR VEHICULO VENDIDO AL BORRAR UN VEHICULO
-CREATE OR REPLACE TRIGGER VEHICULO_VENDIDO
+create or replace TRIGGER VEHICULO_VENDIDO
 AFTER DELETE ON VEHICULOS
 FOR EACH ROW
 BEGIN
-insertar_vehiculo_vendido(:old.matricula,:old.fechaalta,SYSDATE);
+insert into vehiculosvendidos(matricula,fechaalta,fechaventa) values (:old.matricula,:old.fechaalta,to_date(sysdate));
 END;
 /
 
