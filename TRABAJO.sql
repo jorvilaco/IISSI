@@ -29,7 +29,7 @@ CREATE TABLE TIPOVEHICULOS(
 --Creación de tabla Venta de Vehículo
 CREATE TABLE VEHICULOSVENDIDOS(
     id_vhv number(10) primary key,
-    matricula varchar2(40) not null,
+    matricula varchar2(7) not null,
     fechaAlta date not null,
     fechaVenta date not null,
     unique (matricula)
@@ -543,6 +543,8 @@ END;
     commit work;
     end insertar_vehiculo_vendido;
     /
+    
+    
 
 /************************************************************************
                        FUNCIONES
