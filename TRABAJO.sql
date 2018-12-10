@@ -640,7 +640,7 @@ END;
    delete from CITAS where cod_cit = id_cit;
    commit work;
    end eliminar_citas;
-   
+   /
     
     
 
