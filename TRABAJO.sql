@@ -1347,6 +1347,118 @@ create or replace package body PRUEBAS_CONCESIONARIO as
 end PRUEBAS_CONCESIONARIO;
 /
 
+create or replace package PRUEBAS_CITAS as
+   procedure inicializar;
+   procedure insertar(
+   nombre_prueba VARCHAR2,
+   w_fecha date,
+   w_hora number,
+   w_id_cli number,
+   w_id_conces number,
+   salidaEsperada BOOLEAN);
+   procedure actualizar(
+   nombre_prueba VARCHAR2,
+   w_id_cit number,
+   w_fecha date,
+   w_hora number,
+   w_id_cli number,
+   w_id_conces number,
+   salidaEsperada BOOLEAN);
+   procedure eliminar(
+   nombre_prueba VARCHAR2,
+   w_id_cit number,
+   salidaEsperada BOOLEAN);
+end PRUEBAS_CITAS;
+/
+
+create or replace package body PRUEBAS_CITAS as
+
+/* inicialización*/
+   procedure inicializar as
+   begin
+      delete from Citas;
+      delete from Clientes;
+      delete from Concesionarios;
+      null;
+   end inicializar;
+
+/*insertar*/
+   procedure insertar (nombre_prueba VARCHAR2,w_fecha date,w_hora number,w_id_cli number,w_id_conces number,salidaEsperada BOOLEAN) as
+      salida BOOLEAN:= true;
+      cita citas%rowtype;
+      w_cod number(12);
+   begin 
+   
+      insertar_citas(w_fecha,w_hora,w_id_cli,w_id_conces);
+      --id_cit fecha hoea id_cli id_conces
+      w_cod := seq_citas.currval;
+      
+      select * into cita from citas where id_cit = w_cod;
+      
+      if((cita.fecha <> w_fecha)or (cita.hora <>w_hora) or (cita.id_cli<>w_id_cli) or(cita.id_conces <> w_id_conces)) then
+      salida := false;
+      end if;
+   
+   
+      DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+   
+      EXCEPTION
+           WHEN OTHERS THEN
+             DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+             ROLLBACK;
+       COMMIT WORK;
+    
+   end insertar; 
+   
+   procedure actualizar (nombre_prueba VARCHAR2,w_id_cit number,w_fecha date,w_hora number,
+   w_id_cli number,w_id_conces number,salidaEsperada BOOLEAN)as
+   salida BOOLEAN := true;
+   cita citas%rowtype;
+   
+   begin 
+        actualizar_citas(w_id_cit,w_fecha,w_hora,w_id_cli,w_id_conces);
+        
+        select * into cita from CITAS where id_cit = w_id_cit;
+        if((cita.fecha <> w_fecha) or (cita.hora <> w_hora) or (cita.id_cli <> w_id_cli)
+        or (cita.id_CONCES <> w_id_conces)) then
+        salida := false;
+        end if;
+     
+        DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+        
+        EXCEPTION
+        WHEN OTHERS THEN
+        /*DBMS_OUTPUT.put_line(SQLERRM);*/
+            DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+            ROLLBACK;
+        commit work;
+   end actualizar;
+   
+   procedure eliminar(nombre_prueba VARCHAR2,w_id_cit number,salidaEsperada BOOLEAN) as
+   salida BOOLEAN:= true;
+     n_citas INTEGER;
+    begin
+       eliminar_citas(w_id_cit);
+      
+       select count (*) into n_citas from CITAS where id_cit=w_id_cit;
+       if(n_citas <> 0)then
+          salida := false;
+       end if;
+       commit work;
+       
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+         DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+         ROLLBACK;
+   
+   end eliminar;
+end PRUEBAS_CITAS; 
+/
+
+
 
     
     
