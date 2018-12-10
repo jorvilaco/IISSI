@@ -4,6 +4,7 @@ DECLARE
   cod_tpro INTEGER;
   cod_veh INTEGER;
   cod_pro INTEGER;
+  cod_cli INTEGER;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
@@ -96,6 +97,39 @@ BEGIN
   PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-09/Update/"PropiedadesVehiculos=Null"                  /Rollback--> ',2,2,null,false);
   PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-09/Update/"PropiedadesVehiculos=Null"                  /Rollback--> ',null,2,2,false);
   PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-10/Update/Delete/"PropiedadesVehiculos=PV1-4"          /Commit  --> ',4,0,2,true);
+  
+  
+  
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CLIENTES
+  **********************************************************************/
+  
+  PRUEBAS_CLIENTE.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de CLIENTES (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_CLIENTE.INSERTAR  ('Cli-01/Insert-"Clientes=Prueba"                           /Commit  --> ','nanana@batman.com','66606660w',
+  'Juan',666666666,999999999,TO_DATE('12/12/2012'),true);
+  COD_CLI := seq_cliente.currval;
+  PRUEBAS_CLIENTE.INSERTAR('Cli-02/Insert-"Clientes = C2"                               /Commit -->','nonono@batman.com','66606660T',
+  'Ju@n',666606666,999909999,TO_DATE('12/3/2012'),true);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-03/Insert-"Clientes= email duplicado"                   /Rollback-->','nonono@batman.com','66606760T','Ju@n',
+  666606666,999909999,TO_DATE('12/2/2012'),false);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= dni duplicado"                     /Rollback-->','nonono@tman.com','66606660T','Ju@n',
+  666606666,999909999,TO_DATE('12/2/2012'),false);
+   PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= email null"                       /Rollback-->',null,'66609660T','Ju@n',
+  666606666,999909999,TO_DATE('12/2/2012'),false);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= dni null"                       /Rollback-->','no@tman.com',null,'Ju@n',
+  666606666,999909999,TO_DATE('12/2/2012'),false);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= nombre null"                       /Rollback-->','no1@tman.com','12345678W',null,
+  666606666,999909999,TO_DATE('12/2/2012'),false);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= movil null"                       /Rollback-->','no2@tman.com','12345671W','joan',
+  null,999909999,TO_DATE('12/2/2012'),false);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= telef null"                       /Rollback-->','no3@tman.com','12345672W','joan',
+  675644327,null,TO_DATE('12/2/2012'),false);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= fecha null"                       /Rollback-->','no4@tman.com','12345673W','joan',
+  675644327,999909999,null,false);
+  PRUEBAS_CLIENTE.ACTUALIZAR('Cli-05/Update-"Clientes= Cliente 1"                        /Commit-->',cod_cli,'naasdasdasdnana@btman.com','68607660w',
+  'Juan',666666666,999999999,TO_DATE('12/12/2012'),true);
+  PRUEBAS_CLIENTE.ELIMINAR('Cli-05/Delete-"Clientes= Cliente 1"                        /Commit-->',cod_cli,true);
   
   
   
