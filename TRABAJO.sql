@@ -1120,6 +1120,122 @@ END PRUEBAS_PROPIEDADESVEHICULOS;
 END PRUEBAS_PROPIEDADESVEHICULOS;
 /
 
+create or replace package PRUEBAS_CLIENTE as
+    procedure inicializar;
+    procedure insertar(
+    nombre_prueba VARCHAR2,
+    w_email VARCHAR2,
+    w_dni VARCHAR2,
+    w_nombre VARCHAR,
+    w_telef NUMBER,
+    w_movil NUMBER,
+    w_fechalta DATE,
+    salidaEsperada BOOLEAN);
+    procedure actualizar(
+    nombre_prueba VARCHAR2,
+    w_cod_cli number,
+    w_email VARCHAR2,
+    w_dni VARCHAR2,
+    w_nombre VARCHAR,
+    w_telef NUMBER,
+    w_movil NUMBER,
+    w_fechalta DATE,
+    salidaEsperada BOOLEAN);
+    procedure eliminar(
+    nombre_prueba VARCHAR2,
+    w_cod_cli number,
+    salidaEsperada BOOLEAN);
+end PRUEBAS_CLIENTE;
+/
+
+create or replace package body PRUEBAS_CLIENTE as
+-----------------Inicializar-----------------
+    procedure inicializar as
+    Begin
+        delete from CITAS;
+        delete from CLIENTES;
+        delete from CONCESIONARIOS;
+      null;
+    end inicializar;
+    
+---------------Insertar---------------------
+    procedure insertar(nombre_prueba VARCHAR2,w_email VARCHAR2, w_dni VARCHAR2,w_nombre VARCHAR, w_telef number, w_movil number,w_fechAlta date,salidaEsperada BOOLEAN) as
+    salida BOOLEAN := true;
+    cliente clientes%ROWTYPE;
+    w_cod_cli number(12);
+    begin
+        /*insertar fila*/
+        insertar_clientes(w_email,w_dni,w_nombre,w_telef,w_movil,w_fechAlta);
+         
+        w_cod_cli :=seq_cliente.currval;
+         
+        select * into cliente from CLIENTES where id_cli = w_cod_cli;
+        if((cliente.email<>w_email) or (cliente.dni <>w_dni) or (cliente.nombre <>w_nombre) or (cliente.telef<>w_telef) or
+        (cliente.movil <>w_movil) or (cliente.FechAlta<>w_fechAlta)) then
+        salida := false;
+        end if;
+         
+        /*Mostrar resultado de la prueba*/
+        DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+        EXCEPTION
+            WHEN OTHERS THEN
+            DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+            ROLLBACK;
+        commit work;
+        
+        
+    end insertar;
+-----------------Actualizar--------------
+    procedure actualizar (nombre_prueba VARCHAR2,w_cod_cli number,w_email VARCHAR2,w_dni VARCHAR2,w_nombre VARCHAR,w_telef NUMBER,
+    w_movil NUMBER, w_fechalta DATE,salidaEsperada BOOLEAN) as
+    salida BOOLEAN := true;
+    cliente  clientes%ROWTYPE;
+    begin
+    
+    
+        actualizar_clientes(w_cod_cli,w_email,w_dni,w_nombre,w_telef,w_movil,w_fechalta);
+       
+        select * into cliente from clientes where id_cli = w_cod_cli;
+        
+        if((cliente.email<>w_email) or (cliente.dni <>w_dni) or (cliente.nombre <>w_nombre) or (cliente.telef<>w_telef) or
+         (cliente.movil <>w_movil) or (cliente.FechAlta<>w_fechAlta)) then
+         salida := false;
+        end if;
+        commit work;
+        
+        DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+        
+        EXCEPTION
+        WHEN OTHERS THEN
+           DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+           ROLLBACK;
+    end actualizar;
+    -----------------Eliminar--------------
+    procedure eliminar (nombre_prueba VARCHAR2,w_cod_cli number,salidaEsperada BOOLEAN) as
+      salida BOOLEAN:= true;
+      n_clientes INTEGER;
+    begin
+       eliminar_clientes(w_cod_cli);
+      
+       select count (*) into n_clientes from CLIENTES where id_cli=w_cod_cli;
+       if(n_clientes <> 0)then
+       salida := false;
+       end if;
+       commit work;
+      
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+      
+      
+       EXCEPTION
+       WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+    END eliminar;   
+end PRUEBAS_CLIENTE;
+/
+
+
     
     
 /************************************************************************
