@@ -39,6 +39,7 @@ CREATE TABLE VEHICULOSVENDIDOS(
 CREATE TABLE FINANCIACIONES(
     id_fin number(10) primary key,
     nombre varchar2(40) not null,
+    maxima number(10,2),
     unique (nombre)
 );
 
@@ -349,16 +350,18 @@ END;
     
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR FINACIACION
     create or replace procedure insertar_financiacion 
-    (nombre_fin in financiaciones.nombre%type)is
-    begin insert into financiaciones(nombre) values (nombre_fin);
+    (nombre_fin in financiaciones.nombre%type,
+    maxima_fin in financiaciones.nombre%type)is
+    begin insert into financiaciones(nombre,maxima) values (nombre_fin,maxima_fin);
     commit work;
     end insertar_financiacion ;
     /
     
     create or replace procedure actualizar_financiacion 
     (cod_fin in financiaciones.id_fin%type, 
-    nombre_fin in financiaciones.nombre%type )is
-    begin update financiaciones set  nombre = nombre_fin where cod_fin = id_fin;
+    nombre_fin in financiaciones.nombre%type,
+    maxima_fin in financiaciones.nombre%type)is
+    begin update financiaciones set maxima=maxima_fin, nombre = nombre_fin where cod_fin = id_fin;
     commit work;
     end actualizar_financiacion ;
     /
@@ -384,10 +387,9 @@ END;
     
     create or replace procedure actualizar_propiedad
     (cod_pro in propiedades.id_pro%type, 
-    nombre_pro in propiedades.nombre%type,
-    cod_tpro in propiedades.id_tpro%type )is
+    nombre_pro in propiedades.nombre%type)is
     begin     
-    update propiedades set  nombre = nombre_pro, id_tpro = cod_tpro where cod_pro = id_pro;
+    update propiedades set  nombre = nombre_pro where cod_pro = id_pro;
     commit work;
     end actualizar_propiedad;
     /
