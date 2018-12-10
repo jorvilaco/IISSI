@@ -89,9 +89,9 @@ CREATE TABLE PROPIEDADES(
 
 --Creación de tabla relación propiedades y vehículo
 CREATE TABLE PROPIEDADESVEHICULOS(
-    id_tpro number(10),
-    id_pro number(10),
-    id_veh number(10),
+    id_tpro number(10)not null,
+    id_pro number(10) not null,
+    id_veh number(10) not null,
     PRIMARY KEY (id_tpro,id_pro,id_veh),
     unique(id_tpro,id_veh),
     foreign key (id_veh) REFERENCES TIPOPROPIEDADES,
@@ -1011,6 +1011,99 @@ END PRUEBAS_VEHICULOS;
   END eliminar;
 
 END PRUEBAS_VEHICULOS;
+/
+
+
+
+
+CREATE OR REPLACE PACKAGE PRUEBAS_PROPIEDADESVEHICULOS AS 
+
+   PROCEDURE inicializar;
+   PROCEDURE insertar (nombre_prueba VARCHAR2, w_id_tpro INTEGER,w_id_pro INTEGER,w_id_veh INTEGER,salidaEsperada BOOLEAN);
+   PROCEDURE actualizar (nombre_prueba VARCHAR2, w_id_tpro INTEGER,w_id_pro INTEGER,w_id_veh INTEGER, salidaEsperada BOOLEAN);
+   
+
+END PRUEBAS_PROPIEDADESVEHICULOS;
+/
+
+ CREATE OR REPLACE PACKAGE BODY PRUEBAS_PROPIEDADESVEHICULOS AS
+
+  /* INICIALIZACIÓN */
+  PROCEDURE inicializar AS
+  BEGIN
+
+    /* Borrar contenido de la tabla */
+      DELETE FROM propiedadesvehiculos;
+    NULL;
+  END inicializar;
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba VARCHAR2, w_id_tpro INTEGER,w_id_pro INTEGER,w_id_veh INTEGER,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    propiedadvehiculo propiedadesvehiculos%ROWTYPE;
+  BEGIN
+    
+    /* Insertar fila*/
+    insertar_propiedad_vehiculo(w_id_tpro,w_id_pro,w_id_veh);
+    
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    
+    SELECT * INTO propiedadvehiculo FROM propiedadesvehiculos WHERE id_tpro=w_id_tpro and id_pro=w_id_pro and id_veh=w_id_veh;
+    IF (propiedadvehiculo.id_tpro<>w_id_tpro and propiedadvehiculo.id_pro<>w_id_pro and propiedadvehiculo.id_veh<>w_id_veh) THEN
+      salida := false;
+    END IF;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+    
+    
+    COMMIT WORK;
+      
+    
+  END insertar;
+
+/* ACTUALIZACIÓN*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2, w_id_tpro INTEGER,w_id_pro INTEGER,w_id_veh INTEGER, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    propiedadvehiculo propiedadesvehiculos%ROWTYPE;
+    n INTEGER;
+  BEGIN
+ 
+    actualizar_propiedad_vehiculo(w_id_tpro,w_id_pro,w_id_veh);
+    
+    if (w_id_pro<>0)then
+        SELECT * INTO propiedadvehiculo FROM propiedadesvehiculos WHERE id_tpro=w_id_tpro and id_pro=w_id_pro and id_veh=w_id_veh;
+    else
+        SELECT COUNT(*) INTO n FROM propiedadesvehiculos WHERE id_pro=w_id_pro;
+    end if;
+    
+    
+    
+    IF ((w_id_pro=0))THEN
+        if(n<> 0) then
+            salida := false;
+        end if;
+    elsIF ( propiedadvehiculo.id_tpro<>w_id_tpro and propiedadvehiculo.id_pro<>w_id_pro and propiedadvehiculo.id_veh<>w_id_veh) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END actualizar;
+
+END PRUEBAS_PROPIEDADESVEHICULOS;
 /
 
     
