@@ -1236,6 +1236,118 @@ end PRUEBAS_CLIENTE;
 /
 
 
+create or replace package PRUEBAS_CONCESIONARIO as
+    procedure inicializar;
+    procedure insertar(
+    nombre_prueba VARCHAR2,
+    w_nomb VARCHAR2,
+    w_direc VARCHAR2,
+    w_telef number
+    , w_email VARCHAR2,
+    w_numcitas number,
+    salidaEsperada BOOLEAN);
+    procedure actualizar(
+    nombre_prueba VARCHAR2,
+    w_cod_con number,
+    w_nomb VARCHAR2,
+    w_direc VARCHAR2,
+    w_telef number,
+    w_email VARCHAR2,
+    w_numcitas number,
+    salidaEsperada BOOLEAN);
+    procedure eliminar(
+    nombre_prueba VARCHAR2,
+    w_cod_con number,
+    salidaEsperada BOOLEAN);
+end PRUEBAS_CONCESIONARIO;
+/
+
+create or replace package body PRUEBAS_CONCESIONARIO as
+-----------------Inicializar---------
+    procedure inicializar as
+    begin
+          delete from CITAS;
+          delete from CLIENTES;
+          delete from CONCESIONARIOS;
+        null;
+    end inicializar; 
+------------------Insertar---------------
+    procedure insertar (nombre_prueba VARCHAR2,w_nomb VARCHAR2, w_direc VARCHAR2,w_telef number
+    ,w_email VARCHAR2, w_numcitas number,salidaEsperada BOOLEAN) as
+    salida BOOLEAN:= true;
+    concesionario concesionarios%ROWTYPE;
+    w_cod_con number(12);
+    begin
+       insertar_concesionarios(w_nomb,w_direc,w_telef,w_email,w_numcitas);
+          
+       w_cod_con := seq_concesionario.currval; 
+       select * into concesionario from CONCESIONARIOS where id_conces = w_cod_con;
+         
+       if((concesionario.nombre<>w_nomb) or (concesionario.direccion <> w_direc) or (concesionario.telef <> w_telef)
+       or (concesionario.email <> w_email) or (concesionario.NoCitas <> w_numcitas)) then
+       salida := false;
+       end if;
+          
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+          
+       EXCEPTION
+          WHEN OTHERS THEN
+          /*DBMS_OUTPUT.put_line(SQLERRM);*/
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+       commit work;
+        
+    end insertar;
+-------------------Actualizar-----------------
+    procedure actualizar (nombre_prueba VARCHAR2,w_cod_con number,w_nomb VARCHAR2, w_direc VARCHAR2,w_telef number
+    , w_email VARCHAR2, w_numcitas number,salidaEsperada BOOLEAN) as
+    salida BOOLEAN:= true;
+    concesionario concesionarios%ROWTYPE;
+    begin
+          actualizar_concesionarios(w_cod_con,w_nomb,w_direc,w_telef,w_email,w_numcitas);          
+         
+          select * into CONCESIONARIO from CONCESIONARIOS where id_conces = w_cod_con;
+          if((concesionario.nombre<>w_nomb) or (concesionario.direccion <> w_direc) or (concesionario.telef <> w_telef)
+          or (concesionario.email <> w_email) or (concesionario.NoCitas <> w_numcitas)) then
+          salida := false;
+          end if;
+          commit work;
+          
+          /* Mostrar resultado de la prueba */
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+          
+          EXCEPTION
+          WHEN OTHERS THEN
+             /*DBMS_OUTPUT.put_line(SQLERRM);*/
+             DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+             ROLLBACK;
+    end actualizar;
+    -------------------eliminado-----------------
+    procedure eliminar (nombre_prueba VARCHAR2,w_cod_con number,salidaEsperada BOOLEAN) as
+     salida BOOLEAN:= true;
+     n_concesionario INTEGER;
+    begin
+       eliminar_concesionario(w_cod_con);
+      
+       select count (*) into n_concesionario from CONCESIONARIOS where id_conces=w_cod_con;
+       if(n_concesionario <> 0)then
+          salida := false;
+       end if;
+       commit work;
+       
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+         DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+         ROLLBACK;
+    END eliminar;   
+end PRUEBAS_CONCESIONARIO;
+/
+
+
     
     
 /************************************************************************
