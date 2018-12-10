@@ -3,12 +3,14 @@ SET SERVEROUTPUT ON;
 DECLARE
   cod_tpro INTEGER;
   cod_veh INTEGER;
+  cod_pro INTEGER;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
   /*********************************************************************
         PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA TIPOPROPIEDADES 
   **********************************************************************/
+  
   PRUEBAS_TIPOPROPIEDADES.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_TIPOPROPIEDADES.INSERTAR  ('Tpro-01/Insert-"TipoPropiedades=Llanta"                /Commit  --> ','Llanta',true);
@@ -53,6 +55,26 @@ BEGIN
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
   --eliminar_vehiculos(cod_veh);
   PRUEBAS_VEHICULOS.ELIMINAR  ('Veh-11/Delete/"Vehiculos=Prueba"                           /Commit  --> ',cod_veh,true);
+  
+  
+  
+  
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA PROPIEDADES 
+  **********************************************************************/
+  
+  PRUEBAS_PROPIEDADES.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Propiedades (Código Prueba/Acción/Título Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=Morad"                 /Commit  --> ',2,'Morad',true);
+  cod_pro := seq_propiedades.currval;
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P1"                    /Commit  --> ',2,'Negro',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P2"                    /Commit  --> ',2,'Blanco',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P3"                    /Commit  --> ',3,'3 Puertas',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P4"                    /Commit  --> ',4,'Si',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-02/Insert/"TipoPropiedades=Null"                  /Rollback--> ',2,null,false);
+  PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-03/Update/"TipoPropiedades=Morado"                /Commit  --> ',cod_pro,'Morado',true);
+  PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-04/Update/"TipoPropiedades=Null"                  /Rollback--> ',cod_pro,null,false);
+  PRUEBAS_PROPIEDADES.ELIMINAR  ('Pro-05/Delete/"TipoPropiedades=Morado"                /Commit  --> ',cod_pro,true);
   
   
   END;
