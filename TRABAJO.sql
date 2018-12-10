@@ -11,9 +11,9 @@ DROP TABLE TIPOPROPIEDADES;
 DROP TABLE VEHICULOS;
 DROP TABLE FINANCIACIONES;
 DROP TABLE TIPOVEHICULOS;
-DROP TABLE Citas;
-DROP TABLE Clientes;
-DROP TABLE Concesionarios;
+DROP TABLE CITAS;
+DROP TABLE CLIENTES;
+DROP TABLE CONCESIONARIOS;
 DROP TABLE VEHICULOSVENDIDOS;
 
 
@@ -128,7 +128,8 @@ Create table CLIENTES(
    telef number(9) not null,
    movil number(9) not null,
    FechAlta date not null,
-   unique(dni, email)
+   unique(dni), 
+   unique(email)
 );
 
 --Creación Tabla Citas
@@ -160,9 +161,9 @@ drop sequence seq_vehiculos;
 drop sequence seq_tipopropiedades;
 drop sequence seq_propiedades;
 drop sequence seq_descuentos;
-drop sequence seq_clientes;
+drop sequence seq_cliente;
 drop sequence seq_citas;
-drop sequence seq_concesionarios;
+drop sequence seq_concesionario;
 drop sequence seq_vehiculosvendidos;
 
 
@@ -176,9 +177,9 @@ create sequence seq_vehiculos;
 create sequence seq_tipopropiedades;
 create sequence seq_propiedades;
 create sequence seq_descuentos;
-create sequence seq_clientes;
+create sequence seq_cliente;
 create sequence seq_citas;
-create sequence seq_concesionarios;
+create sequence seq_concesionario;
 create sequence seq_vehiculosvendidos;
 
     
@@ -258,7 +259,7 @@ create sequence seq_vehiculosvendidos;
     before insert on CLIENTES
     for each row
     begin
-    :new.id_cli := seq_clientes.nextval;
+    :new.id_cli := seq_cliente.nextval;
     end;
     /
     
@@ -278,7 +279,7 @@ create sequence seq_vehiculosvendidos;
     before insert on CONCESIONARIOS
     for each row
     begin
-    :new.id_conces := seq_concesionarios.nextval;
+    :new.id_conces := seq_concesionario.nextval;
     end;
     /
 
@@ -544,89 +545,102 @@ END;
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR CLIENTES
     create or replace procedure insertar_clientes
     (email_cli in CLIENTES.email%type,
-     dni_cli in CLIENTES.dni%type,
-     nombre_cli in CLIENTES.nombre%type,
-     telef_cli in CLIENTES.telef%type,
-     movil_cli in CLIENTES.movil%type,
-     FechAlta_cli in CLIENTES.FechAlta%type) is
-     begin
-     insert into CLIENTES(email,dni,nombre,telef,movil,FechAlta) 
-     values (email_cli, dni_cli, nombre_cli, telef_cli, movil_cli,FechAlta_cli);
-     commit work;
-     end insertar_clientes;
-     /
+    dni_cli in CLIENTES.dni%type, 
+    nombre_cli in CLIENTES.nombre%type,
+    telef_cli in CLIENTES.telef%type,
+    movil_cli in CLIENTES.movil%type,
+    FechAlta_cli in CLIENTES.FechAlta%type) is
+    begin
+    insert into CLIENTES(email,dni,nombre,telef,movil,FechAlta) 
+    values (email_cli, dni_cli, nombre_cli, telef_cli, movil_cli,FechAlta_cli);
+    commit work;
+    end insertar_clientes;
+    /
    
    create or replace procedure actualizar_clientes(
-       id_clii in CLIENTES.id_cli%type,
-       email_cli in CLIENTES.email%type,
-       dni_cli in CLIENTES.dni%type,
-       nombre_cli in CLIENTES.nombre%type,
-       telef_cli in CLIENTES.telef%type,
-       movil_cli in CLIENTES.movil%type,
-       FechAlta_cli in CLIENTES.FechAlta%type) is
-       begin
-       update CLIENTES set email= email_cli, dni=dni_cli, nombre=nombre_cli, telef=telef_cli,
-       movil= movil_cli,FechAlta= FechAlta_cli where id_clii= id_cli;
-       commit work;
-       end actualizar_clientes;
-       /
-       create or replace procedure actualizar_clientes(
-       id_clii in CLIENTES.id_cli%type,
-       email_cli in CLIENTES.email%type,
-       dni_cli in CLIENTES.dni%type,
-       nombre_cli in CLIENTES.nombre%type,
-       telef_cli in CLIENTES.telef%type,
-       movil_cli in CLIENTES.movil%type,
-       FechAlta_cli in CLIENTES.FechAlta%type) is
-       begin
-       update CLIENTES set email= email_cli, dni=dni_cli, nombre=nombre_cli, telef=telef_cli,
-       movil= movil_cli,FechAlta= FechAlta_cli where id_clii= id_cli;
-       commit work;
-       end actualizar_clientes;
-       /
-       create or replace procedure eliminar_clientes(cod_cli in clientes.id_cli%type)is
-       begin
-       delete from CITAS where cod_cli  = id_cli;
-       delete from CLIENTES where cod_cli = id_cli;
-       commit work;
-       end eliminar_clientes;
-       /
+   id_clii in CLIENTES.id_cli%type,
+   email_cli in CLIENTES.email%type,
+   dni_cli in CLIENTES.dni%type,
+   nombre_cli in CLIENTES.nombre%type,
+   telef_cli in CLIENTES.telef%type,
+   movil_cli in CLIENTES.movil%type,
+   FechAlta_cli in CLIENTES.FechAlta%type) is
+   begin
+   update CLIENTES set email= email_cli, dni=dni_cli, nombre=nombre_cli, telef=telef_cli,
+   movil= movil_cli,FechAlta= FechAlta_cli where id_clii= id_cli;
+   commit work;
+   end actualizar_clientes;
+   /
+   create or replace procedure eliminar_clientes(cod_cli in clientes.id_cli%type)is
+   begin
+   delete from CITAS where cod_cli  = id_cli;
+   delete from CLIENTES where cod_cli = id_cli;
+   commit work;
+   end eliminar_clientes;
+   /
        
-       --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR CONCESIONARIOS
-       create or replace procedure insertar_concesionarios
-       (nombre_con in CONCESIONARIOS.nombre%type,
-        direccion_con in CONCESIONARIOS.direccion%type,
-        telef_con in CONCESIONARIOS.telef%type,
-        email_con in CONCESIONARIOS.email%type,
-        NoCitas_con in CONCESIONARIOS.NoCitas%type) is
-        begin
-        insert into CONCESIONARIOS(Nombre,Direccion,Telef,Email,NoCitas)
-        values (nombre_con,direccion_con,telef_con,email_con,NoCitas_con);
-        commit work;
-        end insertar_concesionarios;
-        /
-       create or replace procedure actualizar_concesionarios(
-         id_concess in CONCESIONARIOS.id_conces%type,
-         nombre_con in CONCESIONARIOS.nombre%type,
-         direccion_con in CONCESIONARIOS.direccion%type,
-         telef_con in CONCESIONARIOS.telef%type,
-         email_con in CONCESIONARIOS.email%type,
-         NoCitas_con in CONCESIONARIOS.NoCitas%type) is
-         begin
-         update CONCESIONARIOS set nombre = nombre_con, direccion= direccion_con, telef = telef_con, email= email_con,
-         NoCitas = NoCitas_con where id_concess= id_conces;
-         commit work;
-         end actualizar_concesionarios;
-        /
-       create or replace procedure eliminar_concesionario
-       (cod_conces in concesionarios.id_conces%type)is
-       begin
-       delete from CITAS where cod_conces = id_conces;
-       delete from CONCESIONARIOS where cod_conces = id_conces;
-       commit work;
-       end eliminar_concesionario;
-       /
-
+   --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR CONCESIONARIOS
+   create or replace procedure insertar_concesionarios
+   (nombre_con in CONCESIONARIOS.nombre%type,
+   direccion_con in CONCESIONARIOS.direccion%type,
+   telef_con in CONCESIONARIOS.telef%type,
+   email_con in CONCESIONARIOS.email%type,
+   NoCitas_con in CONCESIONARIOS.NoCitas%type) is
+   begin
+   insert into CONCESIONARIOS(Nombre,Direccion,Telef,Email,NoCitas)
+   values (nombre_con,direccion_con,telef_con,email_con,NoCitas_con);
+   commit work;
+   end insertar_concesionarios;
+   /
+   create or replace procedure actualizar_concesionarios(
+   id_concess in CONCESIONARIOS.id_conces%type,
+   nombre_con in CONCESIONARIOS.nombre%type,
+   direccion_con in CONCESIONARIOS.direccion%type,
+   telef_con in CONCESIONARIOS.telef%type,
+   email_con in CONCESIONARIOS.email%type,
+   NoCitas_con in CONCESIONARIOS.NoCitas%type) is
+   begin
+   update CONCESIONARIOS set nombre = nombre_con, direccion= direccion_con, telef = telef_con, email= email_con,
+   NoCitas = NoCitas_con where id_concess= id_conces;
+   commit work;
+   end actualizar_concesionarios;
+   /
+   create or replace procedure eliminar_concesionario(cod_conces in concesionarios.id_conces%type)is
+   begin
+   delete from CITAS where cod_conces = id_conces;
+   delete from CONCESIONARIOS where cod_conces = id_conces;
+   commit work;
+   end eliminar_concesionario;
+   /
+   --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR CITAS
+   create or replace procedure insertar_citas
+   (fecha_cit in CITAS.Fecha%type,
+   hora_cit in CITAS.hora%type,
+   id_cli_cit in CITAS.id_cli%type,
+   id_conces_cit in CITAS.id_conces%type) is
+   begin
+   insert into CITAS (fecha, hora, id_cli, id_conces) 
+   values(fecha_cit,hora_cit,id_cli_cit,id_conces_cit);
+   commit work;
+   end insertar_citas;
+   /
+   create or replace procedure actualizar_citas(
+   id_cit_cit in CITAS.id_cit%type,
+   fecha_cit in CITAS.Fecha%type,
+   hora_cit in CITAS.hora%type,
+   id_cli_cit in CITAS.id_cli%type,
+   id_conces_cit in CITAS.id_conces%type) is
+   begin
+   update CITAS set Fecha=fecha_cit, hora=hora_cit, id_cli=id_cli_cit, id_conces=id_conces_cit where id_cit_cit=id_cit;
+   commit work;
+   end actualizar_citas;
+   /
+   create or replace procedure eliminar_citas(cod_cit in CITAS.id_cit%type) is
+   begin 
+   delete form CITAS where cod_cit = id_cit;
+   commit work;
+   end eliminar_citas;
+   
     
     
 
