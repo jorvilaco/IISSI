@@ -151,6 +151,21 @@ BEGIN
   PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                    /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',10,true);
   PRUEBAS_CONCESIONARIO.ELIMINAR('Con-10/Delete-"Concesionario = prueba"                   /Commit-->',cod_conces,true);
   
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CITAS
+  **********************************************************************/
+  
+  PRUEBAS_CITAS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                           /Commit-->',TO_DATE('12/12/2020'),12,null,null,true);
+  cod_cit := seq_citas.currval;
+  PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                               /Commit-->',TO_DATE('12/12/2020'),10,null,null,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                        /Rollback-->',null,10,null,null,false);
+  PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora null"                         /Rollback-->',TO_DATE('12/12/2020'),null,null,null,false);
+  PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"     /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
+  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                  /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,null,null,true);
+  PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                      /Commit-->', cod_cit,true);
+  
   
   
   END;
