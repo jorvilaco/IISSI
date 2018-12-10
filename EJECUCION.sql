@@ -43,13 +43,13 @@ BEGIN
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-05/Insert/"Vehiculos.Matricula=Null"                   /Rollback--> ',null,TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-06/Insert/"Vehiculos.fechaAlta=Null"                   /Rollback--> ','2356JBK',null, 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-06/Insert/"Vehiculos.fechaAlta=Null"                   /Rollback--> ','2357JBK',null, 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-07/Insert/"Vehiculos.Nombre=Null"                      /Rollback--> ','2356JBK',TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-07/Insert/"Vehiculos.Nombre=Null"                      /Rollback--> ','2358JBK',TO_DATE(SYSDATE), 
   null,'Retrovisor exterior ......',10040,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-08/Insert/"Vehiculos.Precio=Null"                      /Rollback--> ','2356JBK',TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-08/Insert/"Vehiculos.Precio=Null"                      /Rollback--> ','2359JBK',TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',null,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-09/Insert/"Vehiculos.Disponible=Null"                  /Rollback--> ','2356JBK',TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-09/Insert/"Vehiculos.Disponible=Null"                  /Rollback--> ','2355JBK',TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,null,null,null,false);
   PRUEBAS_VEHICULOS.ACTUALIZAR('Veh-10/Update/"Vehiculos=2356JBM"                          /Commit  --> ',cod_veh,'2356JBM',TO_DATE(SYSDATE),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
