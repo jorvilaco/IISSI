@@ -637,7 +637,7 @@ END;
    /
    create or replace procedure eliminar_citas(cod_cit in CITAS.id_cit%type) is
    begin 
-   delete form CITAS where cod_cit = id_cit;
+   delete from CITAS where cod_cit = id_cit;
    commit work;
    end eliminar_citas;
    
