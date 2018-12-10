@@ -760,6 +760,117 @@ END PRUEBAS_TIPOPROPIEDADES;
 
 
 
+CREATE OR REPLACE PACKAGE PRUEBAS_PROPIEDADES AS 
+
+   PROCEDURE inicializar;
+   PROCEDURE insertar (nombre_prueba VARCHAR2,w_id_tpro INTEGER, w_nom VARCHAR2,salidaEsperada BOOLEAN);
+   PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2, salidaEsperada BOOLEAN);
+   PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN);
+
+END PRUEBAS_PROPIEDADES;
+/
+
+ CREATE OR REPLACE PACKAGE BODY PRUEBAS_PROPIEDADES AS
+
+  /* INICIALIZACIÓN */
+  PROCEDURE inicializar AS
+  BEGIN
+
+    /* Borrar contenido de la tabla */
+      DELETE FROM propiedadesvehiculos;
+      DELETE FROM propiedades;
+    NULL;
+  END inicializar;
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba VARCHAR2,w_id_tpro INTEGER, w_nom VARCHAR2,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    propiedad propiedades%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+    
+    /* Insertar fila*/
+    insertar_propiedad(w_nom,w_id_tpro);
+    
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_propiedades.currval;
+    SELECT * INTO propiedad FROM propiedades WHERE id_pro=w_cod;
+    IF ((propiedad.nombre<>w_nom) and (propiedad.id_tpro<>w_id_tpro)) THEN
+      salida := false;
+    END IF;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+    
+    
+    COMMIT WORK;
+      
+    
+  END insertar;
+
+/* ACTUALIZACIÓN*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    propiedad propiedades%ROWTYPE;
+  BEGIN
+ 
+    actualizar_propiedad(w_cod,w_nom);
+    
+
+    SELECT * INTO propiedad FROM propiedades WHERE id_pro=w_cod;
+    IF (propiedad.nombre<>w_nom) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END actualizar;
+
+
+/* ELIMINACIÓN */
+  PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    n INTEGER;
+  BEGIN
+    
+
+    eliminar_propiedad(w_cod);
+    
+
+    SELECT COUNT(*) INTO n FROM propiedades WHERE id_pro=w_cod;
+    IF (n <> 0) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END eliminar;
+
+END PRUEBAS_PROPIEDADES;
+/
+
+
+
+
+
 
  CREATE OR REPLACE PACKAGE PRUEBAS_VEHICULOS AS 
 
