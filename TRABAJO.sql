@@ -112,8 +112,8 @@ CREATE TABLE DESCUENTOS(
 --Creación de tabla Foto VehÃ­culo
 CREATE TABLE FOTOVEHICULOS(
     id_ft number(12) primary key,
-    id_veh number(10),
-    posicion number(12),
+    id_veh number(10)not null,
+    posicion number(12)not null,
     unique(id_veh,posicion),
     foreign key(id_veh) references vehiculos
 );
@@ -507,9 +507,11 @@ END;
     create or replace procedure insertar_foto_vehiculo
     (cod_veh in fotovehiculos.id_veh%type,
     valor_posicion in fotovehiculos.posicion%type)is
+    cod_ft Integer;
     begin 
-    insert into fotovehiculos(id_veh,posicion) values (cod_veh,valor_posicion);
-    commit work;
+    insert 
+    into fotovehiculos(id_ft,id_veh,posicion) values (seq_fotovehiculos.currval,cod_veh,valor_posicion);
+    cod_ft := seq_fotovehiculos.nextval;
     end insertar_foto_vehiculo;
     /
     
@@ -1698,6 +1700,115 @@ END PRUEBAS_DESCUENTOS;
   END actualizar;
 
 END PRUEBAS_DESCUENTOS;
+/
+
+
+
+ CREATE OR REPLACE PACKAGE PRUEBAS_FOTOVEHICULOS AS 
+
+   PROCEDURE inicializar;
+   PROCEDURE insertar (nombre_prueba VARCHAR2, w_id_veh INTEGER, w_posicion INTEGER,salidaEsperada BOOLEAN);
+   PROCEDURE actualizar (nombre_prueba VARCHAR2, w_id_ft INTEGER, w_posicion INTEGER,salidaEsperada BOOLEAN);
+   PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN);
+
+END PRUEBAS_FOTOVEHICULOS;
+/
+
+ CREATE OR REPLACE PACKAGE BODY PRUEBAS_FOTOVEHICULOS AS
+
+  /* INICIALIZACIÓN */
+  PROCEDURE inicializar AS
+  BEGIN
+
+    /* Borrar contenido de la tabla */
+      DELETE FROM fotovehiculos;
+    NULL;
+  END inicializar;
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba VARCHAR2, w_id_veh INTEGER, w_posicion INTEGER,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    fotovehiculo fotovehiculos%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+
+     /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_fotovehiculos.currval;
+    
+    /* Insertar fila*/
+    insertar_foto_vehiculo(w_id_veh,w_posicion);
+    
+    SELECT * INTO fotovehiculo FROM fotovehiculos WHERE id_ft=w_cod;
+    
+    
+    IF ((fotovehiculo.id_veh<>w_id_veh)and (fotovehiculo.posicion<>w_posicion)) THEN
+      salida := false;
+     END IF;
+     
+     COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          salida := false;
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+
+  END insertar;
+
+/* ACTUALIZACIÓN*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2, w_id_ft INTEGER, w_posicion INTEGER,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    fotovehiculo fotovehiculos%ROWTYPE;
+  BEGIN
+ 
+    actualizar_ft_veh_posición(w_id_ft,w_posicion);
+    
+
+    SELECT * INTO fotovehiculo FROM fotovehiculos WHERE id_ft=w_id_ft;
+    IF (fotovehiculo.posicion<>w_posicion) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END actualizar;
+
+
+/* ELIMINACIÓN */
+  PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    n INTEGER;
+  BEGIN
+    
+
+    eliminar_foto_vehiculo(w_cod);
+    
+
+    SELECT COUNT(*) INTO n FROM fotovehiculos WHERE id_ft=w_cod;
+    IF (n <> 0) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END eliminar;
+
+END PRUEBAS_FOTOVEHICULOS;
 /
     
     
