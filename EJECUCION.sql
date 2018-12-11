@@ -1,6 +1,7 @@
 SET SERVEROUTPUT ON;
 
 DECLARE
+  cod_ft Integer;
   cod_fin Integer;
   cod_tpro INTEGER;
   cod_veh INTEGER;
@@ -167,8 +168,26 @@ BEGIN
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                  /Rollback--> ',null,2,2,false);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-10/Update/Delete/"Descuento=D1-4"           /Commit  --> ',3,0,3,true);
   
+ 
+/*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA FINANCIACION 
+  **********************************************************************/
   
+  PRUEBAS_FOTOVEHICULOS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft0"                /Commit  --> ',2,4,true);
+  cod_ft := seq_fotovehiculos.currval-1;
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft1"                /Commit  --> ',2,1,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft2"                /Commit  --> ',2,2,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft3"                /Commit  --> ',3,1,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft4"                /Commit  --> ',3,2,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-05/Insert/"FotoVehiculo=Null"               /Rollback--> ',2,null,false);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-05/Insert/"FotoVehiculo=Null"               /Rollback--> ',null,2,false);
+  PRUEBAS_FOTOVEHICULOS.ACTUALIZAR('FotV-06/Update/"FotoVehiculo=Posicion 3"         /Commit  --> ',cod_ft,3,true);
+  PRUEBAS_FOTOVEHICULOS.ACTUALIZAR('FotV-07/Update/"FotoVehiculo=Null"               /Rollback--> ',cod_ft,null,false);
+  PRUEBAS_FOTOVEHICULOS.ELIMINAR  ('FotV-08/Delete/"FotoVehiculo=Ft0"                /Commit  --> ',cod_ft,true);
   
+ 
   
   
   /*********************************************************************
