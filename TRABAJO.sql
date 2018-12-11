@@ -156,11 +156,10 @@ Create table Citas(
 --Borramos las secuencias
 drop sequence seq_fotoVehiculos;
 drop sequence seq_tipovehiculos;
-drop sequence seq_finaciaciones;
+drop sequence seq_financiaciones;
 drop sequence seq_vehiculos;
 drop sequence seq_tipopropiedades; 
 drop sequence seq_propiedades;
-drop sequence seq_descuentos;
 drop sequence seq_cliente;
 drop sequence seq_citas;
 drop sequence seq_concesionario;
@@ -172,12 +171,14 @@ drop sequence seq_vehiculosvendidos;
 --Creamos las secuencias
 create sequence seq_fotoVehiculos;
 create sequence seq_tipovehiculos;
-create sequence seq_finaciaciones;
-create sequence seq_vehiculos;
+create sequence seq_financiaciones MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_financiaciones.nextval from dual;
+create sequence seq_vehiculos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_vehiculos.nextval from dual;
 create sequence seq_tipopropiedades  MINVALUE 1 INCREMENT BY 1 START WITH 1;
 select seq_tipopropiedades.nextval from dual;
-create sequence seq_propiedades;
-create sequence seq_descuentos;
+create sequence seq_propiedades MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_propiedades.nextval from dual;
 create sequence seq_cliente;
 create sequence seq_citas;
 create sequence seq_concesionario;
@@ -194,14 +195,14 @@ create sequence seq_vehiculosvendidos;
     /
 
 
-    --Creación de Trigger Financiación (secuencia)
+    /*--Creación de Trigger Financiación (secuencia)
     create or replace trigger SECUENCIA_FINANCIACIONES
     before insert on FINANCIACIONES
     for each row
     begin
-        :new.id_fin := seq_finaciaciones.nextval;    
+        :new.id_fin := seq_financiaciones.nextval;    
     end;
-    /
+    /*/
     
 
     --Creación de Trigger Tipo Propiedades (secuencia)
@@ -214,24 +215,24 @@ create sequence seq_vehiculosvendidos;
     /*/
     
 
-    --Creación de Trigger Propiedades (secuencia)
+    /*--Creación de Trigger Propiedades (secuencia)
     create or replace trigger SECUENCIA_PROPIEDADES
     before insert on PROPIEDADES
     for each row
     begin
         :new.id_pro := seq_propiedades.nextval;
     end;
-    / 
+    / */
     
 
-    --Creación de Trigger Vehículo (secuencia)
+    /*--Creación de Trigger Vehículo (secuencia)
     create or replace trigger SECUENCIA_VEHICULOS
     before insert on VEHICULOS
     for each row
     begin
         :new.id_veh := seq_vehiculos.nextval;   
     end;
-    / 
+    / */
 
     --Creación de Trigger TipoVehículo (secuencia)
     create or replace trigger SECUENCIA_TIPO_VEHICULOS
@@ -360,8 +361,13 @@ END;
     create or replace procedure insertar_financiacion 
     (nombre_fin in financiaciones.nombre%type,
     maxima_fin in financiaciones.nombre%type)is
-    begin insert into financiaciones(nombre,maxima) values (nombre_fin,maxima_fin);
-    commit work;
+    cod_fin INTEGER;
+    begin 
+    insert into financiaciones values (seq_financiaciones.currval,nombre_fin,maxima_fin);
+    cod_fin := seq_financiaciones.nextval;
+    EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
     end insertar_financiacion ;
     /
     
@@ -388,8 +394,13 @@ END;
     create or replace procedure insertar_propiedad
     (nombre_pro in propiedades.nombre%type,
     cod_tpro in propiedades.id_tpro%type)is
-    begin insert into propiedades(nombre,id_tpro) values (nombre_pro,cod_tpro);
-    commit work;
+    cod_pro INTEGER;
+    begin 
+    insert into propiedades values (seq_propiedades.currval, cod_tpro, nombre_pro);
+    cod_pro := seq_propiedades.nextval;
+    EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
     end insertar_propiedad;
     /
     
@@ -422,10 +433,17 @@ END;
     disponible_vhe in vehiculos.disponible%type,
     id_conces_vhe in vehiculos.id_conces%type,
     id_tveh_vhe in vehiculos.id_tveh%type)is
+    cod_veh Integer;
     begin 
-    insert into vehiculos(matricula,fechaalta,nombre,descripcion,precio,disponible,id_conces,id_tveh) 
-    values (matricula_vhe,fecha_alta_vhe,nombre_vhe,descripcion_vhe,precio_vhe,disponible_vhe,id_conces_vhe,id_tveh_vhe);
-    commit work;
+    insert into vehiculos(id_veh,matricula,fechaalta,nombre,descripcion,precio,disponible,id_conces,id_tveh) 
+    values (seq_vehiculos.currval,matricula_vhe,fecha_alta_vhe,nombre_vhe,descripcion_vhe,precio_vhe,disponible_vhe,id_conces_vhe,id_tveh_vhe);
+    
+    cod_veh := seq_vehiculos.nextval;
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
+        
     end insertar_vehiculo;
     /
     
@@ -700,14 +718,14 @@ END PRUEBAS_TIPOPROPIEDADES;
     tipopropiedad tipopropiedades%ROWTYPE;
     w_cod NUMBER(12);
   BEGIN
-    
+
+     /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
     w_cod := seq_tipopropiedades.currval;
     
     /* Insertar fila*/
     insertar_tipo_propiedades(w_nom);
     
-    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
-    
+   
        
     
     SELECT * INTO tipopropiedad FROM tipopropiedades WHERE id_tpro=w_cod;
@@ -814,11 +832,12 @@ END PRUEBAS_PROPIEDADES;
     w_cod NUMBER(12);
   BEGIN
     
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_propiedades.currval;
+    
     /* Insertar fila*/
     insertar_propiedad(w_nom,w_id_tpro);
     
-    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
-    w_cod := seq_propiedades.currval;
     SELECT * INTO propiedad FROM propiedades WHERE id_pro=w_cod;
     IF ((propiedad.nombre<>w_nom) and (propiedad.id_tpro<>w_id_tpro)) THEN
       salida := false;
@@ -827,6 +846,8 @@ END PRUEBAS_PROPIEDADES;
     /* Mostrar resultado de la prueba */
     DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
     
+    COMMIT WORK;
+    
     EXCEPTION
         WHEN OTHERS THEN
           
@@ -834,7 +855,7 @@ END PRUEBAS_PROPIEDADES;
           ROLLBACK;
     
     
-    COMMIT WORK;
+    
       
     
   END insertar;
@@ -953,12 +974,15 @@ END PRUEBAS_VEHICULOS;
     w_cod NUMBER(12);
   BEGIN
     
+     /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_vehiculos.currval;
+    
     /* Insertar fila*/
     insertar_vehiculo(w_matricula,w_fechaAlta,w_nombre,w_descripcion,w_precio,w_disponible,cod_conces,cod_tveh);
     
-    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
-    w_cod := seq_vehiculos.currval;
+   
     SELECT * INTO vehiculo FROM vehiculos WHERE id_veh=w_cod;
+ 
     
     IF ((vehiculo.matricula<>w_matricula) or (vehiculo.fechaAlta<>w_fechaAlta) or (vehiculo.nombre<>w_nombre) or 
     (vehiculo.descripcion<>w_descripcion) or (vehiculo.precio<>w_precio) or (vehiculo.disponible<>w_disponible) or
@@ -966,18 +990,18 @@ END PRUEBAS_VEHICULOS;
       salida := false;
     END IF;
     
+    COMMIT WORK;
+    
     /* Mostrar resultado de la prueba */
     DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
     
     EXCEPTION
         WHEN OTHERS THEN
           
           DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
           ROLLBACK;
-    
-    
-    COMMIT WORK;
-      
+ 
     
   END insertar;
 
@@ -1071,12 +1095,13 @@ END PRUEBAS_PROPIEDADESVEHICULOS;
     /* Insertar fila*/
     insertar_propiedad_vehiculo(w_id_tpro,w_id_pro,w_id_veh);
     
-    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
-    
+     
     SELECT * INTO propiedadvehiculo FROM propiedadesvehiculos WHERE id_tpro=w_id_tpro and id_pro=w_id_pro and id_veh=w_id_veh;
     IF (propiedadvehiculo.id_tpro<>w_id_tpro and propiedadvehiculo.id_pro<>w_id_pro and propiedadvehiculo.id_veh<>w_id_veh) THEN
       salida := false;
     END IF;
+    
+    COMMIT WORK;
     
     /* Mostrar resultado de la prueba */
     DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
@@ -1088,7 +1113,7 @@ END PRUEBAS_PROPIEDADESVEHICULOS;
           ROLLBACK;
     
     
-    COMMIT WORK;
+    
       
     
   END insertar;
