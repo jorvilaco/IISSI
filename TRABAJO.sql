@@ -1603,6 +1603,100 @@ END PRUEBAS_FINACIACIONES;
 END PRUEBAS_FINACIACIONES;
 /
 
+
+
+
+
+CREATE OR REPLACE PACKAGE PRUEBAS_DESCUENTOS AS 
+
+   PROCEDURE inicializar;
+   PROCEDURE insertar (nombre_prueba VARCHAR2, w_id_fin INTEGER,w_descuento number,w_id_veh INTEGER,salidaEsperada BOOLEAN);
+   PROCEDURE actualizar (nombre_prueba VARCHAR2, w_id_fin INTEGER,w_descuento number,w_id_veh INTEGER,salidaEsperada BOOLEAN);
+   
+
+END PRUEBAS_DESCUENTOS;
+/
+
+ CREATE OR REPLACE PACKAGE BODY PRUEBAS_DESCUENTOS AS
+
+  /* INICIALIZACIÓN */
+  PROCEDURE inicializar AS
+  BEGIN
+
+    /* Borrar contenido de la tabla */
+      DELETE FROM descuentos;
+    NULL;
+  END inicializar;
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba VARCHAR2, w_id_fin INTEGER,w_descuento number,w_id_veh INTEGER,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    descuento descuentos%ROWTYPE;
+  BEGIN
+    
+    /* Insertar fila*/
+    insertar_descuento(w_id_fin,w_descuento,w_id_veh);
+    
+     
+    SELECT * INTO descuento FROM descuentos WHERE id_fin=w_id_fin and descuento=w_descuento and id_veh=w_id_veh;
+    IF (descuento.id_fin<>w_id_fin and descuento.descuento<>w_descuento and descuento.id_veh<>w_id_veh) THEN
+      salida := false;
+    END IF;
+    
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+    
+    
+    
+      
+    
+  END insertar;
+
+/* ACTUALIZACIÓN*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2, w_id_fin INTEGER,w_descuento number,w_id_veh INTEGER,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    descuento descuentos%ROWTYPE;
+    n INTEGER;
+  BEGIN
+ 
+    actualizar_descuento(w_id_fin,w_descuento,w_id_veh);
+    
+    if (w_descuento<>0)then
+        SELECT * INTO descuento FROM descuentos WHERE id_fin=w_id_fin and descuento=w_descuento and id_veh=w_id_veh;
+    else
+        SELECT COUNT(*) INTO n FROM descuentos WHERE id_fin=w_id_fin and id_veh=w_id_veh;
+    end if;
+    
+    
+    
+    IF ((w_descuento=0))THEN
+        if(n<> 0) then
+            salida := false;
+        end if;
+    elsIF ( descuento.descuento<>w_descuento) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END actualizar;
+
+END PRUEBAS_DESCUENTOS;
+/
     
     
 /************************************************************************
