@@ -5,6 +5,8 @@ DECLARE
   cod_veh INTEGER;
   cod_pro INTEGER;
   cod_cli INTEGER;
+  cod_conces INTEGER;
+  cod_cit INTEGER;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
@@ -163,7 +165,7 @@ BEGIN
   PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                        /Rollback-->',null,10,null,null,false);
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora null"                         /Rollback-->',TO_DATE('12/12/2020'),null,null,null,false);
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"     /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
-  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                  /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,null,null,true);
+  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                 /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,null,null,true);
   PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                      /Commit-->', cod_cit,true);
   
   
