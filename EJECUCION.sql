@@ -10,6 +10,29 @@ DECLARE
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
+
+
+ /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CONCESIONARIOS
+  **********************************************************************/
+  
+  
+  PRUEBAS_CONCESIONARIO.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-01/insert-"Concesionario= prueba"                   /Commit-->','Con1','calle2',756493499,'prueba2@prueba1',11,true);
+  cod_conces := seq_concesionario.currval;
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C1"                       /Commit-->','Con2','calle3',756493496,'prueba2@prueba2',10,true);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-03/insert-"Concesionario= C2"                       /Commit-->','Con3','calle4',756493497,'prueba3@rueba3',9,true);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-04/insert-"Concesionario= nombre null"              /Rollback-->',null,'calle3',756493496,'prueba2@prueba2',10,false);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-05/insert-"Concesionario= calle null"               /Rollback-->','Con3',null,756493496,'prueba2@prueba2',10,false);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-06/insert-"Concesionario= telef null"               /Rollback-->','Con3','calle3',null,'prueba2@prueba2',10,false);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-07/insert-"Concesionario= email null"               /Rollback-->','Con3','calle3',756493496,null,10,false);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-08/insert-"Concesionario= NoCitas null"             /Rollback-->','Con3','calle3',756493496,'prueba2@prueba2',null,false);
+  PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                  /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',10,true);
+  PRUEBAS_CONCESIONARIO.ELIMINAR('Con-10/Delete-"Concesionario = prueba"                  /Commit-->',cod_conces,true);
+
+
+
   /*********************************************************************
         PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA TIPOPROPIEDADES 
   **********************************************************************/
@@ -56,7 +79,6 @@ BEGIN
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,null,null,null,false);
   PRUEBAS_VEHICULOS.ACTUALIZAR('Veh-10/Update/"Vehiculos=2356JBM"                          /Commit  --> ',cod_veh,'2356JBM',TO_DATE(SYSDATE),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
-  --eliminar_vehiculos(cod_veh);
   PRUEBAS_VEHICULOS.ELIMINAR  ('Veh-11/Delete/"Vehiculos=Prueba"                           /Commit  --> ',cod_veh,true);
   
   
@@ -134,24 +156,7 @@ BEGIN
   PRUEBAS_CLIENTE.ELIMINAR('Cli-05/Delete-"Clientes= Cliente 1"                        /Commit-->',cod_cli,true);
   
   
-  /*********************************************************************
-        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CONCESIONARIOS
-  **********************************************************************/
-  
-  
-  PRUEBAS_CONCESIONARIO.INICIALIZAR;
-  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-01/insert-"Concesionario= prueba"                   /Commit-->','Con1','calle2',756493499,'prueba2@prueba1',11,true);
-  cod_conces := seq_concesionario.currval;
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C1"                       /Commit-->','Con2','calle3',756493496,'prueba2@prueba2',10,true);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-03/insert-"Concesionario= C2"                       /Commit-->','Con3','calle4',756493497,'prueba3@rueba3',9,true);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-04/insert-"Concesionario= nombre null"              /Rollback-->',null,'calle3',756493496,'prueba2@prueba2',10,false);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-05/insert-"Concesionario= calle null"               /Rollback-->','Con3',null,756493496,'prueba2@prueba2',10,false);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-06/insert-"Concesionario= telef null"               /Rollback-->','Con3','calle3',null,'prueba2@prueba2',10,false);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-07/insert-"Concesionario= email null"               /Rollback-->','Con3','calle3',756493496,null,10,false);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-08/insert-"Concesionario= NoCitas null"             /Rollback-->','Con3','calle3',756493496,'prueba2@prueba2',null,false);
-  PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                    /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',10,true);
-  PRUEBAS_CONCESIONARIO.ELIMINAR('Con-10/Delete-"Concesionario = prueba"                   /Commit-->',cod_conces,true);
+ 
   
   /*********************************************************************
         PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CITAS
