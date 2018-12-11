@@ -39,7 +39,7 @@ CREATE TABLE VEHICULOSVENDIDOS(
 CREATE TABLE FINANCIACIONES(
     id_fin number(10) primary key,
     nombre varchar2(40) not null,
-    maxima number(10,2),
+    maxima number(10,2)not null,
     unique (nombre)
 );
 
@@ -169,7 +169,8 @@ drop sequence seq_vehiculosvendidos;
 
 
 --Creamos las secuencias
-create sequence seq_fotoVehiculos;
+create sequence seq_fotoVehiculos  MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_fotoVehiculos.nextval from dual;
 create sequence seq_tipovehiculos;
 create sequence seq_financiaciones MINVALUE 1 INCREMENT BY 1 START WITH 1;
 select seq_financiaciones.nextval from dual;
@@ -244,14 +245,14 @@ create sequence seq_vehiculosvendidos;
     /    
     
     
-        --Creación de Trigger Vehículo (secuencia)
+    /*    --Creación de Trigger Vehículo (secuencia)
     create or replace trigger SECUENCIA_FOTOS_VEHICULOS
     before insert on FOTOVEHICULOS
     for each row
     begin
         :new.id_ft := seq_fotoVehiculos.nextval;   
     end;
-    / 
+    / */
 
   
     
@@ -375,7 +376,8 @@ END;
     (cod_fin in financiaciones.id_fin%type, 
     nombre_fin in financiaciones.nombre%type,
     maxima_fin in financiaciones.nombre%type)is
-    begin update financiaciones set maxima=maxima_fin, nombre = nombre_fin where cod_fin = id_fin;
+    begin 
+    update financiaciones set maxima=maxima_fin, nombre = nombre_fin where cod_fin = id_fin;
     commit work;
     end actualizar_financiacion ;
     /
@@ -1495,6 +1497,115 @@ end PRUEBAS_CITAS;
 /
 
 
+
+
+ CREATE OR REPLACE PACKAGE PRUEBAS_FINACIACIONES AS 
+
+   PROCEDURE inicializar;
+   PROCEDURE insertar (nombre_prueba VARCHAR2, w_nom VARCHAR2, w_maxima_fin number,salidaEsperada BOOLEAN);
+   PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2,w_maxima_fin number, salidaEsperada BOOLEAN);
+   PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN);
+
+END PRUEBAS_FINACIACIONES;
+/
+
+ CREATE OR REPLACE PACKAGE BODY PRUEBAS_FINACIACIONES AS
+
+  /* INICIALIZACIÓN */
+  PROCEDURE inicializar AS
+  BEGIN
+
+    /* Borrar contenido de la tabla */
+      DELETE FROM descuentos;
+      DELETE FROM financiaciones;
+    NULL;
+  END inicializar;
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba VARCHAR2, w_nom VARCHAR2, w_maxima_fin number,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    financiacion financiaciones%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+
+     /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_financiaciones.currval;
+    
+    /* Insertar fila*/
+    insertar_financiacion(w_nom,w_maxima_fin);
+    
+    SELECT * INTO financiacion FROM financiaciones WHERE id_fin=w_cod;
+    
+    
+    IF ((financiacion.nombre<>w_nom) or (financiacion.maxima<>w_maxima_fin)) THEN
+      salida := false;
+     END IF;
+     
+     COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          salida := false;
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+
+  END insertar;
+
+/* ACTUALIZACIÓN*/
+  PROCEDURE actualizar (nombre_prueba VARCHAR2,w_cod INTEGER, w_nom VARCHAR2,w_maxima_fin number, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    financiacion financiaciones%ROWTYPE;
+  BEGIN
+ 
+    actualizar_financiacion(w_cod,w_nom,w_maxima_fin); 
+
+    SELECT * INTO financiacion FROM financiaciones WHERE id_fin=w_cod;  
+
+    IF ((financiacion.nombre<>w_nom) or (financiacion.maxima<>w_maxima_fin)) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END actualizar;
+
+
+/* ELIMINACIÓN */
+  PROCEDURE eliminar (nombre_prueba VARCHAR2,w_cod INTEGER, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    n INTEGER;
+  BEGIN
+    
+
+    eliminar_financiacion(w_cod);
+    
+
+    SELECT COUNT(*) INTO n FROM financiaciones WHERE id_fin=w_cod;
+    IF (n <> 0) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+    
+    EXCEPTION
+    WHEN OTHERS THEN
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+  END eliminar;
+
+END PRUEBAS_FINACIACIONES;
+/
 
     
     
