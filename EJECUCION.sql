@@ -49,7 +49,7 @@ BEGIN
   PRUEBAS_TIPOPROPIEDADES.ACTUALIZAR('Tpro-06/Update/"TipoPropiedades=Llantas"               /Commit  --> ',cod_tpro,'Llantas',true);
   PRUEBAS_TIPOPROPIEDADES.ACTUALIZAR('Tpro-07/Update/"TipoPropiedades=Null"                  /Rollback--> ',cod_tpro,null,false);
   PRUEBAS_TIPOPROPIEDADES.ELIMINAR  ('Tpro-08/Delete/"TipoPropiedades=Llantas"               /Commit  --> ',cod_tpro,true);
-  PRUEBAS_TIPOPROPIEDADES.INSERTAR  ('Tpro-01/Insert-"TipoPropiedades=Llanta"                /Commit  --> ','Llanta',true);
+  
  
 
   
@@ -60,28 +60,28 @@ BEGIN
   
   PRUEBAS_VEHICULOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Vehiculos (CÓdigo Prueba/AcciÓn/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-01/Insert-"Vehiculos=Prueba"                           /Commit  --> ','2286JBK',TO_DATE(SYSDATE),
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-01/Insert-"Vehiculos=Prueba"                          /Commit  --> ','2286JBK',TO_DATE(SYSDATE),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
-  cod_veh := seq_vehiculos.currval;
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                               /Commit  --> ','2356JBK',TO_DATE(SYSDATE),
+  cod_veh := seq_vehiculos.currval-1;
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                              /Commit  --> ','2356JBK',TO_DATE(SYSDATE),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-03/Insert-"Vehiculos=V2"                               /Commit  --> ','2386JBK',TO_DATE(SYSDATE),
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-03/Insert-"Vehiculos=V2"                              /Commit  --> ','2386JBK',TO_DATE(SYSDATE),
   'Citroen C3 HDI Blanco','Retrovisor exterior ......',9040,1,null,null,true);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-04/Insert/"Vehiculos.MatriculoDuplicada=2356JBK"       /Rollback--> ','2356JBK',TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-04/Insert/"Vehiculos.MatriculoDuplicada=2356JBK"      /Rollback--> ','2356JBK',TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-05/Insert/"Vehiculos.Matricula=Null"                   /Rollback--> ',null,TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-05/Insert/"Vehiculos.Matricula=Null"                  /Rollback--> ',null,TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-06/Insert/"Vehiculos.fechaAlta=Null"                   /Rollback--> ','2357JBK',null, 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-06/Insert/"Vehiculos.fechaAlta=Null"                  /Rollback--> ','2357JBK',null, 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-07/Insert/"Vehiculos.Nombre=Null"                      /Rollback--> ','2358JBK',TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-07/Insert/"Vehiculos.Nombre=Null"                     /Rollback--> ','2358JBK',TO_DATE(SYSDATE), 
   null,'Retrovisor exterior ......',10040,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-08/Insert/"Vehiculos.Precio=Null"                      /Rollback--> ','2359JBK',TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-08/Insert/"Vehiculos.Precio=Null"                     /Rollback--> ','2359JBK',TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',null,1,null,null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-09/Insert/"Vehiculos.Disponible=Null"                  /Rollback--> ','2355JBK',TO_DATE(SYSDATE), 
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-09/Insert/"Vehiculos.Disponible=Null"                 /Rollback--> ','2355JBK',TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,null,null,null,false);
-  PRUEBAS_VEHICULOS.ACTUALIZAR('Veh-10/Update/"Vehiculos=2356JBM"                          /Commit  --> ',cod_veh,'2356JBM',TO_DATE(SYSDATE),
+  PRUEBAS_VEHICULOS.ACTUALIZAR('Veh-10/Update/"Vehiculos=2356JBM"                         /Commit  --> ',cod_veh,'2356JBM',TO_DATE(SYSDATE),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
-  PRUEBAS_VEHICULOS.ELIMINAR  ('Veh-11/Delete/"Vehiculos=Prueba"                           /Commit  --> ',cod_veh,true);
+  PRUEBAS_VEHICULOS.ELIMINAR  ('Veh-11/Delete/"Vehiculos=Prueba"                          /Commit  --> ',cod_veh,true);
   
   
   
@@ -92,16 +92,16 @@ BEGIN
   
   PRUEBAS_PROPIEDADES.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Propiedades (Código Prueba/Acción/Título Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=Morad"                 /Commit  --> ',2,'Morad',true);
-  cod_pro := seq_propiedades.currval;
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P1"                    /Commit  --> ',2,'Negro',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P2"                    /Commit  --> ',2,'Blanco',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P3"                    /Commit  --> ',3,'3 Puertas',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"TipoPropiedades=P4"                    /Commit  --> ',4,'Si',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-02/Insert/"TipoPropiedades=Null"                  /Rollback--> ',2,null,false);
-  PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-03/Update/"TipoPropiedades=Morado"                /Commit  --> ',cod_pro,'Morado',true);
-  PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-04/Update/"TipoPropiedades=Null"                  /Rollback--> ',cod_pro,null,false);
-  PRUEBAS_PROPIEDADES.ELIMINAR  ('Pro-05/Delete/"TipoPropiedades=Morado"                /Commit  --> ',cod_pro,true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=Morad"                      /Commit  --> ',2,'Morad',true);
+  cod_pro := seq_propiedades.currval-1;
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P1"                         /Commit  --> ',2,'Negro',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P2"                         /Commit  --> ',2,'Blanco',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P3"                         /Commit  --> ',3,'3 Puertas',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P4"                         /Commit  --> ',4,'Si',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-02/Insert/"Propiedades=Null"                       /Rollback--> ',2,null,false);
+  PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-03/Update/"Propiedades=Morado"                     /Commit  --> ',cod_pro,'Morado',true);
+  PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-04/Update/"Propiedades=Null"                       /Rollback--> ',cod_pro,null,false);
+  PRUEBAS_PROPIEDADES.ELIMINAR  ('Pro-05/Delete/"TipoPropiedades=Morado"                 /Commit  --> ',cod_pro,true);
   
   
   /*********************************************************************
@@ -143,19 +143,19 @@ BEGIN
   666606666,999909999,TO_DATE('12/2/2012'),false);
    PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= email null"                       /Rollback-->',null,'66609660T','Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= dni null"                       /Rollback-->','no@tman.com',null,'Ju@n',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= dni null"                          /Rollback-->','no@tman.com',null,'Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
   PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= nombre null"                       /Rollback-->','no1@tman.com','12345678W',null,
   666606666,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= movil null"                       /Rollback-->','no2@tman.com','12345671W','joan',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= movil null"                        /Rollback-->','no2@tman.com','12345671W','joan',
   null,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= telef null"                       /Rollback-->','no3@tman.com','12345672W','joan',
-  675644327,null,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= fecha null"                       /Rollback-->','no4@tman.com','12345673W','joan',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= telef null"                        /Rollback-->','no3@tman.com','12345672W','joan',
+  675644327,null,TO_DATE('12/2/2012'),false); 
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= fecha null"                        /Rollback-->','no4@tman.com','12345673W','joan',
   675644327,999909999,null,false);
-  PRUEBAS_CLIENTE.ACTUALIZAR('Cli-05/Update-"Clientes= Cliente 1"                        /Commit-->',cod_cli,'naasdasdasdnana@btman.com','68607660w',
+  PRUEBAS_CLIENTE.ACTUALIZAR('Cli-05/Update-"Clientes= Cliente 1"                       /Commit-->',cod_cli,'naasdasdasdnana@btman.com','68607660w',
   'Juan',666666666,999999999,TO_DATE('12/12/2012'),true);
-  PRUEBAS_CLIENTE.ELIMINAR('Cli-05/Delete-"Clientes= Cliente 1"                        /Commit-->',cod_cli,true);
+  PRUEBAS_CLIENTE.ELIMINAR('Cli-05/Delete-"Clientes= Cliente 1"                         /Commit-->',cod_cli,true);
   
   
  
@@ -166,14 +166,14 @@ BEGIN
   
   PRUEBAS_CITAS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Citas (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                           /Commit-->',TO_DATE('12/12/2020'),12,null,null,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('12/12/2020'),12,null,null,true);
   cod_cit := seq_citas.currval;
-  PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                               /Commit-->',TO_DATE('12/12/2020'),10,null,null,true);
-  PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                        /Rollback-->',null,10,null,null,false);
-  PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora null"                         /Rollback-->',TO_DATE('12/12/2020'),null,null,null,false);
-  PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"     /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
-  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                 /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,null,null,true);
-  PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                      /Commit-->', cod_cit,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('12/12/2020'),10,null,null,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                              /Rollback-->',null,10,null,null,false);
+  PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora null"                               /Rollback-->',TO_DATE('12/12/2020'),null,null,null,false);
+  PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"           /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
+  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                      /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,null,null,true);
+  PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                            /Commit-->', cod_cit,true);
   
   
   
