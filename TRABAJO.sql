@@ -158,7 +158,7 @@ drop sequence seq_fotoVehiculos;
 drop sequence seq_tipovehiculos;
 drop sequence seq_finaciaciones;
 drop sequence seq_vehiculos;
-drop sequence seq_tipopropiedades;
+drop sequence seq_tipopropiedades; 
 drop sequence seq_propiedades;
 drop sequence seq_descuentos;
 drop sequence seq_cliente;
@@ -174,7 +174,8 @@ create sequence seq_fotoVehiculos;
 create sequence seq_tipovehiculos;
 create sequence seq_finaciaciones;
 create sequence seq_vehiculos;
-create sequence seq_tipopropiedades;
+create sequence seq_tipopropiedades  MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_tipopropiedades.nextval from dual;
 create sequence seq_propiedades;
 create sequence seq_descuentos;
 create sequence seq_cliente;
@@ -204,13 +205,13 @@ create sequence seq_vehiculosvendidos;
     
 
     --Creación de Trigger Tipo Propiedades (secuencia)
-    create or replace trigger SECUENCIA_TIPO_PROPIEDADES
+   /* create or replace trigger SECUENCIA_TIPO_PROPIEDADES
     before insert on TIPOPROPIEDADES
     for each row
     begin
         :new.id_tpro := seq_tipopropiedades.nextval;    
     end;
-    /
+    /*/
     
 
     --Creación de Trigger Propiedades (secuencia)
@@ -324,8 +325,14 @@ END;
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR TIPO PROPIEDADES
     create or replace procedure insertar_tipo_propiedades 
     (t_pro in tipopropiedades.nombre%type)is
-    begin insert into tipopropiedades(nombre) values (t_pro);
-    commit work;
+    cod_tpro INTEGER;
+    begin 
+    insert into tipopropiedades values (seq_tipopropiedades.currval,t_pro);
+    cod_tpro := seq_tipopropiedades.nextval;
+    
+     EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
     end insertar_tipo_propiedades;
     /
     
@@ -694,29 +701,33 @@ END PRUEBAS_TIPOPROPIEDADES;
     w_cod NUMBER(12);
   BEGIN
     
+    w_cod := seq_tipopropiedades.currval;
+    
     /* Insertar fila*/
     insertar_tipo_propiedades(w_nom);
     
     /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
-    w_cod := seq_tipopropiedades.currval;
+    
+       
+    
     SELECT * INTO tipopropiedad FROM tipopropiedades WHERE id_tpro=w_cod;
-    IF (tipopropiedad.nombre<>w_nom) THEN
+    
+    
+    IF ((tipopropiedad.nombre<>w_nom)) THEN
       salida := false;
-    END IF;
+     END IF;
+     
+     COMMIT WORK;
     
     /* Mostrar resultado de la prueba */
     DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
     
     EXCEPTION
         WHEN OTHERS THEN
-          
+          salida := false;
           DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
           ROLLBACK;
-    
-    
-    COMMIT WORK;
-      
-    
+
   END insertar;
 
 /* ACTUALIZACIÓN*/
