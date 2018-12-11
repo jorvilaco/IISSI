@@ -491,19 +491,15 @@ END;
     valor_descuento in descuentos.descuento%type,
     cod_veh in descuentos.id_veh%type)is
     begin     
-    update descuentos set  descuento = valor_descuento where cod_fin = id_fin  and cod_veh = id_veh;
+    if (valor_descuento <> 0)then
+    update descuentos set descuento = valor_descuento where id_fin = cod_fin and id_veh = cod_veh;
+    else 
+    delete from descuentos where id_fin = cod_fin and id_veh = cod_veh;
+    end if;
     commit work;
     end actualizar_descuento;
     /
-    
-     create or replace procedure eliminar_descuento 
-    (cod_fin in descuentos.id_fin%type,
-    cod_veh in descuentos.id_veh%type)is
-    begin 
-    delete from descuentos where cod_fin = id_fin  and cod_veh = id_veh;
-    commit work;
-    end eliminar_descuento;
-    /
+  
     
     
      --PROCEDURES INSERTAR Y BORRAR FOTO VEHICULO Y ACTUALIZAR POSICION
