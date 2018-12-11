@@ -140,6 +140,7 @@ BEGIN
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-01/Insert-"Financiacion=Psa"                   /Commit  --> ','PSA 10 años',1000,true);
   cod_fin := seq_financiaciones.currval-1;
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-02/Insert-"Financiacion=F1"                    /Commit  --> ','PSA 3 años',1000,true);
+  PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-01/Insert-"Financiacion=F2"                   /Commit  --> ','PSA 8 años',1000,true);
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-05/Insert/"Financiacion=Null"                  /Rollback--> ',null,1000,false);
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-06/Insert/"Financiacion=Null"                  /Rollback--> ','PSA 5 años',null,false);
   PRUEBAS_FINACIACIONES.ACTUALIZAR('Tfin-07/Update/"Financiacion=PSA 5 años"            /Commit  --> ',cod_fin,'PSA 5 años',1000,true);
@@ -154,16 +155,18 @@ BEGIN
   
   PRUEBAS_DESCUENTOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de PropiedadesVehiculos (Código Prueba/Acción/Título Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D-1"                   /Commit  --> ',2,500,2,true);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=D1-2"                  /Commit  --> ',2,600,3,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D0"                  /Commit  --> ',3,500,3,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D1"                  /Commit  --> ',2,300,2,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=D2"                  /Commit  --> ',2,300,3,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=D2"                  /Commit  --> ',3,300,2,true);
   PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                  /Rollback--> ',2,5,null,false);
   PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                  /Rollback--> ',2,null,2,false);
   PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                  /Rollback--> ',null,2,2,false);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-08/Update/"Descuento=D1-2 800"              /Commit  --> ',2,1000,2,true);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-08/Update/"Descuento=D1-1 800"              /Commit  --> ',3,200,2,true);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                  /Rollback--> ',2,2,null,false);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                  /Rollback--> ',null,2,2,false);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-10/Update/Delete/"Descuento=D1-4"           /Commit  --> ',2,0,2,true);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=PV1-1"                 /Commit  --> ',2,500,2,true);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-10/Update/Delete/"Descuento=D1-4"           /Commit  --> ',3,0,3,true);
+  
   
   
   
