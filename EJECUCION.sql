@@ -18,7 +18,7 @@ BEGIN
   
   
   PRUEBAS_CONCESIONARIO.INICIALIZAR;
-  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Concesionario (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-01/insert-"Concesionario= prueba"                   /Commit-->','Con1','calle2',756493499,'prueba2@prueba1',11,true);
   cod_conces := seq_concesionario.currval;
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C1"                       /Commit-->','Con2','calle3',756493496,'prueba2@prueba2',10,true);
@@ -163,7 +163,7 @@ BEGIN
   **********************************************************************/
   
   PRUEBAS_CITAS.INICIALIZAR;
-  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Citas (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                           /Commit-->',TO_DATE('12/12/2020'),12,null,null,true);
   cod_cit := seq_citas.currval;
   PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                               /Commit-->',TO_DATE('12/12/2020'),10,null,null,true);
