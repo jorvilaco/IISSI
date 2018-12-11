@@ -1,6 +1,7 @@
 SET SERVEROUTPUT ON;
 
 DECLARE
+  cod_fin Integer;
   cod_tpro INTEGER;
   cod_veh INTEGER;
   cod_pro INTEGER;
@@ -51,6 +52,7 @@ BEGIN
   PRUEBAS_TIPOPROPIEDADES.ELIMINAR  ('Tpro-08/Delete/"TipoPropiedades=Llantas"               /Commit  --> ',cod_tpro,true);
   
  
+
 
   
   /*********************************************************************
@@ -105,7 +107,7 @@ BEGIN
   
   
   /*********************************************************************
-        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA PROPIEDADES 
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA PROPIEDADES-VEHICULOS 
   **********************************************************************/
   
   PRUEBAS_PROPIEDADESVEHICULOS.INICIALIZAR;
@@ -124,6 +126,27 @@ BEGIN
   PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-09/Update/"PropiedadesVehiculos=Null"                  /Rollback--> ',null,2,2,false);
   PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-10/Update/Delete/"PropiedadesVehiculos=PV1-4"          /Commit  --> ',4,0,2,true);
   
+  
+  
+
+
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA FINANCIACIONES
+  **********************************************************************/
+  
+  
+  PRUEBAS_FINACIACIONES.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-01/Insert-"Financiacion=Psa"                   /Commit  --> ','PSA 10 años',1000,true);
+  cod_fin := seq_financiaciones.currval;
+  PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-02/Insert-"Financiacion=F1"                    /Commit  --> ','PSA 3 años',1000,true);
+  PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-05/Insert/"Financiacion=Null"                  /Rollback--> ',null,1000,false);
+  PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-06/Insert/"Financiacion=Null"                  /Rollback--> ','PSA 5 años',null,false);
+  PRUEBAS_FINACIACIONES.ACTUALIZAR('Tfin-07/Update/"Financiacion=PSA 5 años"            /Commit  --> ',cod_fin,'PSA 5 años',1000,true);
+  PRUEBAS_FINACIACIONES.ACTUALIZAR('Tfin-08/Update/"Financiacion=Null"                  /Rollback--> ',cod_fin,null,1000,false);
+  PRUEBAS_FINACIACIONES.ELIMINAR  ('Tfin-09/Delete/"Financiacion=PSA 5 años"            /Commit  --> ',cod_fin,true);
+  
+ 
   
   
   /*********************************************************************
