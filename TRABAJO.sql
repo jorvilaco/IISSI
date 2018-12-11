@@ -471,6 +471,7 @@ END;
     begin 
     delete from propiedadesvehiculos where cod_veh = id_veh;
     delete from descuentos where cod_veh = id_veh;
+    delete from fotovehiculos where cod_veh = id_veh;
     delete from vehiculos where cod_veh = id_veh;
     commit work;
     end eliminar_vehiculos;
@@ -960,6 +961,7 @@ END PRUEBAS_VEHICULOS;
       DELETE FROM propiedadesvehiculos;
       DELETE FROM descuentos;
       delete from vehiculosvendidos;
+      delete from fotovehiculos;
       DELETE FROM vehiculos;
     NULL;
   END inicializar;
