@@ -148,6 +148,25 @@ BEGIN
   
  
   
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA PROPIEDADES-VEHICULOS 
+  **********************************************************************/
+  
+  PRUEBAS_DESCUENTOS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de PropiedadesVehiculos (Código Prueba/Acción/Título Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D-1"                   /Commit  --> ',2,500,2,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=D1-2"                  /Commit  --> ',2,600,3,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                  /Rollback--> ',2,5,null,false);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                  /Rollback--> ',2,null,2,false);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                  /Rollback--> ',null,2,2,false);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-08/Update/"Descuento=D1-2 800"              /Commit  --> ',2,1000,2,true);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                  /Rollback--> ',2,2,null,false);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                  /Rollback--> ',null,2,2,false);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-10/Update/Delete/"Descuento=D1-4"           /Commit  --> ',2,0,2,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=PV1-1"                 /Commit  --> ',2,500,2,true);
+  
+  
+  
   
   /*********************************************************************
         PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CLIENTES
