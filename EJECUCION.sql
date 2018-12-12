@@ -232,13 +232,13 @@ BEGIN
   
   PRUEBAS_CITAS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Citas (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('12/12/2020'),12,null,null,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('12/12/2020'),12,2,3,true);
   cod_cit := seq_citas.currval-1;
-  PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('12/12/2020'),10,null,null,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('12/12/2018'),10,2,3,true);
   PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                              /Rollback-->',null,10,null,null,false);
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora null"                               /Rollback-->',TO_DATE('12/12/2020'),null,null,null,false);
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"           /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
-  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                      /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,null,null,true);
+  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                      /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,2,3,true);
   PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                            /Commit-->', cod_cit,true);
   
   
@@ -250,3 +250,7 @@ BEGIN
   /
    select obtener_veh_vend_fechas(TO_DATE('2017-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'),TO_DATE('2018-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
   from dual;
+   /
+   select obtener_cit_en_fechas(TO_DATE('2017-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'),TO_DATE('2018-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
+  from dual;
+  
