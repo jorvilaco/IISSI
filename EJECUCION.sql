@@ -240,5 +240,11 @@ BEGIN
   PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                            /Commit-->', cod_cit,true);
   
   
+   
+  
+  
   
   END;
+  /
+   select obtener_veh_vend_fechas(TO_DATE('2017-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'),TO_DATE('2018-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
+  from dual;
