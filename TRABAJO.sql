@@ -1,6 +1,6 @@
 /************************************************************************
                         TABLAS
-************************************************************************* /
+*************************************************************************/
 
 --Borramos las tablas
 DROP TABLE FOTOVEHICULOS;
@@ -46,7 +46,7 @@ CREATE TABLE FINANCIACIONES(
 --Creación de tabla Tipo Propiedades
 CREATE TABLE TIPOPROPIEDADES(
     id_tpro number(10) primary key,
-    nombre varchar2(40) not null,
+    nombre varchar2(40) not null,fgh
     unique (nombre)
 );
 
