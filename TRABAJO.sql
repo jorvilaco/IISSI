@@ -320,6 +320,23 @@ END IF;
 END;
 /
 
+/* Función para ver si el día es sabado o domingo*/
+--to_number(TO_CHAR(TO_DATE(fecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH'))
+/*CREATE OR REPLACE TRIGGER TR_Dias_Citas
+BEFORE INSERT OR UPDATE OF Fecha ON CITAS
+FOR EACH ROW
+DECLARE
+    newfecha date;
+    dia integer;
+BEGIN
+    SELECT fecha into newfecha FROM Citas;
+    IF (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=1 OR
+    (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=7 THEN
+        RAISE_APPLICATION_ERROR(-20020, 'Los días de la semana en dónde se puede realizar una tutoría deben estar entre lunes y viernes');
+    END IF;
+END;
+/
+*/
 
 /************************************************************************
                         PROCEDURES
@@ -721,6 +738,22 @@ END ASSERT_EQUALS;
   
   end obtener_veh_vend_fechas;
   /
+  
+  create or replace function obtener_cit_en_fechas(
+  fechaini date, fechafin date)
+  return sys_refcursor
+  is
+  rf_cur   sys_refcursor;
+  
+  begin
+    open rf_cur for
+        select * from citas where fecha<fechafin and fecha>fechaini order by id_cit;
+    return rf_cur;
+  
+  end obtener_cit_en_fechas;
+  /
+  
+  
     
 /************************************************************************
                        PAQUETES
@@ -1849,6 +1882,9 @@ END PRUEBAS_FOTOVEHICULOS;
 
 END PRUEBAS_FOTOVEHICULOS;
 /
+
+
+
 
    
 
