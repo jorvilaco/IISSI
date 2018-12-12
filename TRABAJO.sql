@@ -1856,16 +1856,5 @@ END PRUEBAS_FOTOVEHICULOS;
 *************************************************************************/
 
 
-    insert into Clientes (email,dni,nombre,telef,movil,FechAlta) 
-    values ('prueba@prueba.com','66606660w','Juan',666666666,999999999,TO_DATE('12/12/2012'));
-    insert into Clientes (email,dni,nombre,telef,movil,FechAlta) 
-    values ('prueba2@prueba2.com','66606660T','Juon',666606666,999909999,TO_DATE('12/2/2012'));
-    insert into Citas (Fecha, Hora,id_cli,id_conces) values (TO_DATE('12/12/2020'),13,1,1);
-    insert into Citas (Fecha, Hora,id_cli,id_conces) values (TO_DATE('12/12/2020'),13,2,1);
-    insert into Concesionarios (Nombre, Direccion, Telef, Email, NoCitas) 
-    values ('Con','calle',756493498,'prueba@prueba.com',10);
-    insert into Concesionarios (Nombre, Direccion, Telef, Email, NoCitas) 
-    values ('Con2','calle2',756493499,'prueba2@prueba2',11);
-    
    
 
