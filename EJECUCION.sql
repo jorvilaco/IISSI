@@ -22,7 +22,7 @@ BEGIN
   PRUEBAS_CONCESIONARIO.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Concesionario (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-01/insert-"Concesionario= prueba"                   /Commit-->','Con1','calle2',756493499,'prueba2@prueba1',11,true);
-  cod_conces := seq_concesionario.currval;
+  cod_conces := seq_concesionario.currval-1;
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C1"                       /Commit-->','Con2','calle3',756493496,'prueba2@prueba2',10,true);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-03/insert-"Concesionario= C2"                       /Commit-->','Con3','calle4',756493497,'prueba3@rueba3',9,true);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-04/insert-"Concesionario= nombre null"              /Rollback-->',null,'calle3',756493496,'prueba2@prueba2',10,false);
@@ -198,28 +198,30 @@ BEGIN
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de CLIENTES (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_CLIENTE.INSERTAR  ('Cli-01/Insert-"Clientes=Prueba"                           /Commit  --> ','nanana@batman.com','66606660w',
   'Juan',666666666,999999999,TO_DATE('12/12/2012'),true);
-  COD_CLI := seq_cliente.currval;
+  COD_CLI := seq_cliente.currval-1;
   PRUEBAS_CLIENTE.INSERTAR('Cli-02/Insert-"Clientes = C2"                               /Commit -->','nonono@batman.com','66606660T',
   'Ju@n',666606666,999909999,TO_DATE('12/3/2012'),true);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-03/Insert-"Clientes= email duplicado"                   /Rollback-->','nonono@batman.com','66606760T','Ju@n',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-03/Insert-"Clientes = C3"                               /Commit -->','nununu@batman.com','66608660T',
+  'Ju@n',666606666,999909999,TO_DATE('12/3/2012'),true);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/Insert-"Clientes= email duplicado"                   /Rollback-->','nonono@batman.com','66606760T','Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= dni duplicado"                     /Rollback-->','nonono@tman.com','66606660T','Ju@n',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-05/insert-"Clientes= dni duplicado"                     /Rollback-->','nonono@tman.com','66606660T','Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
-   PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= email null"                       /Rollback-->',null,'66609660T','Ju@n',
+   PRUEBAS_CLIENTE.INSERTAR('Cli-06/insert-"Clientes= email null"                       /Rollback-->',null,'66609660T','Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= dni null"                          /Rollback-->','no@tman.com',null,'Ju@n',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-07/insert-"Clientes= dni null"                          /Rollback-->','no@tman.com',null,'Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= nombre null"                       /Rollback-->','no1@tman.com','12345678W',null,
+  PRUEBAS_CLIENTE.INSERTAR('Cli-08/insert-"Clientes= nombre null"                       /Rollback-->','no1@tman.com','12345678W',null,
   666606666,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= movil null"                        /Rollback-->','no2@tman.com','12345671W','joan',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-09/insert-"Clientes= movil null"                        /Rollback-->','no2@tman.com','12345671W','joan',
   null,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= telef null"                        /Rollback-->','no3@tman.com','12345672W','joan',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-010/insert-"Clientes= telef null"                        /Rollback-->','no3@tman.com','12345672W','joan',
   675644327,null,TO_DATE('12/2/2012'),false); 
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/insert-"Clientes= fecha null"                        /Rollback-->','no4@tman.com','12345673W','joan',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-011/insert-"Clientes= fecha null"                        /Rollback-->','no4@tman.com','12345673W','joan',
   675644327,999909999,null,false);
-  PRUEBAS_CLIENTE.ACTUALIZAR('Cli-05/Update-"Clientes= Cliente 1"                       /Commit-->',cod_cli,'naasdasdasdnana@btman.com','68607660w',
+  PRUEBAS_CLIENTE.ACTUALIZAR('Cli-012/Update-"Clientes= Cliente 1"                       /Commit-->',cod_cli,'naasdasdasdnana@btman.com','68607660w',
   'Juan',666666666,999999999,TO_DATE('12/12/2012'),true);
-  PRUEBAS_CLIENTE.ELIMINAR('Cli-05/Delete-"Clientes= Cliente 1"                         /Commit-->',cod_cli,true);
+  PRUEBAS_CLIENTE.ELIMINAR('Cli-013/Delete-"Clientes= Cliente 1"                         /Commit-->',cod_cli,true);
   
   
  
@@ -231,7 +233,7 @@ BEGIN
   PRUEBAS_CITAS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Citas (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('12/12/2020'),12,null,null,true);
-  cod_cit := seq_citas.currval;
+  cod_cit := seq_citas.currval-1;
   PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('12/12/2020'),10,null,null,true);
   PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                              /Rollback-->',null,10,null,null,false);
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora null"                               /Rollback-->',TO_DATE('12/12/2020'),null,null,null,false);
