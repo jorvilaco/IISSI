@@ -684,6 +684,22 @@ BEGIN
   END IF;
 END ASSERT_EQUALS;
 /
+
+
+ 
+  create or replace function obtener_veh_vend_fechas(
+  fechaini date, fechafin date)
+  return sys_refcursor
+  is
+  rf_cur   sys_refcursor;
+  
+  begin
+    open rf_cur for
+        select * from vehiculosvendidos where fechaalta<fechafin and fechaalta>fechaini order by matricula;
+    return rf_cur;
+  
+  end obtener_veh_vend_fechas;
+  /
     
 /************************************************************************
                        PAQUETES
@@ -838,6 +854,7 @@ END PRUEBAS_PROPIEDADES;
     
     /* Insertar fila*/
     insertar_propiedad(w_nom,w_id_tpro);
+    
     
     SELECT * INTO propiedad FROM propiedades WHERE id_pro=w_cod;
     IF ((propiedad.nombre<>w_nom) and (propiedad.id_tpro<>w_id_tpro)) THEN
