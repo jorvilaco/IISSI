@@ -1,6 +1,6 @@
 /************************************************************************
                         TABLAS
-************************************************************************* /
+*************************************************************************/
 
 --Borramos las tablas
 DROP TABLE FOTOVEHICULOS;
@@ -9,7 +9,7 @@ DROP TABLE PROPIEDADESVEHICULOS;
 DROP TABLE PROPIEDADES;
 DROP TABLE TIPOPROPIEDADES;
 DROP TABLE VEHICULOS;
-DROP TABLE FINANCIACIONES;
+DROP TABLE FINANCIACIONES;asdasd
 DROP TABLE TIPOVEHICULOS;
 DROP TABLE CITAS;
 DROP TABLE CLIENTES;
