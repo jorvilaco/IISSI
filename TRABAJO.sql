@@ -180,9 +180,12 @@ create sequence seq_tipopropiedades  MINVALUE 1 INCREMENT BY 1 START WITH 1;
 select seq_tipopropiedades.nextval from dual;
 create sequence seq_propiedades MINVALUE 1 INCREMENT BY 1 START WITH 1;
 select seq_propiedades.nextval from dual;
-create sequence seq_cliente;
-create sequence seq_citas;
-create sequence seq_concesionario;
+create sequence seq_cliente MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_cliente.nextval from dual;
+create sequence seq_citas MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_citas.nextval from dual;
+create sequence seq_concesionario MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_concesionario.nextval from dual;
 create sequence seq_vehiculosvendidos;
 
     
@@ -258,33 +261,33 @@ create sequence seq_vehiculosvendidos;
     
 
     --Creación de Trigger Cliente (secuencia)
-    create or replace trigger SECUENCIA_CLIENTES
+    /*create or replace trigger SECUENCIA_CLIENTES
     before insert on CLIENTES
     for each row
     begin
     :new.id_cli := seq_cliente.nextval;
     end;
-    /
+    /*/
     
 
     --Creación de Trigger Citas (secuencia)
-    create or replace trigger SECUENCIA_CITAS
+    /*create or replace trigger SECUENCIA_CITAS
     before insert on CITAS
     for each row
     begin
     :new.id_cit := seq_citas.nextval;
     end;
-    /
+    /*/
     
 
     --Creación de Trigger Concesionario (secuencia)
-    create or replace trigger SECUENCIA_CONCESIONARIOS
+    /*create or replace trigger SECUENCIA_CONCESIONARIOS
     before insert on CONCESIONARIOS
     for each row
     begin
     :new.id_conces := seq_concesionario.nextval;
     end;
-    /
+    /*/
 
 
 /************************************************************************
@@ -576,10 +579,15 @@ END;
     telef_cli in CLIENTES.telef%type,
     movil_cli in CLIENTES.movil%type,
     FechAlta_cli in CLIENTES.FechAlta%type) is
+    cod_cli INTEGER;
     begin
-    insert into CLIENTES(email,dni,nombre,telef,movil,FechAlta) 
-    values (email_cli, dni_cli, nombre_cli, telef_cli, movil_cli,FechAlta_cli);
-    commit work;
+    insert into CLIENTES(id_cli,email,dni,nombre,telef,movil,FechAlta) 
+    values (seq_cliente.currval,email_cli, dni_cli, nombre_cli, telef_cli, movil_cli,FechAlta_cli);
+    cod_cli := seq_cliente.nextval;
+    EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
+    
     end insertar_clientes;
     /
    
@@ -612,10 +620,17 @@ END;
    telef_con in CONCESIONARIOS.telef%type,
    email_con in CONCESIONARIOS.email%type,
    NoCitas_con in CONCESIONARIOS.NoCitas%type) is
+   cod_conces INTEGER;
    begin
-   insert into CONCESIONARIOS(Nombre,Direccion,Telef,Email,NoCitas)
-   values (nombre_con,direccion_con,telef_con,email_con,NoCitas_con);
-   commit work;
+   insert into CONCESIONARIOS(id_conces,Nombre,Direccion,Telef,Email,NoCitas)
+   values (seq_concesionario.currval,nombre_con,direccion_con,telef_con,email_con,NoCitas_con);
+   
+   cod_conces  := seq_concesionario.nextval;
+   
+   EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
+        
    end insertar_concesionarios;
    /
    create or replace procedure actualizar_concesionarios(
@@ -644,10 +659,16 @@ END;
    hora_cit in CITAS.hora%type,
    id_cli_cit in CITAS.id_cli%type,
    id_conces_cit in CITAS.id_conces%type) is
+   cod_cit INTEGER;
    begin
-   insert into CITAS (fecha, hora, id_cli, id_conces) 
-   values(fecha_cit,hora_cit,id_cli_cit,id_conces_cit);
-   commit work;
+   insert into CITAS (id_cit,fecha, hora, id_cli, id_conces) 
+   values(seq_citas.currval,fecha_cit,hora_cit,id_cli_cit,id_conces_cit);
+   cod_cit := seq_citas.nextval;
+   
+   EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
+        
    end insertar_citas;
    /
    create or replace procedure actualizar_citas(
@@ -1209,7 +1230,6 @@ create or replace package body PRUEBAS_CLIENTE as
     Begin
         delete from CITAS;
         delete from CLIENTES;
-        delete from CONCESIONARIOS;
       null;
     end inicializar;
     
@@ -1219,24 +1239,26 @@ create or replace package body PRUEBAS_CLIENTE as
     cliente clientes%ROWTYPE;
     w_cod_cli number(12);
     begin
+    
+        w_cod_cli :=seq_cliente.currval;
         /*insertar fila*/
         insertar_clientes(w_email,w_dni,w_nombre,w_telef,w_movil,w_fechAlta);
          
-        w_cod_cli :=seq_cliente.currval;
+        
          
         select * into cliente from CLIENTES where id_cli = w_cod_cli;
         if((cliente.email<>w_email) or (cliente.dni <>w_dni) or (cliente.nombre <>w_nombre) or (cliente.telef<>w_telef) or
         (cliente.movil <>w_movil) or (cliente.FechAlta<>w_fechAlta)) then
         salida := false;
         end if;
-         
+        commit work;
         /*Mostrar resultado de la prueba*/
         DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
         EXCEPTION
             WHEN OTHERS THEN
             DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
             ROLLBACK;
-        commit work;
+        
         
         
     end insertar;
@@ -1322,7 +1344,6 @@ create or replace package body PRUEBAS_CONCESIONARIO as
     procedure inicializar as
     begin
           delete from CITAS;
-          delete from CLIENTES;
           delete from CONCESIONARIOS;
         null;
     end inicializar; 
@@ -1333,16 +1354,18 @@ create or replace package body PRUEBAS_CONCESIONARIO as
     concesionario concesionarios%ROWTYPE;
     w_cod_con number(12);
     begin
+       w_cod_con := seq_concesionario.currval; 
+    
        insertar_concesionarios(w_nomb,w_direc,w_telef,w_email,w_numcitas);
           
-       w_cod_con := seq_concesionario.currval; 
+      
        select * into concesionario from CONCESIONARIOS where id_conces = w_cod_con;
          
        if((concesionario.nombre<>w_nomb) or (concesionario.direccion <> w_direc) or (concesionario.telef <> w_telef)
        or (concesionario.email <> w_email) or (concesionario.NoCitas <> w_numcitas)) then
        salida := false;
        end if;
-          
+       commit work;   
        /* Mostrar resultado de la prueba */
        DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
           
@@ -1351,7 +1374,7 @@ create or replace package body PRUEBAS_CONCESIONARIO as
           /*DBMS_OUTPUT.put_line(SQLERRM);*/
           DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
           ROLLBACK;
-       commit work;
+       
         
     end insertar;
 -------------------Actualizar-----------------
@@ -1432,8 +1455,6 @@ create or replace package body PRUEBAS_CITAS as
    procedure inicializar as
    begin
       delete from Citas;
-      delete from Clientes;
-      delete from Concesionarios;
       null;
    end inicializar;
 
@@ -1443,17 +1464,18 @@ create or replace package body PRUEBAS_CITAS as
       cita citas%rowtype;
       w_cod number(12);
    begin 
+      w_cod := seq_citas.currval;
    
       insertar_citas(w_fecha,w_hora,w_id_cli,w_id_conces);
       --id_cit fecha hoea id_cli id_conces
-      w_cod := seq_citas.currval;
+      
       
       select * into cita from citas where id_cit = w_cod;
       
       if((cita.fecha <> w_fecha)or (cita.hora <>w_hora) or (cita.id_cli<>w_id_cli) or(cita.id_conces <> w_id_conces)) then
       salida := false;
       end if;
-   
+      COMMIT WORK;
    
       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
    
@@ -1461,7 +1483,7 @@ create or replace package body PRUEBAS_CITAS as
            WHEN OTHERS THEN
              DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
              ROLLBACK;
-       COMMIT WORK;
+       
     
    end insertar; 
    
