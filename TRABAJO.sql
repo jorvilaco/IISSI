@@ -8,13 +8,16 @@ DROP TABLE DESCUENTOS;
 DROP TABLE PROPIEDADESVEHICULOS;
 DROP TABLE PROPIEDADES;
 DROP TABLE TIPOPROPIEDADES;
+DROP TABLE METAVEHICULOS;
 DROP TABLE VEHICULOS;
 DROP TABLE FINANCIACIONES;
+DROP TABLE METATIPOS;
 DROP TABLE TIPOVEHICULOS;
 DROP TABLE CITAS;
 DROP TABLE CLIENTES;
 DROP TABLE CONCESIONARIOS;
 DROP TABLE VEHICULOSVENDIDOS;
+DROP TABLE EMPLEADOS;
 
 
 
@@ -143,7 +146,36 @@ Create table Citas(
    FOREIGN KEY (id_cli) REFERENCES CLIENTES
    );
 
+--Creación Tabla Empleados
+Create table EMPLEADOS(
+    id_empleado number(10) primary key,
+    nombre varchar2(50) not null,
+    rol varchar2 (50) not null,
+    usuario varchar2 (10)not null,
+    contraseña varchar2(24) not null,
+    dni varchar2 (9) not null,
+    UNIQUE (usuario)
+);
 
+--Creación Tabla MetaVehiculos
+Create table METAVEHICULOS(
+   id_metaVehiculo number(10) primary key,
+   id_veh number(10),
+   metaTitulo varchar2(70) not null,
+   metaDescripcion varchar2(140) not null,
+   urlAmigable varchar2(40) not null,
+   FOREIGN KEY (id_veh) REFERENCES Vehiculos
+ );
+
+--Creación Tabla MetaTipos
+Create table METATIPOS(
+   id_metaTipo number(10) primary key,
+   id_tveh number(10) ,
+   metaTitulo varchar2(70) not null,
+   metaDescripcion varchar2(140) not null,
+   urlAmigable varchar2(40) not null,
+   FOREIGN KEY (id_tveh) REFERENCES TipoVehiculos
+ );
 
 
 
@@ -164,7 +196,9 @@ drop sequence seq_cliente;
 drop sequence seq_citas;
 drop sequence seq_concesionario;
 drop sequence seq_vehiculosvendidos;
-
+drop sequence seq_metavehiculos;
+drop sequence seq_metatipos;
+drop sequence seq_empleados;
 
 
 
@@ -288,7 +322,33 @@ create sequence seq_vehiculosvendidos;
     :new.id_conces := seq_concesionario.nextval;
     end;
     /*/
+    
+    --Creación de Trigger Empleados (secuencia)
+    /*create or replace trigger SECUENCIA_EMPLEADOS 
+    before insert on EMPLEADOS 
+    for each row 
+    begin 
+    :new.id_empleado := seq_empleados.nextval;
+    end;
+    /*/
 
+    --Creación de Trigger MetaVehiculos (secuencia)
+    /*create or replace trigger SECUENCIA_METAVEHICULOS 
+    before insert on METAVEHICULOS 
+    for each row 
+    begin 
+    :new.id_metaVehiculo := seq_metavehiculos.nextval;
+    end;
+    /*/
+
+    --Creación de Trigger MetaVehiculos (secuencia)
+    /*create or replace trigger SECUENCIA_METATIPOS 
+    before insert on METATIPOS 
+    for each row 
+    begin 
+    :new.id_metaTipo := seq_metatipos.nextval;
+    end;
+    /*/
 
 /************************************************************************
                         TRIGGER
@@ -705,7 +765,97 @@ END;
    commit work;
    end eliminar_citas;
    /
+   --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR EMPLEADOS
+   create or replace procedure insertar_empleados(
+   w_nombre in EMPLEADOS.nombre%TYPE,
+   w_rol in EMPLEADOS.rol%TYPE,
+   w_usuario in EMPLEADOS.usuario%TYPE,
+   w_contraseña in EMPLEADOS.contraseña%TYPE,
+   w_dni in EMPLEADOS.dni%TYPE) is begin
+   insert into EMPLEADOS (nombre, rol, usuario, contraseña, dni) 
+   values(w_nombre, w_rol, w_usuario, w_contraseña, w_dni);
+   commit work;
+   end insertar_empleados;
+   /
+   
+    create or replace procedure actualizar_empleados(
+    w_id_empleado in EMPLEADOS.id_empleado%type,
+    w_nombre in EMPLEADOS.nombre%type,
+    w_rol in EMPLEADOS.rol%type,
+    w_usuario in EMPLEADOS.usuario%type,
+    w_contraseña in EMPLEADOS.contraseña%type,
+    w_dni in EMPLEADOS.dni%type) is
+    begin
+    update EMPLEADOS set nombre = w_nombre, rol = w_rol, usuario = w_usuario, contraseña= w_contraseña,
+    dni = dni where w_id_empleado = id_empleado;
+    commit work;
+    end actualizar_empleados;
+    /
+   
+    create or replace procedure eliminar_empleados(cod_empleados in EMPLEADOS.id_empleado%type) is
+    begin 
+    delete from EMPLEADOS where cod_empleados = id_empleado;
+    commit work;
+    end eliminar_empleados;
+    /
+  
+  --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR METAVEHICULOS
     
+    create or replace procedure insertar_metavehiculos(
+    w_metatit in METAVEHICULOS.metatitulo%TYPE,
+    w_metadesc in METAVEHICULOS.metadescripcion%TYPE,
+    w_urlamig in METAVEHICULOS.urlamigable%TYPE) is begin
+    insert into METAVEHICULOS (metatitulo, metadescripcion, urlamigable) 
+    values(w_metatit, w_metadesc, w_urlamig);
+    commit work;
+    end insertar_metavehiculos;
+    /
+    
+    create or replace procedure actualizar_metavehiculos(
+    w_id_metaveh in METAVEHICULOS.id_metavehiculo%TYPE,
+    w_metatit in METAVEHICULOS.metatitulo%TYPE,
+    w_metadesc in METAVEHICULOS.metadescripcion%TYPE,
+    w_urlamig in METAVEHICULOS.urlamigable%TYPE) is begin
+    update METAVEHICULOS set metatitulo = w_metatit, metadescripcion = w_metadesc, urlamigable = w_urlamig where w_id_metaveh = id_metavehiculo;
+    commit work;
+    end actualizar_metavehiculos;
+    /
+    
+    create or replace procedure eliminar_metavehiculos(cod_metaveh in METAVEHICULOS.id_metavehiculo%type) is
+    begin 
+    delete from METAVEHICULOS where cod_metaveh = id_metavehiculo;
+    commit work;
+    end eliminar_metavehiculos;
+    /
+    
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR METATIPOS
+  
+    create or replace procedure insertar_metatipos(
+    w_metatit in METATIPOS.metatitulo%TYPE,
+    w_metadesc in METATIPOS.metadescripcion%TYPE,
+    w_urlamig in METATIPOS.urlamigable%TYPE) is begin
+    insert into METATIPOS (metatitulo, metadescripcion, urlamigable) 
+    values(w_metatit, w_metadesc, w_urlamig);
+    commit work;
+    end insertar_metatipos;
+    /
+    
+    create or replace procedure actualizar_metatipos(
+    w_id_metatip in METATIPOS.id_metatipo%TYPE,
+    w_metatit in METATIPOS.metatitulo%TYPE,
+    w_metadesc in METATIPOS.metadescripcion%TYPE,
+    w_urlamig in METATIPOS.urlamigable%TYPE) is begin
+    update METATIPOS set metatitulo = w_metatit, metadescripcion = w_metadesc, urlamigable = w_urlamig where w_id_metatip = id_metatipo;
+    commit work;
+    end actualizar_metatipos;
+    /
+    
+    create or replace procedure eliminar_metatipos(cod_metatip in METATIPOS.id_metatipo%type) is
+    begin 
+    delete from METATIPOS where cod_metatip = id_metatipo;
+    commit work;
+    end eliminar_metatipos;
+    / 
     
 
 /************************************************************************
