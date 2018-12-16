@@ -221,6 +221,12 @@ select seq_citas.nextval from dual;
 create sequence seq_concesionario MINVALUE 1 INCREMENT BY 1 START WITH 1;
 select seq_concesionario.nextval from dual;
 create sequence seq_vehiculosvendidos;
+create sequence seq_metavehiculos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_metavehiculos.nextval from dual;
+create sequence seq_metatipos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_metatipos.nextval from dual;
+create sequence seq_empleados MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_empleados.nextval from dual;
 
     
     --Creación de Trigger Vehículo Vendido (secuencia)
@@ -771,10 +777,14 @@ END;
    w_rol in EMPLEADOS.rol%TYPE,
    w_usuario in EMPLEADOS.usuario%TYPE,
    w_contraseña in EMPLEADOS.contraseña%TYPE,
-   w_dni in EMPLEADOS.dni%TYPE) is begin
-   insert into EMPLEADOS (nombre, rol, usuario, contraseña, dni) 
-   values(w_nombre, w_rol, w_usuario, w_contraseña, w_dni);
-   commit work;
+   w_dni in EMPLEADOS.dni%TYPE) is cod_empleados Integer;
+   begin
+   insert into EMPLEADOS (id_empleado, nombre, rol, usuario, contraseña, dni) 
+   values(seq_empleados.currval, w_nombre, w_rol, w_usuario, w_contraseña, w_dni);
+   cod_empleados := seq_empleados.nextval;
+   EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
    end insertar_empleados;
    /
    
@@ -804,10 +814,17 @@ END;
     create or replace procedure insertar_metavehiculos(
     w_metatit in METAVEHICULOS.metatitulo%TYPE,
     w_metadesc in METAVEHICULOS.metadescripcion%TYPE,
-    w_urlamig in METAVEHICULOS.urlamigable%TYPE) is begin
-    insert into METAVEHICULOS (metatitulo, metadescripcion, urlamigable) 
-    values(w_metatit, w_metadesc, w_urlamig);
-    commit work;
+    w_urlamig in METAVEHICULOS.urlamigable%TYPE,
+    w_id_veh in METAVEHICULOS.id_veh%TYPE)is cod_metaveh Integer; 
+    begin
+    insert into METAVEHICULOS (id_metavehiculo, metatitulo, metadescripcion, urlamigable, id_veh) 
+    values(seq_metavehiculos.currval, w_metatit, w_metadesc, w_urlamig, w_id_veh);
+    cod_metaveh := seq_metavehiculos.nextval;
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
+
     end insertar_metavehiculos;
     /
     
@@ -833,10 +850,16 @@ END;
     create or replace procedure insertar_metatipos(
     w_metatit in METATIPOS.metatitulo%TYPE,
     w_metadesc in METATIPOS.metadescripcion%TYPE,
-    w_urlamig in METATIPOS.urlamigable%TYPE) is begin
+    w_urlamig in METATIPOS.urlamigable%TYPE,
+    w_id_tveh in METATIPOS.id_tveh%TYPE) is cod_metatip Integer;
+    begin
     insert into METATIPOS (metatitulo, metadescripcion, urlamigable) 
     values(w_metatit, w_metadesc, w_urlamig);
-    commit work;
+    cod_metatip := seq_metatipos.nextval;
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
     end insertar_metatipos;
     /
     
