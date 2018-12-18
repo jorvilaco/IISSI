@@ -169,7 +169,7 @@ BEGIN
   PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                /Rollback--> ',null,2,2,false);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-08/Update/"Descuento=D1-1 200"            /Commit  --> ',3,200,2,true);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=RN-1.10"             /Rollback--> ',3,1100,2,false);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=RN-1.10"             /Rollback--> ',2,900,3,false);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=RN-1.10"             /Rollback--> ',2,950,3,false);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                /Rollback--> ',2,2,null,false);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                /Rollback--> ',null,2,2,false);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-10/Delete/"Descuento=D1-4"                /Commit  --> ',3,0,3,true);
