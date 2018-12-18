@@ -205,7 +205,8 @@ drop sequence seq_empleados;
 --Creamos las secuencias
 create sequence seq_fotoVehiculos  MINVALUE 1 INCREMENT BY 1 START WITH 1;
 select seq_fotoVehiculos.nextval from dual;
-create sequence seq_tipovehiculos;
+create sequence seq_tipovehiculos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_tipovehiculos.nextval from dual;
 create sequence seq_financiaciones MINVALUE 1 INCREMENT BY 1 START WITH 1;
 select seq_financiaciones.nextval from dual;
 create sequence seq_vehiculos MINVALUE 1 INCREMENT BY 1 START WITH 1;
@@ -480,7 +481,70 @@ end;
     end eliminar_tipo_propiedades;
     /
 
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR TIPO VEHICULOS
     
+   create or replace procedure insertar_tipovehiculos(
+   w_nombre in TIPOVEHICULOS.nombre%TYPE) is cod_tipovehiculos Integer;
+   begin
+   insert into TIPOVEHICULOS (id_tveh, nombre) 
+   values(seq_tipovehiculos.currval, w_nombre);
+   cod_tipovehiculos := seq_tipovehiculos.nextval;
+   EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
+   end insertar_tipovehiculos;
+   /
+   
+    create or replace procedure actualizar_tipovehiculos(
+    w_id_tveh in TIPOVEHICULOS.id_tveh%type,
+    w_nombre in TIPOVEHICULOS.nombre%type) is
+    begin
+    update TIPOVEHICULOS set nombre = w_nombre where w_id_tveh = id_tveh;
+    commit work;
+    end actualizar_tipovehiculos;
+    /
+   
+    create or replace procedure eliminar_tipovehiculos(cod_tipovehiculos in TIPOVEHICULOS.id_tveh%type) is
+    begin 
+    delete from TIPOVEHICULOS where cod_tipovehiculos = id_tveh;
+    commit work;
+    end eliminar_tipovehiculos;
+    /
+
+    
+    
+    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR FINACIACION
+    create or replace procedure insertar_financiacion 
+    (nombre_fin in financiaciones.nombre%type,
+    maxima_fin in financiaciones.nombre%type)is
+    cod_fin INTEGER;
+    begin 
+    insert into financiaciones values (seq_financiaciones.currval,nombre_fin,maxima_fin);
+    cod_fin := seq_financiaciones.nextval;
+    EXCEPTION
+        WHEN OTHERS THEN
+        ROLLBACK work;
+    end insertar_financiacion ;
+    /
+    
+    create or replace procedure actualizar_financiacion 
+    (cod_fin in financiaciones.id_fin%type, 
+    nombre_fin in financiaciones.nombre%type,
+    maxima_fin in financiaciones.nombre%type)is
+    begin 
+    update financiaciones set maxima=maxima_fin, nombre = nombre_fin where cod_fin = id_fin;
+    commit work;
+    end actualizar_financiacion ;
+    /
+    
+     create or replace procedure eliminar_financiacion 
+    (cod_fin in financiaciones.id_fin%type)is
+    begin 
+    delete from descuentos where cod_fin = id_fin;
+    delete from financiaciones where cod_fin = id_fin;
+    commit work;
+    end eliminar_financiacion ;
+    /
     
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR FINACIACION
     create or replace procedure insertar_financiacion 
