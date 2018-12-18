@@ -1042,6 +1042,21 @@ END ASSERT_EQUALS;
   end obtener_cit_en_fechas;
   /
   
+  /* RF-4.7:Información número de vehículos en concesionario */
+  create or replace function obtener_veh_estancados(
+  fechaini date)
+  return sys_refcursor
+  is
+  rf_cur   sys_refcursor;
+  
+  begin
+    open rf_cur for
+        select * from vehiculos where fechaalta<fechaini order by fechaalta;
+    return rf_cur;
+  
+  end obtener_veh_estancados;
+  /
+  
   
     
 /************************************************************************
