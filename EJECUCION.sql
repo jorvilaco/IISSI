@@ -120,6 +120,8 @@ BEGIN
   PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-05/Insert-"PropiedadesVehiculos=PV2-3"                 /Commit  --> ',3,4,3,true);
   PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-06/Insert-"PropiedadesVehiculos=PV2-4"                 /Commit  --> ',4,5,3,true);
   PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',2,5,null,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Duplicado-PV2-2"       /Rollback--> ',2,3,3,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Tigger-1.7"            /Rollback--> ',2,2,2,false);
   PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',2,null,2,false);
   PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',null,2,2,false);
   PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-08/Update/"PropiedadesVehiculos=PV1-2"                 /Commit  --> ',2,2,2,true);
@@ -250,7 +252,5 @@ BEGIN
   /
    select obtener_veh_vend_fechas(TO_DATE('2017-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'),TO_DATE('2018-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
   from dual;
-   /
-   select obtener_cit_en_fechas(TO_DATE('2017-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'),TO_DATE('2018-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
-  from dual;
+  
   
