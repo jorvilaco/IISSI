@@ -257,4 +257,6 @@ BEGIN
    select obtener_veh_vend_fechas(TO_DATE('2017-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'),TO_DATE('2018-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
   from dual;
   
-  
+  /* RF-4.7:Información número de vehículos en concesionario */
+  select obtener_veh_estancados(TO_DATE('2019-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
+  from dual;
