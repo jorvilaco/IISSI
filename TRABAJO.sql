@@ -405,7 +405,21 @@ END IF;
 END;
 /
 
+create or replace TRIGGER PORCENTAJE_PRECIO_VEHICULO
+BEFORE INSERT OR UPDATE ON DESCUENTOS
+FOR EACH ROW
+DECLARE 
+ valor_descuento Integer;
+BEGIN
 
+SELECT precio INTO valor_descuento FROM vehiculos WHERE :NEW.ID_veh=id_veh ;
+IF (:NEW.DESCUENTO > valor_descuento*0.1) THEN
+    RAISE_APPLICATION_ERROR(-20410,valor_descuento|| 'DESCUENTO SUPERIOR A DESCUENTO MAYOR 10% PRECIO VEHICULO');
+
+END IF;
+
+END;
+/
 
 
 /* Función para ver si el día es sabado o domingo*/
