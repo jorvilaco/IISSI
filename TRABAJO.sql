@@ -404,6 +404,23 @@ END;
 /
 */
 
+CREATE OR REPLACE TRIGGER MAXCITAS
+BEFORE INSERT OR UPDATE ON CITAS
+FOR EACH ROW
+DECLARE
+   num_citas_c integer;
+   num_citas_p integer;
+BEGIN 
+   select count(*) into num_citas_c from Citas where (:new.fecha = fecha and :new.hora = hora and :new.id_conces=id_conces);
+   select nocitas into num_citas_p from Concesionarios where :new.id_conces = id_conces;
+
+if(num_citas_c >= num_citas_p ) then 
+RAISE_APPLICATION_ERROR(-20501,num_citas_c|| 'Máximo de citas permitidas completado');
+end if;
+   
+end;
+/
+
 /************************************************************************
                         PROCEDURES
 *************************************************************************/
@@ -2055,9 +2072,5 @@ END PRUEBAS_FOTOVEHICULOS;
 
 END PRUEBAS_FOTOVEHICULOS;
 /
-
-
-
-
    
 
