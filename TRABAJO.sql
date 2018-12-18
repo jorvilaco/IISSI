@@ -405,22 +405,6 @@ END;
 /
 
 
---TRIGGER PARA COMPROBAR VALOR MÁXIMO DE DESCUENTO
-CREATE OR REPLACE TRIGGER MAXIMA_FINANCIACION
-BEFORE INSERT OR UPDATE ON DESCUENTOS
-FOR EACH ROW
-DECLARE 
- valor_descuento Integer;
-BEGIN
-
-SELECT maxima INTO valor_descuento FROM financiaciones WHERE :NEW.ID_fin=id_fin ;
-IF (:NEW.DESCUENTO > valor_descuento) THEN
-    RAISE_APPLICATION_ERROR(-20410,valor_descuento|| 'DESCUENTO SUPERIOR A FINANCIACION MAXIMA');
-
-END IF;
-
-END;
-/
 
 
 /* Función para ver si el día es sabado o domingo*/
