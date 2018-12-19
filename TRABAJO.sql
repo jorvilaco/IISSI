@@ -427,22 +427,18 @@ END;
 
 
 /* Función para ver si el día es sabado o domingo*/
---to_number(TO_CHAR(TO_DATE(fecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH'))
-/*CREATE OR REPLACE TRIGGER TR_Dias_Citas
-BEFORE INSERT OR UPDATE OF Fecha ON CITAS
+CREATE OR REPLACE TRIGGER TR_Dias_Citas
+BEFORE INSERT OR UPDATE ON CITAS
 FOR EACH ROW
 DECLARE
-    newfecha date;
     dia integer;
 BEGIN
-    SELECT fecha into newfecha FROM Citas;
-    IF (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=1 OR
-    (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=7 THEN
-        RAISE_APPLICATION_ERROR(-20020, 'Los días de la semana en dónde se puede realizar una tutoría deben estar entre lunes y viernes');
+    select diaDeLaSemana(:new.fecha) into dia from dual;
+    IF(dia = 6 or dia= 7) THEN
+        RAISE_APPLICATION_ERROR(-20020,:new.fecha||  'Los días de la semana en dónde se puede realizar una cita deben estar entre lunes y viernes');
     END IF;
 END;
 /
-*/
 
 CREATE OR REPLACE TRIGGER MAXCITAS
 BEFORE INSERT OR UPDATE ON CITAS
@@ -473,6 +469,22 @@ BEGIN
             RAISE_APPLICATION_ERROR(-20502,num_vehiculos|| 'Máximo de vehiculos permitidos en un concesionario');
         end if;
     end if;
+end;
+/
+	    
+CREATE OR REPLACE TRIGGER MAXDECITPORCONCESYEMPL
+BEFORE UPDATE ON concesionarios
+FOR EACH ROW
+DECLARE
+    num_empleados integer;
+    
+begin
+   select count(*) into num_empleados from empleados where :new.id_conces = id_conces;
+  
+   
+if(num_empleados-2<:new.nocitas) then
+    RAISE_APPLICATION_ERROR(-20503,:new.nocitas|| 'No puede haber más citas que empleados menos 2');
+end if;
 end;
 /
 
@@ -1093,6 +1105,17 @@ END ASSERT_EQUALS;
   
   end obtener_num_veh_en_cons;
   /
+  create or replace function diaDeLaSemana(fechas date)
+  return integer
+  is
+  dia_semana integer;
+
+  begin
+        dia_semana := (to_number(TO_CHAR(fechas,'D')));
+     return dia_semana;
+    
+end diaDeLaSemana;
+/
   
   
     
