@@ -458,6 +458,20 @@ end if;
    
 end;
 /
+            
+CREATE OR REPLACE TRIGGER MAXVEHIENCONS
+BEFORE INSERT OR UPDATE ON VEHICULOS
+FOR EACH ROW
+DECLARE
+   num_vehiculos integer;
+BEGIN 
+   select count(*) into num_vehiculos from vehiculos where :new.id_conces=id_conces;
+
+if(num_vehiculos >= 1000 ) then 
+RAISE_APPLICATION_ERROR(-20502,num_vehiculos|| 'Máximo de vehiculos permitidos en un concesionario');
+end if;
+end;
+/
 
 /************************************************************************
                         PROCEDURES
@@ -1058,6 +1072,17 @@ END ASSERT_EQUALS;
     return rf_cur;
   
   end obtener_veh_estancados;
+  /
+  
+  create or replace function obtener_num_veh_en_cons(conces number)
+  return number
+  is 
+  num_veh number;
+  begin
+         select count(*) into num_veh from vehiculos  where conces = id_conces;
+    return num_veh;
+  
+  end obtener_num_veh_en_cons;
   /
   
   
