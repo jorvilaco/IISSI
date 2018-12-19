@@ -78,10 +78,10 @@ BEGIN
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-06/insert-"Concesionario= telef null"               /Rollback-->','Con3','calle3',null,'prueba2@prueba2',10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-07/insert-"Concesionario= email null"               /Rollback-->','Con3','calle3',756493496,null,10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-08/insert-"Concesionario= NoCitas null"             /Rollback-->','Con3','calle3',756493496,'prueba2@prueba2',null,false);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                              /Commit  --> ','1356JBK',TO_DATE('2017-12-20', 'YYYY-MM-DD'),
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                            /Commit  --> ','1356JBK',TO_DATE('2017-12-20', 'YYYY-MM-DD'),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,1,null,true);
   select id_conces into prueba_conces from vehiculos where matricula = '1356JBK';
-  PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                  /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',10,true);
+  PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                    /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',10,true);
   PRUEBAS_CONCESIONARIO.ELIMINAR('Con-10/Delete-"Concesionario = prueba"                  /Commit-->',cod_conces,true);
   select id_conces into prueba_conces2 from vehiculos where matricula = '1356JBK';
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Prueba sobre ID del concesionario al eliminar el concesionario el id_conces (Vehiculo) actualiza a null'||CR_LF);
@@ -120,26 +120,26 @@ BEGIN
   PRUEBAS_VEHICULOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Vehiculos (CÓdigo Prueba/AcciÓn/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-01/Insert-"Vehiculos=Prueba"                          /Commit  --> ','2286JBK',TO_DATE(SYSDATE),
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,true);
   cod_veh := seq_vehiculos.currval-1;
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                              /Commit  --> ','2356JBK',TO_DATE(SYSDATE),
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,true);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-03/Insert-"Vehiculos=V2"                              /Commit  --> ','2386JBK',TO_DATE(SYSDATE),
-  'Citroen C3 HDI Blanco','Retrovisor exterior ......',9040,1,null,null,true);
+  'Citroen C3 HDI Blanco','Retrovisor exterior ......',9040,1,2,null,true);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-04/Insert/"Vehiculos.MatriculoDuplicada=2356JBK"      /Rollback--> ','2356JBK',TO_DATE(SYSDATE), 
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,false);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-05/Insert/"Vehiculos.Matricula=Null"                  /Rollback--> ',null,TO_DATE(SYSDATE), 
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,false);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-06/Insert/"Vehiculos.fechaAlta=Null"                  /Rollback--> ','2357JBK',null, 
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,false);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,false);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-07/Insert/"Vehiculos.Nombre=Null"                     /Rollback--> ','2358JBK',TO_DATE(SYSDATE), 
-  null,'Retrovisor exterior ......',10040,1,null,null,false);
+  null,'Retrovisor exterior ......',10040,1,2,null,false);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-08/Insert/"Vehiculos.Precio=Null"                     /Rollback--> ','2359JBK',TO_DATE(SYSDATE), 
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',null,1,null,null,false);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',null,1,2,null,false);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-09/Insert/"Vehiculos.Disponible=Null"                 /Rollback--> ','2355JBK',TO_DATE(SYSDATE), 
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,null,null,null,false);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,null,2,null,false);
   PRUEBAS_VEHICULOS.ACTUALIZAR('Veh-10/Update/"Vehiculos=2356JBM"                         /Commit  --> ',cod_veh,'2356JBM',TO_DATE(SYSDATE),
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,null,null,true);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,true);
   PRUEBAS_VEHICULOS.ELIMINAR  ('Veh-11/Delete/"Vehiculos=Prueba"                          /Commit  --> ',cod_veh,true);
   
   
@@ -199,7 +199,7 @@ BEGIN
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-01/Insert-"Financiacion=Psa"                   /Commit  --> ','PSA 10 años',1000,true);
   cod_fin := seq_financiaciones.currval-1;
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-02/Insert-"Financiacion=F1"                    /Commit  --> ','PSA 3 años',1000,true);
-  PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-01/Insert-"Financiacion=F2"                   /Commit  --> ','PSA 8 años',1000,true);
+  PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-01/Insert-"Financiacion=F2"                    /Commit  --> ','PSA 8 años',1000,true);
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-05/Insert/"Financiacion=Null"                  /Rollback--> ',null,1000,false);
   PRUEBAS_FINACIACIONES.INSERTAR  ('Tfin-06/Insert/"Financiacion=Null"                  /Rollback--> ','PSA 5 años',null,false);
   PRUEBAS_FINACIACIONES.ACTUALIZAR('Tfin-07/Update/"Financiacion=PSA 5 años"            /Commit  --> ',cod_fin,'PSA 5 años',1000,true);
@@ -214,21 +214,21 @@ BEGIN
   
   PRUEBAS_DESCUENTOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de PropiedadesVehiculos (Código Prueba/Acción/Título Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D0"                  /Commit  --> ',3,500,3,true);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D1"                  /Commit  --> ',2,300,2,true);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=D2"                  /Commit  --> ',2,300,3,true);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=RN-1.10"             /Rollback--> ',3,1100,2,false);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=RN-1.10"             /Rollback--> ',3,940,3,false);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-03/Insert-"Descuento=D3"                  /Commit  --> ',3,300,2,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D0"                  /Commit  --> ',3,500,cod_veh+2,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-01/Insert-"Descuento=D1"                  /Commit  --> ',2,300,cod_veh+1,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=D2"                  /Commit  --> ',2,300,cod_veh+2,true);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=RN-1.10"             /Rollback--> ',3,1100,cod_veh+1,false);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-02/Insert-"Descuento=RN-1.10"             /Rollback--> ',3,940,cod_veh+2,false);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-03/Insert-"Descuento=D3"                  /Commit  --> ',3,300,cod_veh+1,true);
   PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                /Rollback--> ',2,5,null,false);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                /Rollback--> ',2,null,2,false);
-  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                /Rollback--> ',null,2,2,false);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-08/Update/"Descuento=D1-1 200"            /Commit  --> ',3,200,2,true);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=RN-1.10"             /Rollback--> ',3,1100,2,false);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=RN-1.10"             /Rollback--> ',2,950,3,false);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                /Rollback--> ',2,null,cod_veh+1,false);
+  PRUEBAS_DESCUENTOS.INSERTAR  ('Desc-07/Insert/"Descuento=Null"                /Rollback--> ',null,2,cod_veh+1,false);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-08/Update/"Descuento=D1-1 200"            /Commit  --> ',3,200,cod_veh+1,true);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=RN-1.10"             /Rollback--> ',3,1100,cod_veh+1,false);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=RN-1.10"             /Rollback--> ',2,950,cod_veh+2,false);
   PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                /Rollback--> ',2,2,null,false);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                /Rollback--> ',null,2,2,false);
-  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-10/Delete/"Descuento=D1-4"                /Commit  --> ',3,0,3,true);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-09/Update/"Descuento=Null"                /Rollback--> ',null,2,cod_veh+1,false);
+  PRUEBAS_DESCUENTOS.ACTUALIZAR('Desc-10/Delete/"Descuento=D1-4"                /Commit  --> ',3,0,cod_veh+2,true);
   
  
 /*********************************************************************
@@ -237,13 +237,13 @@ BEGIN
   
   PRUEBAS_FOTOVEHICULOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TipoPropiedades (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft0"                /Commit  --> ',2,4,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft0"                /Commit  --> ',cod_veh+1,4,true);
   cod_ft := seq_fotovehiculos.currval-1;
-  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft1"                /Commit  --> ',2,1,true);
-  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft2"                /Commit  --> ',2,2,true);
-  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft3"                /Commit  --> ',3,1,true);
-  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft4"                /Commit  --> ',3,2,true);
-  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-05/Insert/"FotoVehiculo=Null"               /Rollback--> ',2,null,false);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft1"                /Commit  --> ',cod_veh+1,1,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft2"                /Commit  --> ',cod_veh+1,2,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft3"                /Commit  --> ',cod_veh+2,1,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-01/Insert-"FotoVehiculo=Ft4"                /Commit  --> ',cod_veh+2,2,true);
+  PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-05/Insert/"FotoVehiculo=Null"               /Rollback--> ',cod_veh+2,null,false);
   PRUEBAS_FOTOVEHICULOS.INSERTAR  ('FotV-05/Insert/"FotoVehiculo=Null"               /Rollback--> ',null,2,false);
   PRUEBAS_FOTOVEHICULOS.ACTUALIZAR('FotV-06/Update/"FotoVehiculo=Posicion 3"         /Commit  --> ',cod_ft,3,true);
   PRUEBAS_FOTOVEHICULOS.ACTUALIZAR('FotV-07/Update/"FotoVehiculo=Null"               /Rollback--> ',cod_ft,null,false);
