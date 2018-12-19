@@ -864,6 +864,7 @@ end;
    commit work;
    end actualizar_concesionarios;
    /
+   
    create or replace procedure eliminar_concesionario(cod_conces in concesionarios.id_conces%type)is
    begin
    delete from CITAS where cod_conces = id_conces;
@@ -872,6 +873,9 @@ end;
    commit work;
    end eliminar_concesionario;
    /
+   
+   
+   
    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR CITAS
    create or replace procedure insertar_citas
    (fecha_cit in CITAS.Fecha%type,
