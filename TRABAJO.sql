@@ -154,8 +154,9 @@ Create table EMPLEADOS(
     usuario varchar2 (10)not null,
     contraseña varchar2(24) not null,
     dni varchar2 (9) not null,
-    UNIQUE (usuario)
-);
+    id_conces number(10) not null, 
+    FOREIGN KEY (id_conces) REFERENCES CONCESIONARIOS, 
+    UNIQUE (usuario));
 
 --Creación Tabla MetaVehiculos
 Create table METAVEHICULOS(
@@ -969,8 +970,9 @@ end;
     w_urlamig in METATIPOS.urlamigable%TYPE,
     w_id_tveh in METATIPOS.id_tveh%TYPE) is cod_metatip Integer;
     begin
-    insert into METATIPOS (metatitulo, metadescripcion, urlamigable) 
-    values(w_metatit, w_metadesc, w_urlamig);
+    
+    insert into METATIPOS (id_metatipo,id_tveh,metatitulo, metadescripcion, urlamigable) 
+    values(seq_metatipos.currval,w_id_tveh,w_metatit, w_metadesc, w_urlamig);
     cod_metatip := seq_metatipos.nextval;
     
     EXCEPTION
@@ -2186,5 +2188,209 @@ END PRUEBAS_FOTOVEHICULOS;
 
 END PRUEBAS_FOTOVEHICULOS;
 /
-   
+
+            
+CREATE OR REPLACE PACKAGE PRUEBAS_METAVEHICULOS AS 
+    
+    PROCEDURE inicializar ;
+    PROCEDURE insertar(nombre_prueba varchar2, p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2, p_id_veh Integer, salidaEsperada BOOLEAN);
+    PROCEDURE actualizar( nombre_prueba varchar2, p_cod_metavehiculo varchar2,  p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2, salidaEsperada BOOLEAN);
+    PROCEDURE eliminar( nombre_prueba varchar2, p_cod_metavehiculo varchar2, salidaEsperada BOOLEAN);
+END PRUEBAS_METAVEHICULOS;
+/
+
+CREATE OR REPLACE PACKAGE BODY PRUEBAS_METAVEHICULOS AS
+
+/*INICIALIZACION*/
+    PROCEDURE inicializar AS
+    BEGIN
+
+    /* Borrar contenido de la tabla */
+    DELETE FROM metavehiculos;
+    DELETE FROM vehiculos;
+    NULL;
+END inicializar; 
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba varchar2,  p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2 , p_id_veh Integer ,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    metavehiculo metavehiculos%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+    
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_metavehiculos.currval;
+    
+    /* Insertar fila*/
+    insertar_metavehiculos(p_metatitulo , p_metadescripcion  ,p_urlamigable, p_id_veh);
+    
+    
+    SELECT * INTO metavehiculo FROM metavehiculos WHERE id_metavehiculo=w_cod;
+    IF ((metavehiculo.metatitulo<>p_metatitulo) or (metavehiculo.metadescripcion <> p_metadescripcion)
+    or (metavehiculo.urlamigable <> p_urlamigable) or (metavehiculo.id_veh <> p_id_veh)) THEN
+      salida := false;
+    END IF;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    COMMIT WORK;
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+END insertar;
+
+
+/* ACTUALIZACIÓN*/
+ PROCEDURE actualizar (nombre_prueba VARCHAR2, p_cod_metavehiculo varchar2, p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2,salidaEsperada BOOLEAN) as
+    salida BOOLEAN:= true;
+    metavehiculo metavehiculos%ROWTYPE;
+    begin
+          actualizar_metavehiculos(p_cod_metavehiculo, p_metatitulo , p_metadescripcion ,p_urlamigable);          
+         
+          select * into METAVEHICULO from METAVEHICULOS where id_metavehiculo = p_cod_metavehiculo;
+          if ((metavehiculo.metatitulo<>p_metatitulo) or (metavehiculo.metadescripcion <> p_metadescripcion)
+          or (metavehiculo.urlamigable <> p_urlAmigable)) then
+          salida := false;
+          end if;
+          commit work;
+          
+          /* Mostrar resultado de la prueba */
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+          
+          EXCEPTION
+          WHEN OTHERS THEN
+             /*DBMS_OUTPUT.put_line(SQLERRM);*/
+             DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+             ROLLBACK;
+    end actualizar;
+    
+/* ELIMINADO */
+procedure eliminar (nombre_prueba VARCHAR2,p_cod_metavehiculo varchar2 ,salidaEsperada BOOLEAN) as
+     salida BOOLEAN:= true;
+     n_metavehiculo INTEGER;
+    begin
+       eliminar_metavehiculos(p_cod_metavehiculo);
+      
+       select count (*) into n_metavehiculo from METAVEHICULOS where id_metavehiculo=p_cod_metavehiculo;
+       if(n_metavehiculo <> 0)then
+          salida := false;
+       end if;
+       commit work;
+       
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+         DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+         ROLLBACK;
+    END eliminar;   
+end PRUEBAS_METAVEHICULOS;
+/
+
+            
+CREATE OR REPLACE PACKAGE PRUEBAS_METATIPOS AS 
+            
+    PROCEDURE inicializar ;
+    PROCEDURE insertar(nombre_prueba varchar2, p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2, p_id_tveh Integer , salidaEsperada BOOLEAN);
+    PROCEDURE actualizar( nombre_prueba varchar2, p_cod_metatipo varchar2,  p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2, salidaEsperada BOOLEAN);
+    PROCEDURE eliminar( nombre_prueba varchar2, p_cod_metatipo Integer, salidaEsperada BOOLEAN);
+END PRUEBAS_METATIPOS;
+/
+
+create or replace PACKAGE BODY PRUEBAS_METATIPOS AS
+
+/*INICIALIZACION*/
+    PROCEDURE inicializar AS
+    BEGIN
+
+    /* Borrar contenido de la tabla */
+    DELETE FROM metatipos;
+    NULL;
+END inicializar; 
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba varchar2,  p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2, p_id_tveh Integer ,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    metatipo metatipos%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_metatipos.currval;
+
+    /* Insertar fila*/
+    insertar_metatipos(p_metatitulo , p_metadescripcion  ,p_urlamigable, p_id_tveh);
+
+
+    SELECT * INTO metatipo FROM metatipos WHERE id_metatipo=w_cod;
+    IF ((metatipo.metatitulo<>p_metatitulo) or (metatipo.metadescripcion <> p_metadescripcion)
+    or (metatipo.urlamigable <> p_urlamigable) or (metatipo.id_tveh <> p_id_tveh)) THEN
+      salida := false;
+    END IF;
+
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+
+    COMMIT WORK;
+
+    EXCEPTION
+        WHEN OTHERS THEN
+
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+END insertar;
+
+            
+/* ACTUALIZACIÓN*/
+ PROCEDURE actualizar (nombre_prueba VARCHAR2, p_cod_metatipo varchar2, p_metatitulo varchar2, p_metadescripcion varchar2 ,p_urlamigable varchar2 ,salidaEsperada BOOLEAN) as
+    salida BOOLEAN:= true;
+    metatipo metatipos%ROWTYPE;
+    begin
+          actualizar_metatipos(p_cod_metatipo, p_metatitulo , p_metadescripcion  ,p_urlamigable);          
+
+          select * into METATIPO from METATIPOS where id_metatipo = p_cod_metatipo;
+          if ((metatipo.metatitulo<>p_metatitulo) or (metatipo.metadescripcion <> p_metadescripcion)
+          or (metatipo.urlamigable <> p_urlamigable)) then
+          salida := false;
+          end if;
+          commit work;
+
+          /* Mostrar resultado de la prueba */
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+
+          EXCEPTION
+          WHEN OTHERS THEN
+             /*DBMS_OUTPUT.put_line(SQLERRM);*/
+             DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+             ROLLBACK;
+    end actualizar;
+
+/* ELIMINADO */
+procedure eliminar (nombre_prueba VARCHAR2,p_cod_metatipo Integer,salidaEsperada BOOLEAN) as
+     salida BOOLEAN:= true;
+     n_metatipo INTEGER;
+    begin
+       eliminar_metatipos(p_cod_metatipo);
+
+       select count (*) into n_metatipo from METATIPOS where id_metatipo=p_cod_metatipo;
+       if(n_metatipo <> 0)then
+          salida := false;
+       end if;
+       commit work;
+
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+
+      EXCEPTION
+      WHEN OTHERS THEN
+         DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+         ROLLBACK;
+    END eliminar;   
+end PRUEBAS_METATIPOS;
+/    
 
