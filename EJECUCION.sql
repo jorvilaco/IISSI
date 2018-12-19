@@ -260,3 +260,5 @@ BEGIN
   /* RF-4.7:Información número de vehículos en concesionario */
   select obtener_veh_estancados(TO_DATE('2019-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
   from dual;
+                                        
+  select obtener_num_veh_en_cons(2) from dual;
