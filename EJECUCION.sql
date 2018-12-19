@@ -302,15 +302,14 @@ BEGIN
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"           /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
   PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                      /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,2,3,true);
   PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                            /Commit-->', cod_cit,true);
-  
-  
-   
-  
-  
-  
+ 
   END;
   /
-   select obtener_veh_vend_fechas(TO_DATE('2017-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'),TO_DATE('2018-12-20 19:28:24', 'YYYY-MM-DD HH24:MI:SS'))
+  
+  
+  --Prueba Muestra los coches vendidos entre el 20 de Diciembre de 2017 y 20 de Enero de 2018 Devuelve(ID:1 e ID:2)
+  
+  select obtener_veh_vend_fechas(TO_DATE('2017-12-20', 'YYYY-MM-DD'),TO_DATE('2018-12-20', 'YYYY-MM-DD'))
   from dual;
   
   /* RF-4.7:Información número de vehículos en concesionario */
