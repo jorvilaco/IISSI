@@ -465,11 +465,12 @@ FOR EACH ROW
 DECLARE
    num_vehiculos integer;
 BEGIN 
-   select count(*) into num_vehiculos from vehiculos where :new.id_conces=id_conces;
-
-if(num_vehiculos >= 1000 ) then 
-RAISE_APPLICATION_ERROR(-20502,num_vehiculos|| 'Máximo de vehiculos permitidos en un concesionario');
-end if;
+    if(:new.id_conces <> null)then
+         select count(*) into num_vehiculos from vehiculos where :new.id_conces=id_conces;
+		 if(num_vehiculos >= 1000 ) then 
+            RAISE_APPLICATION_ERROR(-20502,num_vehiculos|| 'Máximo de vehiculos permitidos en un concesionario');
+        end if;
+    end if;
 end;
 /
 
