@@ -1092,6 +1092,107 @@ END ASSERT_EQUALS;
                        PAQUETES
 *************************************************************************/
 
+            
+ CREATE OR REPLACE PACKAGE PRUEBAS_TIPOVEHICULOS AS 
+    PROCEDURE inicializar ;
+    PROCEDURE insertar(nombre_prueba varchar2, p_nombre varchar2,salidaEsperada BOOLEAN);
+    PROCEDURE actualizar(nombre_prueba varchar2, cod_tipovehiculos Integer , p_nombre varchar2, salidaEsperada BOOLEAN);
+    PROCEDURE eliminar(nombre_prueba varchar2, cod_tipovehiculos Integer, salidaEsperada BOOLEAN);
+END PRUEBAS_TIPOVEHICULOS;
+/
+
+CREATE OR REPLACE PACKAGE BODY PRUEBAS_TIPOVEHICULOS AS
+
+/*INICIALIZACION*/
+    PROCEDURE inicializar
+    AS BEGIN
+
+    /* Borrar contenido de la tabla */
+    DELETE FROM tipovehiculos;
+    NULL;
+END inicializar; 
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba varchar2, p_nombre varchar2, salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    tipovehiculo tipovehiculos%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+    
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_tipovehiculos.currval;
+    
+    /* Insertar fila*/
+    insertar_tipovehiculos(p_nombre);  
+    
+    
+    SELECT * INTO tipovehiculo FROM tipovehiculos WHERE id_tveh=w_cod;
+    IF ((tipovehiculo.nombre<>p_nombre)) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+END insertar;
+
+
+/* ACTUALIZACIÓN*/
+ 
+ PROCEDURE actualizar (nombre_prueba VARCHAR2, cod_tipovehiculos Integer, p_nombre varchar2, salidaEsperada BOOLEAN) as
+    salida BOOLEAN:= true;
+    tipovehiculo tipovehiculos%ROWTYPE;
+    begin
+          actualizar_tipovehiculos(cod_tipovehiculos ,p_nombre);          
+         
+          select * into tipovehiculo  from tipovehiculos where id_tveh = cod_tipovehiculos;
+          if ((tipovehiculo.nombre<>p_nombre)) then
+          salida := false;
+          end if;
+          commit work;
+          
+          /* Mostrar resultado de la prueba */
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+          
+          EXCEPTION
+          WHEN OTHERS THEN
+             /*DBMS_OUTPUT.put_line(SQLERRM);*/
+             DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+             ROLLBACK;
+    end actualizar;
+    
+/* ELIMINADO */
+procedure eliminar (nombre_prueba VARCHAR2, cod_tipovehiculos Integer, salidaEsperada BOOLEAN) as
+     salida BOOLEAN:= true;
+     n_tipovehiculo INTEGER;
+    begin
+       eliminar_tipovehiculos(cod_tipovehiculos);
+      
+       select count (*) into n_tipovehiculo from tipovehiculos where id_tveh=cod_tipovehiculos;
+       if(n_tipovehiculo <> 0)then
+          salida := false;
+       end if;
+       commit work;
+       
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+         DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+         ROLLBACK;
+    END eliminar;   
+end PRUEBAS_TIPOVEHICULOS;
+/
+            
 
  CREATE OR REPLACE PACKAGE PRUEBAS_TIPOPROPIEDADES AS 
 
@@ -2216,6 +2317,112 @@ END PRUEBAS_FOTOVEHICULOS;
 END PRUEBAS_FOTOVEHICULOS;
 /
 
+            
+            
+CREATE OR REPLACE PACKAGE PRUEBAS_EMPLEADOS AS 
+    PROCEDURE inicializar ;
+    PROCEDURE insertar(nombre_prueba varchar2, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2,p_id_conces Integer,  salidaEsperada BOOLEAN);
+    PROCEDURE actualizar(nombre_prueba varchar2, cod_empleados Integer, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2, p_id_conces Integer, salidaEsperada BOOLEAN);
+    PROCEDURE eliminar(nombre_prueba varchar2, cod_empleados Integer, salidaEsperada BOOLEAN);
+END PRUEBAS_EMPLEADOS;
+/
+
+CREATE OR REPLACE PACKAGE BODY PRUEBAS_EMPLEADOS AS
+
+/*INICIALIZACION*/
+    PROCEDURE inicializar
+    AS BEGIN
+
+    /* Borrar contenido de la tabla */
+    DELETE FROM empleados;
+    NULL;
+END inicializar; 
+
+/* PRUEBA PARA LA INSERCIÓN*/
+  PROCEDURE insertar (nombre_prueba varchar2, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2,
+                       p_dni varchar2, p_id_conces Integer,salidaEsperada BOOLEAN) AS
+    salida BOOLEAN := true;
+    empleado empleados%ROWTYPE;
+    w_cod NUMBER(12);
+  BEGIN
+    
+    /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
+    w_cod := seq_empleados.currval;
+    
+    /* Insertar fila*/
+    insertar_empleados(p_nombre, p_rol ,p_usuario, p_contraseña, p_dni, p_id_conces);  
+    
+    
+    SELECT * INTO empleado FROM empleados WHERE id_empleado=w_cod;
+    IF ((empleado.nombre<>p_nombre) or (empleado.rol <> p_rol) or (empleado.usuario <> p_usuario)
+          or (empleado.contraseña <> p_contraseña) or (empleado.dni <> p_dni) or (empleado.id_conces <> p_id_conces)) THEN
+      salida := false;
+    END IF;
+    COMMIT WORK;
+    
+    /* Mostrar resultado de la prueba */
+    DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada)); 
+    
+    
+    
+    EXCEPTION
+        WHEN OTHERS THEN
+          
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+          ROLLBACK;
+END insertar;
+
+
+/* ACTUALIZACIÓN*/
+ 
+ PROCEDURE actualizar (nombre_prueba VARCHAR2, cod_empleados Integer, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2, p_id_conces Integer, salidaEsperada BOOLEAN) as
+    salida BOOLEAN:= true;
+    empleado empleados%ROWTYPE;
+    begin
+          actualizar_empleados(cod_empleados ,p_nombre, p_rol, p_usuario, p_contraseña ,p_dni);          
+         
+          select * into EMPLEADO from EMPLEADOS where id_empleado = cod_empleados;
+          if ((empleado.nombre<>p_nombre) or (empleado.rol <> p_rol) or (empleado.usuario <> p_usuario)
+          or (empleado.contraseña <> p_contraseña) or (empleado.dni <> p_dni)or (empleado.id_conces <> p_id_conces)) then
+          salida := false;
+          end if;
+          commit work;
+          
+          /* Mostrar resultado de la prueba */
+          DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+          
+          EXCEPTION
+          WHEN OTHERS THEN
+             /*DBMS_OUTPUT.put_line(SQLERRM);*/
+             DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+             ROLLBACK;
+    end actualizar;
+    
+/* ELIMINADO */
+procedure eliminar (nombre_prueba VARCHAR2, cod_empleados Integer, salidaEsperada BOOLEAN) as
+     salida BOOLEAN:= true;
+     n_empleado INTEGER;
+    begin
+       eliminar_empleados(cod_empleados);
+      
+       select count (*) into n_empleado from EMPLEADOS where id_empleado=cod_empleados;
+       if(n_empleado <> 0)then
+          salida := false;
+       end if;
+       commit work;
+       
+       /* Mostrar resultado de la prueba */
+       DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(salida,salidaEsperada));
+      
+      EXCEPTION
+      WHEN OTHERS THEN
+         DBMS_OUTPUT.put_line(nombre_prueba || ASSERT_EQUALS(false,salidaEsperada));
+         ROLLBACK;
+    END eliminar;   
+end PRUEBAS_EMPLEADOS;
+/
+     
+            
             
 CREATE OR REPLACE PACKAGE PRUEBAS_METAVEHICULOS AS 
     
