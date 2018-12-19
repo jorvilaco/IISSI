@@ -1,5 +1,51 @@
 SET SERVEROUTPUT ON;
 
+
+--Borramos las secuencias
+drop sequence seq_fotoVehiculos;
+drop sequence seq_tipovehiculos;
+drop sequence seq_financiaciones;
+drop sequence seq_vehiculos;
+drop sequence seq_tipopropiedades; 
+drop sequence seq_propiedades;
+drop sequence seq_cliente;
+drop sequence seq_citas;
+drop sequence seq_concesionario;
+drop sequence seq_vehiculosvendidos;
+drop sequence seq_metavehiculos;
+drop sequence seq_metatipos;
+drop sequence seq_empleados;
+
+
+
+--Creamos las secuencias
+create sequence seq_fotoVehiculos  MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_fotoVehiculos.nextval from dual;
+create sequence seq_tipovehiculos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_tipovehiculos.nextval from dual;
+create sequence seq_financiaciones MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_financiaciones.nextval from dual;
+create sequence seq_vehiculos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_vehiculos.nextval from dual;
+create sequence seq_tipopropiedades  MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_tipopropiedades.nextval from dual;
+create sequence seq_propiedades MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_propiedades.nextval from dual;
+create sequence seq_cliente MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_cliente.nextval from dual;
+create sequence seq_citas MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_citas.nextval from dual;
+create sequence seq_concesionario MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_concesionario.nextval from dual;
+create sequence seq_vehiculosvendidos;
+create sequence seq_metavehiculos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_metavehiculos.nextval from dual;
+create sequence seq_metatipos MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_metatipos.nextval from dual;
+create sequence seq_empleados MINVALUE 1 INCREMENT BY 1 START WITH 1;
+select seq_empleados.nextval from dual;
+
+
 DECLARE
   cod_ft Integer;
   cod_fin Integer;
@@ -9,6 +55,8 @@ DECLARE
   cod_cli INTEGER;
   cod_conces INTEGER;
   cod_cit INTEGER;
+  prueba_conces Integer;
+  prueba_conces2 Integer;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
@@ -30,8 +78,16 @@ BEGIN
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-06/insert-"Concesionario= telef null"               /Rollback-->','Con3','calle3',null,'prueba2@prueba2',10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-07/insert-"Concesionario= email null"               /Rollback-->','Con3','calle3',756493496,null,10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-08/insert-"Concesionario= NoCitas null"             /Rollback-->','Con3','calle3',756493496,'prueba2@prueba2',null,false);
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                              /Commit  --> ','1356JBK',TO_DATE('2017-12-20', 'YYYY-MM-DD'),
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,1,null,true);
+  select id_conces into prueba_conces from vehiculos where matricula = '1356JBK';
   PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                  /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',10,true);
   PRUEBAS_CONCESIONARIO.ELIMINAR('Con-10/Delete-"Concesionario = prueba"                  /Commit-->',cod_conces,true);
+  select id_conces into prueba_conces2 from vehiculos where matricula = '1356JBK';
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Prueba sobre ID del concesionario al eliminar el concesionario el id_conces (Vehiculo) actualiza a null'||CR_LF);
+  
+  DBMS_OUTPUT.PUT_LINE(prueba_conces || '     - >  Valor del id:concesionario (1356JBK) despues de borrar el concesionario');
+  DBMS_OUTPUT.PUT_LINE(prueba_conces2 || '      - >  Valor del id:concesionario (1356JBK) despues de borrar el concesionario');
 
 
 
@@ -95,13 +151,13 @@ BEGIN
   
   PRUEBAS_PROPIEDADES.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Propiedades (Código Prueba/Acción/Título Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=Morad"                      /Commit  --> ',2,'Morad',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=Morad"                      /Commit  --> ',cod_tpro+1,'Morad',true);
   cod_pro := seq_propiedades.currval-1;
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P1"                         /Commit  --> ',2,'Negro',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P2"                         /Commit  --> ',2,'Blanco',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P3"                         /Commit  --> ',3,'3 Puertas',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P4"                         /Commit  --> ',4,'Si',true);
-  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-02/Insert/"Propiedades=Null"                       /Rollback--> ',2,null,false);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P1"                         /Commit  --> ',cod_tpro+1,'Negro',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P2"                         /Commit  --> ',cod_tpro+1,'Blanco',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P3"                         /Commit  --> ',cod_tpro+2,'3 Puertas',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-01/Insert-"Propiedades=P4"                         /Commit  --> ',cod_tpro+3,'Si',true);
+  PRUEBAS_PROPIEDADES.INSERTAR  ('Pro-02/Insert/"Propiedades=Null"                       /Rollback--> ',cod_tpro+1,null,false);
   PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-03/Update/"Propiedades=Morado"                     /Commit  --> ',cod_pro,'Morado',true);
   PRUEBAS_PROPIEDADES.ACTUALIZAR('Pro-04/Update/"Propiedades=Null"                       /Rollback--> ',cod_pro,null,false);
   PRUEBAS_PROPIEDADES.ELIMINAR  ('Pro-05/Delete/"TipoPropiedades=Morado"                 /Commit  --> ',cod_pro,true);
@@ -113,21 +169,21 @@ BEGIN
   
   PRUEBAS_PROPIEDADESVEHICULOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de PropiedadesVehiculos (Código Prueba/Acción/Título Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-01/Insert-"PropiedadesVehiculos=PV1-4"                 /Commit  --> ',4,5,2,true);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-02/Insert-"PropiedadesVehiculos=PV1-1"                 /Commit  --> ',2,3,2,true);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-03/Insert-"PropiedadesVehiculos=PV2-2"                 /Commit  --> ',2,3,3,true);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-04/Insert-"PropiedadesVehiculos=PV1-3"                 /Commit  --> ',3,4,2,true);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-05/Insert-"PropiedadesVehiculos=PV2-3"                 /Commit  --> ',3,4,3,true);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-06/Insert-"PropiedadesVehiculos=PV2-4"                 /Commit  --> ',4,5,3,true);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',2,5,null,false);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Duplicado-PV2-2"       /Rollback--> ',2,3,3,false);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Tigger-1.7"            /Rollback--> ',2,2,2,false);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',2,null,2,false);
-  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',null,2,2,false);
-  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-08/Update/"PropiedadesVehiculos=PV1-2"                 /Commit  --> ',2,2,2,true);
-  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-09/Update/"PropiedadesVehiculos=Null"                  /Rollback--> ',2,2,null,false);
-  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-09/Update/"PropiedadesVehiculos=Null"                  /Rollback--> ',null,2,2,false);
-  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-10/Update/Delete/"PropiedadesVehiculos=PV1-4"          /Commit  --> ',4,0,2,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-01/Insert-"PropiedadesVehiculos=PV1-4"                 /Commit  --> ',cod_tpro+3,5,cod_veh+1,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-02/Insert-"PropiedadesVehiculos=PV1-1"                 /Commit  --> ',cod_tpro+1,3,cod_veh+1,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-03/Insert-"PropiedadesVehiculos=PV2-2"                 /Commit  --> ',cod_tpro+1,3,cod_veh+2,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-04/Insert-"PropiedadesVehiculos=PV1-3"                 /Commit  --> ',cod_tpro+2,4,cod_veh+1,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-05/Insert-"PropiedadesVehiculos=PV2-3"                 /Commit  --> ',cod_tpro+2,4,cod_veh+2,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-06/Insert-"PropiedadesVehiculos=PV2-4"                 /Commit  --> ',cod_tpro+3,5,cod_veh+2,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',cod_tpro+1,5,null,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Duplicado-PV2-2"       /Rollback--> ',cod_tpro+1,3,cod_veh+2,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Tigger-1.7"            /Rollback--> ',cod_tpro+1,2,cod_veh+1,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',cod_tpro+1,null,cod_veh+1,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.INSERTAR  ('ProV-07/Insert/"PropiedadesVehiculos=Null"                  /Rollback--> ',null,2,cod_veh+1,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-08/Update/"PropiedadesVehiculos=PV1-2"                 /Commit  --> ',cod_tpro+1,2,cod_veh+1,true);
+  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-09/Update/"PropiedadesVehiculos=Null"                  /Rollback--> ',cod_tpro+1,2,null,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-09/Update/"PropiedadesVehiculos=Null"                  /Rollback--> ',null,2,cod_veh+1,false);
+  PRUEBAS_PROPIEDADESVEHICULOS.ACTUALIZAR('ProV-10/Update/Delete/"PropiedadesVehiculos=PV1-4"          /Commit  --> ',cod_tpro+3,0,cod_veh+1,true);
   
   
   
