@@ -27,6 +27,8 @@ DROP TABLE VEHICULOSVENDIDOS;
 CREATE TABLE TIPOVEHICULOS(
     id_tveh number(10) primary key,
     nombre varchar2(40) not null,
+    descripcion varchar(140) not null,
+    precio_maximo number(10,2),
     unique (nombre)
 );
 
