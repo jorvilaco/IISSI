@@ -910,17 +910,18 @@ end;
    w_rol in EMPLEADOS.rol%TYPE,
    w_usuario in EMPLEADOS.usuario%TYPE,
    w_contraseña in EMPLEADOS.contraseña%TYPE,
-   w_dni in EMPLEADOS.dni%TYPE) is cod_empleados Integer;
+   w_dni in EMPLEADOS.dni%TYPE,
+   w_id_conces in EMPLEADOS.id_conces%TYPE) is
+   cod_empleados Integer;
    begin
-   insert into EMPLEADOS (id_empleado, nombre, rol, usuario, contraseña, dni) 
-   values(seq_empleados.currval, w_nombre, w_rol, w_usuario, w_contraseña, w_dni);
+   insert into EMPLEADOS (id_empleado, nombre, rol, usuario, contraseña, dni, id_conces) 
+   values(seq_empleados.currval, w_nombre, w_rol, w_usuario, w_contraseña, w_dni, w_id_conces);
    cod_empleados := seq_empleados.nextval;
    EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
    end insertar_empleados;
    /
-   
     create or replace procedure actualizar_empleados(
     w_id_empleado in EMPLEADOS.id_empleado%type,
     w_nombre in EMPLEADOS.nombre%type,
