@@ -57,6 +57,8 @@ DECLARE
   cod_cit INTEGER;
   prueba_conces Integer;
   prueba_conces2 Integer;
+  cod_empleados Integer;
+  cod_metatip Integer;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
@@ -302,6 +304,47 @@ BEGIN
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"           /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
   PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                      /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,2,3,true);
   PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                            /Commit-->', cod_cit,true);
+ 
+ 
+ 
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA EMPLEADOS
+  **********************************************************************/
+ 
+  PRUEBAS_EMPLEADOS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de EMPLEADOS (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-01/Insert-"Empleados=E1"                           /Commit  --> ','Manuel Marín','Administrativo ','manumr','manu100385', '32096400Y', 2 ,true);
+  cod_empleados:= seq_empleados.currval-1;
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-01/Insert-"Empleados=E2"                              /Commit -->','Rosa Márquez','Jefa de Marketing ','rosmar','1904m', '48592056B', 2 ,true);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-02/Insert-"Empleados=E3"                             /Commit -->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', '01724748R', 3 ,true);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-03/Insert-"Empleados= nombre null"                    /Rollback-->',null,'Jefa de Ventas ','marimar','mmz1889', '01724748R', 4 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-04/Insert-"Empleados= rol null"                      /Rollback-->','María Martínez ',null,'marimar','mmz1889', '01724748R', 5 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-05/Insert-"Empleados= usuario null"                   /Rollback-->','María Martínez ','Jefa de Ventas ',null,'mmz1889', '01724748R', 6 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-06/Insert-"Empleados= contraseña null"                /Rollback-->','María Martínez ','Jefa de Ventas ','marimar',null, '01724748R', 7 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-07/Insert-"Empleados= dni null"                      /Rollback-->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', null, 8 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-08/Insert-"Empleados= id_conces null"                 /Rollback-->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', '01724748R', null ,false);
+  PRUEBAS_EMPLEADOS.ACTUALIZAR('Emp-09/Update-"Empleados=E1"                            /Commit-->',cod_empleados,'Manuel Marín','Jefe de Administración ','manumr','manu100385', '32096400Y',true);
+  PRUEBAS_EMPLEADOS.ELIMINAR('Emp-10/Delete-"Empleados=E1"                              /Commit-->',cod_empleados,true);
+ 
+ 
+ 
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA METATIPOS
+  **********************************************************************/
+ 
+  PRUEBAS_METATIPOS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de METATIPOS (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_METATIPOS.INSERTAR  ('MeT-01/Insert-"Metatipos=MET1"                              /Commit  --> ','Venta de vehículos urbanos en  sevilla','Venta de los mejores vehículos de ocasión urbanos en Sevilla ','vehiculos-ocasion-urbanos', 1 ,true);
+  cod_metatip:= seq_metatipos.currval-1;
+  PRUEBAS_METATIPOS.INSERTAR('MeT-02/Insert-"Metatipos = MET2"                              /Commit -->','Venta de vehículos industriales ','Tu vehículo industrial al mejor precio en terry ocasion  ','vehiculos-ocasion-industriales',2,true);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-03/Insert-"Metatipos = MET3"                              /Commit -->','Venta de Monovolumen en Sevilla ','Gran variadad de vehículos Monovolumen en Terry Ocasión  ','vehiculos-ocasion-monovolumen',2,true);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-04/Insert-"Metatipos= metatitulo null"                    /Rollback-->',null ,'Venta de los mejores vehículos de ocasión urbanos en Sevilla ','vehiculos-ocasion-urbanos', 4 ,false);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-05/Insert-"Metatipos= metadescripcion null"               /Rollback-->','Venta de vehículos urbanos en  sevilla' ,null ,'vehiculos-ocasion-urbanos',5 ,false);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-05/Insert-"Metatipos= urlamigable null"                   /Rollback-->','Venta de vehículos urbanos en  sevilla' ,'Venta de los mejores vehículos de ocasión urbanos en Sevilla' , null, 6, false);
+  PRUEBAS_METATIPOS.ACTUALIZAR('MeT-05/Update-"Metatipos=MET1"                              /Commit-->',cod_metatip,'Monovolumen en Sevilla','Monovolumen al mejor precio en Terry Ocasión tu concesionario de confianza ','vehiculos-ocasion-monovolumen',true);
+  PRUEBAS_METATIPOS.ELIMINAR('MeT-06/Delete-"Metatipos=MET1"                                /Commit-->',cod_metatip,true);
+ 
+ 
  
   END;
   /
