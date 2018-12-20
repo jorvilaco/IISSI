@@ -986,7 +986,8 @@ end;
     w_metatit in METAVEHICULOS.metatitulo%TYPE,
     w_metadesc in METAVEHICULOS.metadescripcion%TYPE,
     w_urlamig in METAVEHICULOS.urlamigable%TYPE) is begin
-    update METAVEHICULOS set metatitulo = w_metatit, metadescripcion = w_metadesc, urlamigable = w_urlamig where w_id_metaveh = id_metavehiculo;
+    update METAVEHICULOS set metatitulo = w_metatit, metadescripcion = w_metadesc,
+	    urlamigable = w_urlamig where w_id_metaveh = id_metavehiculo;
     commit work;
     end actualizar_metavehiculos;
     /
@@ -998,7 +999,7 @@ end;
     end eliminar_metavehiculos;
     /
     
-    --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR METATIPOS
+   --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR METATIPOS
   
     create or replace procedure insertar_metatipos(
     w_metatit in METATIPOS.metatitulo%TYPE,
@@ -1022,7 +1023,8 @@ end;
     w_metatit in METATIPOS.metatitulo%TYPE,
     w_metadesc in METATIPOS.metadescripcion%TYPE,
     w_urlamig in METATIPOS.urlamigable%TYPE) is begin
-    update METATIPOS set metatitulo = w_metatit, metadescripcion = w_metadesc, urlamigable = w_urlamig where w_id_metatip = id_metatipo;
+    update METATIPOS set metatitulo = w_metatit, metadescripcion = w_metadesc, 
+	    urlamigable = w_urlamig where w_id_metatip = id_metatipo;
     commit work;
     end actualizar_metatipos;
     /
@@ -2657,5 +2659,5 @@ procedure eliminar (nombre_prueba VARCHAR2,p_cod_metatipo Integer,salidaEsperada
          ROLLBACK;
     END eliminar;   
 end PRUEBAS_METATIPOS;
-/    
+/     
 
