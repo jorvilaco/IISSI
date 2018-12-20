@@ -2353,7 +2353,7 @@ END PRUEBAS_FOTOVEHICULOS;
 CREATE OR REPLACE PACKAGE PRUEBAS_EMPLEADOS AS 
     PROCEDURE inicializar ;
     PROCEDURE insertar(nombre_prueba varchar2, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2,p_id_conces Integer,  salidaEsperada BOOLEAN);
-    PROCEDURE actualizar(nombre_prueba varchar2, cod_empleados Integer, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2, p_id_conces Integer, salidaEsperada BOOLEAN);
+    PROCEDURE actualizar(nombre_prueba varchar2, cod_empleados Integer, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2, salidaEsperada BOOLEAN);
     PROCEDURE eliminar(nombre_prueba varchar2, cod_empleados Integer, salidaEsperada BOOLEAN);
 END PRUEBAS_EMPLEADOS;
 /
@@ -2406,7 +2406,7 @@ END insertar;
 
 /* ACTUALIZACIÓN*/
  
- PROCEDURE actualizar (nombre_prueba VARCHAR2, cod_empleados Integer, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2, p_id_conces Integer, salidaEsperada BOOLEAN) as
+ PROCEDURE actualizar (nombre_prueba VARCHAR2, cod_empleados Integer, p_nombre varchar2, p_rol varchar2 ,p_usuario varchar2, p_contraseña varchar2, p_dni varchar2, salidaEsperada BOOLEAN) as
     salida BOOLEAN:= true;
     empleado empleados%ROWTYPE;
     begin
@@ -2414,7 +2414,7 @@ END insertar;
          
           select * into EMPLEADO from EMPLEADOS where id_empleado = cod_empleados;
           if ((empleado.nombre<>p_nombre) or (empleado.rol <> p_rol) or (empleado.usuario <> p_usuario)
-          or (empleado.contraseña <> p_contraseña) or (empleado.dni <> p_dni)or (empleado.id_conces <> p_id_conces)) then
+          or (empleado.contraseña <> p_contraseña) or (empleado.dni <> p_dni)) then
           salida := false;
           end if;
           commit work;
