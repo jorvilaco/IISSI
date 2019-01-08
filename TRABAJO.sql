@@ -477,6 +477,7 @@ end;
 /
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	    
 CREATE OR REPLACE TRIGGER MAXDECITPORCONCESYEMPL
 BEFORE UPDATE ON concesionarios
@@ -510,6 +511,8 @@ END IF;
 
 END;
 /	    
+=======
+>>>>>>> parent of d9079d8... Update TRABAJO.sql
 =======
 >>>>>>> parent of d9079d8... Update TRABAJO.sql
 =======
