@@ -311,7 +311,7 @@ BEGIN
  
   END;
   /
-   
+  
   
   --Prueba Muestra los coches vendidos entre el 20 de Diciembre de 2017 y 20 de Enero de 2018 Devuelve(ID:1 e ID:2)
   
