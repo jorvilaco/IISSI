@@ -427,22 +427,18 @@ END;
 
 
 /* Función para ver si el día es sabado o domingo*/
---to_number(TO_CHAR(TO_DATE(fecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH'))
-/*CREATE OR REPLACE TRIGGER TR_Dias_Citas
-BEFORE INSERT OR UPDATE OF Fecha ON CITAS
+CREATE OR REPLACE TRIGGER TR_Dias_Citas
+BEFORE INSERT OR UPDATE ON CITAS
 FOR EACH ROW
 DECLARE
-    newfecha date;
     dia integer;
 BEGIN
-    SELECT fecha into newfecha FROM Citas;
-    IF (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=1 OR
-    (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=7 THEN
-        RAISE_APPLICATION_ERROR(-20020, 'Los días de la semana en dónde se puede realizar una tutoría deben estar entre lunes y viernes');
+    select diaDeLaSemana(:new.fecha) into dia from dual;
+    IF(dia = 6 or dia= 7) THEN
+        RAISE_APPLICATION_ERROR(-20020,:new.fecha||  'Los días de la semana en dónde se puede realizar una cita deben estar entre lunes y viernes');
     END IF;
 END;
 /
-*/
 
 CREATE OR REPLACE TRIGGER MAXCITAS
 BEFORE INSERT OR UPDATE ON CITAS
@@ -460,7 +456,7 @@ end if;
    
 end;
 /
-            
+
 CREATE OR REPLACE TRIGGER MAXVEHIENCONS
 BEFORE INSERT OR UPDATE ON VEHICULOS
 FOR EACH ROW
@@ -475,9 +471,6 @@ BEGIN
     end if;
 end;
 /
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	    
 CREATE OR REPLACE TRIGGER MAXDECITPORCONCESYEMPL
 BEFORE UPDATE ON concesionarios
@@ -494,29 +487,6 @@ if(num_empleados-2<:new.nocitas) then
 end if;
 end;
 /
-	    
---TRIGGER PARA QUE EL PRECIO DEL VEHICULO NO SEA MAYOR QUE EL PRECIO DEL TIPO DE VEHICULO
-create or replace TRIGGER PRECIO_MAXIMO_TIPO
-BEFORE INSERT OR UPDATE ON VEHICULOS
-FOR EACH ROW 
-DECLARE 
- precio_max Integer;
-BEGIN
-
-SELECT PRECIO_MAXIMO INTO precio_max FROM TIPOVEHICULOS WHERE :NEW.id_veh=id_tveh ;
-IF (:NEW.precio > precio_max  ) THEN
-    RAISE_APPLICATION_ERROR(-20410,precio_max|| 'PRECIO INSERTADO SUPERIOR AL PRECIO MAXIMO DEL TIPO DE VEHICULO');
-
-END IF;
-
-END;
-/	    
-=======
->>>>>>> parent of d9079d8... Update TRABAJO.sql
-=======
->>>>>>> parent of d9079d8... Update TRABAJO.sql
-=======
->>>>>>> parent of d9079d8... Update TRABAJO.sql
 
 /************************************************************************
                         PROCEDURES
@@ -559,12 +529,10 @@ END;
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR TIPO VEHICULOS
     
    create or replace procedure insertar_tipovehiculos(
-   w_nombre in TIPOVEHICULOS.nombre%TYPE,
-   w_descripcion in TIPOVEHICULOS.descripcion%TYPE,
-   w_precio_maximo in TIPOVEHICULOS.precio_maximo%TYPE) is cod_tipovehiculos Integer;
+   w_nombre in TIPOVEHICULOS.nombre%TYPE) is cod_tipovehiculos Integer;
    begin
-   insert into TIPOVEHICULOS (id_tveh, nombre, descripcion, precio_maximo) 
-   values(seq_tipovehiculos.currval, w_nombre, w_descripcion, w_precio_maximo);
+   insert into TIPOVEHICULOS (id_tveh, nombre) 
+   values(seq_tipovehiculos.currval, w_nombre);
    cod_tipovehiculos := seq_tipovehiculos.nextval;
    EXCEPTION
         WHEN OTHERS THEN
@@ -574,11 +542,9 @@ END;
    
     create or replace procedure actualizar_tipovehiculos(
     w_id_tveh in TIPOVEHICULOS.id_tveh%type,
-    w_nombre in TIPOVEHICULOS.nombre%type,
-    w_descripcion in TIPOVEHICULOS.descripcion%TYPE,
-    w_precio_maximo in TIPOVEHICULOS.precio_maximo%TYPE) is
+    w_nombre in TIPOVEHICULOS.nombre%type) is
     begin
-    update TIPOVEHICULOS set nombre = w_nombre, descripcion = w_descripcion, precio_maximo = w_precio_maximo where w_id_tveh = id_tveh;
+    update TIPOVEHICULOS set nombre = w_nombre where w_id_tveh = id_tveh;
     commit work;
     end actualizar_tipovehiculos;
     /
@@ -907,6 +873,7 @@ END;
    begin
    update CONCESIONARIOS set nombre = nombre_con, direccion= direccion_con, telef = telef_con, email= email_con,
    NoCitas = NoCitas_con where id_concess= id_conces;
+   
    commit work;
    end actualizar_concesionarios;
    /
@@ -1141,6 +1108,17 @@ END ASSERT_EQUALS;
   
   end obtener_num_veh_en_cons;
   /
+  create or replace function diaDeLaSemana(fechas date)
+  return integer
+  is
+  dia_semana integer;
+
+  begin
+        dia_semana := (to_number(TO_CHAR(fechas,'D')));
+     return dia_semana;
+    
+end diaDeLaSemana;
+/
   
   
     
@@ -1151,8 +1129,8 @@ END ASSERT_EQUALS;
             
  CREATE OR REPLACE PACKAGE PRUEBAS_TIPOVEHICULOS AS 
     PROCEDURE inicializar ;
-    PROCEDURE insertar(nombre_prueba varchar2, p_nombre varchar2, p_descripcion varchar2, p_precio_maximo number, salidaEsperada BOOLEAN);
-    PROCEDURE actualizar(nombre_prueba varchar2, cod_tipovehiculos Integer , p_nombre varchar2, p_descripcion varchar2, p_precio_maximo number, salidaEsperada BOOLEAN);
+    PROCEDURE insertar(nombre_prueba varchar2, p_nombre varchar2,salidaEsperada BOOLEAN);
+    PROCEDURE actualizar(nombre_prueba varchar2, cod_tipovehiculos Integer , p_nombre varchar2, salidaEsperada BOOLEAN);
     PROCEDURE eliminar(nombre_prueba varchar2, cod_tipovehiculos Integer, salidaEsperada BOOLEAN);
 END PRUEBAS_TIPOVEHICULOS;
 /
@@ -1169,7 +1147,7 @@ CREATE OR REPLACE PACKAGE BODY PRUEBAS_TIPOVEHICULOS AS
 END inicializar; 
 
 /* PRUEBA PARA LA INSERCIÓN*/
-  PROCEDURE insertar (nombre_prueba varchar2, p_nombre varchar2, p_descripcion varchar2, p_precio_maximo number,  salidaEsperada BOOLEAN) AS
+  PROCEDURE insertar (nombre_prueba varchar2, p_nombre varchar2, salidaEsperada BOOLEAN) AS
     salida BOOLEAN := true;
     tipovehiculo tipovehiculos%ROWTYPE;
     w_cod NUMBER(12);
@@ -1177,14 +1155,13 @@ END inicializar;
     
     /* Seleccionar departamento y comprobar que los datos se insertaron correctamente */
     w_cod := seq_tipovehiculos.currval;
-   
+    
     /* Insertar fila*/
-    insertar_tipovehiculos(p_nombre, p_descripcion, p_precio_maximo);  
+    insertar_tipovehiculos(p_nombre);  
     
     
     SELECT * INTO tipovehiculo FROM tipovehiculos WHERE id_tveh=w_cod;
-    IF ((tipovehiculo.nombre<>p_nombre) or (tipovehiculo.descripcion<>p_descripcion) or (tipovehiculo.precio_maximo<>p_precio_maximo)) THEN
-         
+    IF ((tipovehiculo.nombre<>p_nombre)) THEN
       salida := false;
     END IF;
     COMMIT WORK;
@@ -1204,14 +1181,14 @@ END insertar;
 
 /* ACTUALIZACIÓN*/
  
- PROCEDURE actualizar (nombre_prueba VARCHAR2, cod_tipovehiculos Integer, p_nombre varchar2, p_descripcion varchar2, p_precio_maximo number, salidaEsperada BOOLEAN) as
+ PROCEDURE actualizar (nombre_prueba VARCHAR2, cod_tipovehiculos Integer, p_nombre varchar2, salidaEsperada BOOLEAN) as
     salida BOOLEAN:= true;
     tipovehiculo tipovehiculos%ROWTYPE;
     begin
-          actualizar_tipovehiculos(cod_tipovehiculos ,p_nombre, p_descripcion, p_precio_maximo);          
+          actualizar_tipovehiculos(cod_tipovehiculos ,p_nombre);          
          
           select * into tipovehiculo  from tipovehiculos where id_tveh = cod_tipovehiculos;
-          if ((tipovehiculo.nombre<>p_nombre) or (tipovehiculo.descripcion<>p_descripcion) or (tipovehiculo.precio_maximo<>p_precio_maximo)) then
+          if ((tipovehiculo.nombre<>p_nombre)) then
           salida := false;
           end if;
           commit work;
@@ -2683,5 +2660,5 @@ procedure eliminar (nombre_prueba VARCHAR2,p_cod_metatipo Integer,salidaEsperada
          ROLLBACK;
     END eliminar;   
 end PRUEBAS_METATIPOS;
-/          
+/    
 
