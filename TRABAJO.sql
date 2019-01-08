@@ -427,18 +427,22 @@ END;
 
 
 /* Función para ver si el día es sabado o domingo*/
-CREATE OR REPLACE TRIGGER TR_Dias_Citas
-BEFORE INSERT OR UPDATE ON CITAS
+--to_number(TO_CHAR(TO_DATE(fecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH'))
+/*CREATE OR REPLACE TRIGGER TR_Dias_Citas
+BEFORE INSERT OR UPDATE OF Fecha ON CITAS
 FOR EACH ROW
 DECLARE
+    newfecha date;
     dia integer;
 BEGIN
-    select diaDeLaSemana(:new.fecha) into dia from dual;
-    IF(dia = 6 or dia= 7) THEN
-        RAISE_APPLICATION_ERROR(-20020,:new.fecha||  'Los días de la semana en dónde se puede realizar una cita deben estar entre lunes y viernes');
+    SELECT fecha into newfecha FROM Citas;
+    IF (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=1 OR
+    (to_number(TO_CHAR(TO_DATE(newfecha, 'DD/MM/YYYY'), 'D', 'NLS_DATE_LANGUAGE=ENGLISH')))=7 THEN
+        RAISE_APPLICATION_ERROR(-20020, 'Los días de la semana en dónde se puede realizar una tutoría deben estar entre lunes y viernes');
     END IF;
 END;
 /
+*/
 
 CREATE OR REPLACE TRIGGER MAXCITAS
 BEFORE INSERT OR UPDATE ON CITAS
@@ -471,6 +475,7 @@ BEGIN
     end if;
 end;
 /
+<<<<<<< HEAD
 	    
 CREATE OR REPLACE TRIGGER MAXDECITPORCONCESYEMPL
 BEFORE UPDATE ON concesionarios
@@ -504,6 +509,8 @@ END IF;
 
 END;
 /	    
+=======
+>>>>>>> parent of d9079d8... Update TRABAJO.sql
 
 /************************************************************************
                         PROCEDURES
@@ -1128,17 +1135,6 @@ END ASSERT_EQUALS;
   
   end obtener_num_veh_en_cons;
   /
-  create or replace function diaDeLaSemana(fechas date)
-  return integer
-  is
-  dia_semana integer;
-
-  begin
-        dia_semana := (to_number(TO_CHAR(fechas,'D')));
-     return dia_semana;
-    
-end diaDeLaSemana;
-/
   
   
     
