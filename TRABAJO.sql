@@ -770,7 +770,8 @@ end;
    create or replace procedure eliminar_concesionario(cod_conces in concesionarios.id_conces%type)is
    begin
    delete from CITAS where cod_conces = id_conces;
-   update vehiculos set id_conces = null where id_conces = cod_conces;
+   update vehiculos set id_conces = null where id_conces = cod_conce;
+   update empleados set id_conces = null where id_conces = cod_conces;
    delete from CONCESIONARIOS where cod_conces = id_conces;
    commit work;
    end eliminar_concesionario;
