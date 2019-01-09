@@ -83,7 +83,10 @@ BEGIN
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                            /Commit  --> ','1356JBK',TO_DATE('2017-12-20', 'YYYY-MM-DD'),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,1,null,true);
   select id_conces into prueba_conces from vehiculos where matricula = '1356JBK';
-  PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                    /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',10,true);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-01/Insert-"Empleados=E2"                              /Commit -->','Rosa Márquez','Jefa de Marketing ','rosmar','1904m', '48592056B', 1,true);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-02/Insert-"Empleados=E3"                              /Commit -->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', '01724748R', 1 ,true);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-02/Insert-"Empleados=E3"                              /Commit -->','María Tom ','Jefa de Ventas ','mari','mmz18', '01724748V', 1 ,true);
+  PRUEBAS_CONCESIONARIO.ACTUALIZAR('Con-9/Update-"Concesionario= prueba"                    /Commit-->',cod_conces,'Con','calle',756493498,'prueba@prueba.com',1,true);
   PRUEBAS_CONCESIONARIO.ELIMINAR('Con-10/Delete-"Concesionario = prueba"                  /Commit-->',cod_conces,true);
   select id_conces into prueba_conces2 from vehiculos where matricula = '1356JBK';
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Prueba sobre ID del concesionario al eliminar el concesionario el id_conces (Vehiculo) actualiza a null'||CR_LF);
@@ -296,7 +299,7 @@ BEGIN
   
   PRUEBAS_CITAS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Citas (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('01/09/2019'),12,2,3,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('9/1/2019'),12,2,3,true);
   cod_cit := seq_citas.currval-1;
   PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('12/12/2018'),10,2,3,true);
   PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                              /Rollback-->',null,10,null,null,false);
@@ -314,12 +317,12 @@ BEGIN
   PRUEBAS_EMPLEADOS.INSERTAR('Emp-01/Insert-"Empleados=E1"                              /Commit  --> ','Manuel Marín','Administrativo ','manumr','manu100385', '32096400Y', 2 ,true);
   cod_empleados:= seq_empleados.currval-1;
   PRUEBAS_EMPLEADOS.INSERTAR('Emp-01/Insert-"Empleados=E2"                              /Commit -->','Rosa Márquez','Jefa de Marketing ','rosmar','1904m', '48592056B', 2 ,true);
-  PRUEBAS_EMPLEADOS.INSERTAR('Emp-02/Insert-"Empleados=E3"                              /Commit -->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', '01724748R', 3 ,true);
-  PRUEBAS_EMPLEADOS.INSERTAR('Emp-03/Insert-"Empleados= nombre null"                    /Rollback-->',null,'Jefa de Ventas ','marimar','mmz1889', '01724748R', 4 ,false);
-  PRUEBAS_EMPLEADOS.INSERTAR('Emp-04/Insert-"Empleados= rol null"                       /Rollback-->','María Martínez ',null,'marimar','mmz1889', '01724748R', 5 ,false);
-  PRUEBAS_EMPLEADOS.INSERTAR('Emp-05/Insert-"Empleados= usuario null"                   /Rollback-->','María Martínez ','Jefa de Ventas ',null,'mmz1889', '01724748R', 6 ,false);
-  PRUEBAS_EMPLEADOS.INSERTAR('Emp-06/Insert-"Empleados= contraseña null"                /Rollback-->','María Martínez ','Jefa de Ventas ','marimar',null, '01724748R', 7 ,false);
-  PRUEBAS_EMPLEADOS.INSERTAR('Emp-07/Insert-"Empleados= dni null"                       /Rollback-->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', null, 8 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-02/Insert-"Empleados=E3"                              /Commit -->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', '01724748R', 2 ,true);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-03/Insert-"Empleados= nombre null"                    /Rollback-->',null,'Jefa de Ventas ','marimar','mmz1889', '01724748R', 2 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-04/Insert-"Empleados= rol null"                       /Rollback-->','María Martínez ',null,'marimar','mmz1889', '01724748R', 2 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-05/Insert-"Empleados= usuario null"                   /Rollback-->','María Martínez ','Jefa de Ventas ',null,'mmz1889', '01724748R', 2 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-06/Insert-"Empleados= contraseña null"                /Rollback-->','María Martínez ','Jefa de Ventas ','marimar',null, '01724748R', 2 ,false);
+  PRUEBAS_EMPLEADOS.INSERTAR('Emp-07/Insert-"Empleados= dni null"                       /Rollback-->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', null, 2 ,false);
   PRUEBAS_EMPLEADOS.INSERTAR('Emp-08/Insert-"Empleados= id_conces null"                 /Rollback-->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', '01724748R', null ,false);
   PRUEBAS_EMPLEADOS.ACTUALIZAR('Emp-09/Update-"Empleados=E1"                            /Commit-->',cod_empleados,'Manuel Marín','Jefe de Administración ','manumr','manu100385', '32096400Y',true);
   PRUEBAS_EMPLEADOS.ELIMINAR('Emp-10/Delete-"Empleados=E1"                              /Commit-->',cod_empleados,true);
@@ -337,7 +340,7 @@ BEGIN
   PRUEBAS_METAVEHICULOS.INSERTAR('MeT-03/Insert-"Metavehiculos = Id vehículo duplicado"           /Commit -->','honda  ocasion en  sevilla  ','honda civic ocasion en conceionario terryocasion  ','ocasioncivicurl',3,false);
   PRUEBAS_METAVEHICULOS.INSERTAR('MeT-04/Insert-"Metavehiculos= metatitulo null"                  /Rollback-->',null ,'honda civic ocasion en conceionario terryocasion ','ocasioncivicurl',4,false);
   PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= metadescripcion null"             /Rollback-->','honda  ocasion en  ttesevilla' ,null ,'ocasionerecivicurl',4 ,false);
-  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= urlamigable null"                 /Rollback-->','honda  ocasion en  ttesevilla' ,'honda civic ojghghfdvdcasion en conceionario terryocasion' , 'ocasiojbvnurl',4,false);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= urlamigable null"                 /Rollback-->','honda  ocasion en  ttesevilla' ,'honda civic ojghghfdvdcasion en conceionario terryocasion' , null,4,false);
   PRUEBAS_METAVEHICULOS.ACTUALIZAR('MeT-05/Update-"Metavehiculos=M4"                              /Commit-->',cod_metaveh,'citroën en  sevilla','citroen c3 ocasion en sevilla ','ocasionurl',true);
   PRUEBAS_METAVEHICULOS.ELIMINAR('MeT-06/Delete-"Metavehiculos=M4"                                /Commit-->',cod_metaveh,true);
   
