@@ -381,13 +381,13 @@ FOR EACH ROW
 DECLARE 
  precio_max Integer;
 BEGIN
-
-SELECT PRECIO_MAXIMO INTO precio_max FROM TIPOVEHICULOS WHERE :NEW.id_tveh=id_tveh ;
-IF (:NEW.precio > precio_max  ) THEN
-    RAISE_APPLICATION_ERROR(-20504,precio_max|| 'PRECIO INSERTADO SUPERIOR AL PRECIO MAXIMO DEL TIPO DE VEHICULO');
-
+if(:new.id_tveh <> null) then
+    SELECT PRECIO_MAXIMO INTO precio_max FROM TIPOVEHICULOS WHERE :NEW.id_tveh=id_tveh ;
+    IF (:NEW.precio > precio_max  ) THEN
+        RAISE_APPLICATION_ERROR(-20504,precio_max|| 'PRECIO INSERTADO SUPERIOR AL PRECIO MAXIMO DEL TIPO DE VEHICULO');
+    
+    END IF;
 END IF;
-
 END;
 /
 
