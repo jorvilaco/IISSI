@@ -374,6 +374,23 @@ end if;
 end;
 /
 
+--TRIGGER PARA QUE EL PRECIO DEL VEHICULO NO SEA MAYOR QUE EL PRECIO DEL TIPO DE VEHICULO
+create or replace TRIGGER PRECIO_MAXIMO_TIPO
+BEFORE INSERT OR UPDATE ON VEHICULOS
+FOR EACH ROW 
+DECLARE 
+ precio_max Integer;
+BEGIN
+
+SELECT PRECIO_MAXIMO INTO precio_max FROM TIPOVEHICULOS WHERE :NEW.id_tveh=id_tveh ;
+IF (:NEW.precio > precio_max  ) THEN
+    RAISE_APPLICATION_ERROR(-20504,precio_max|| 'PRECIO INSERTADO SUPERIOR AL PRECIO MAXIMO DEL TIPO DE VEHICULO');
+
+END IF;
+
+END;
+/
+
 /************************************************************************
                         PROCEDURES
 *************************************************************************/
