@@ -332,7 +332,7 @@ DECLARE
    numcitasc integer;
    numcitasp integer;
 BEGIN 
- if(:new.id_conces <> null) then
+   if(:new.id_conces <> null) then
         select count(*) into numcitasc from Citas where (:new.fecha = fecha and :new.hora = hora and :new.id_conces=id_conces);
         select nocitas into numcitasp from Concesionarios where :new.id_conces = id_conces;
 
@@ -349,7 +349,7 @@ FOR EACH ROW
 DECLARE
    num_vehiculos integer;
 BEGIN 
-    if(:new.id_conces <> null)then
+    if(:new.id_conces <> null) then
          select count(*) into num_vehiculos from vehiculos where :new.id_conces=id_conces;
 		 if(num_vehiculos >= 1000 ) then 
             RAISE_APPLICATION_ERROR(-20502,num_vehiculos|| 'Máximo de vehiculos permitidos en un concesionario');
@@ -381,7 +381,7 @@ FOR EACH ROW
 DECLARE 
  precio_max Integer;
 BEGIN
-if(:new.id_tveh <> null) then
+if :new.id_tveh is not null then
     SELECT PRECIO_MAXIMO INTO precio_max FROM TIPOVEHICULOS WHERE :NEW.id_tveh=id_tveh ;
     IF (:NEW.precio > precio_max  ) THEN
         RAISE_APPLICATION_ERROR(-20504,precio_max|| 'PRECIO INSERTADO SUPERIOR AL PRECIO MAXIMO DEL TIPO DE VEHICULO');
@@ -1050,6 +1050,11 @@ CREATE OR REPLACE PACKAGE BODY PRUEBAS_TIPOVEHICULOS AS
     AS BEGIN
 
     /* Borrar contenido de la tabla */
+    DELETE FROM propiedadesvehiculos;
+    DELETE FROM descuentos;
+    delete from vehiculosvendidos;
+    delete from fotovehiculos;
+    DELETE FROM VEHICULOS;
     DELETE FROM tipovehiculos;
     NULL;
 END inicializar; 
