@@ -440,6 +440,7 @@ end;
    
     create or replace procedure eliminar_tipovehiculos(cod_tipovehiculos in TIPOVEHICULOS.id_tveh%type) is
     begin 
+    delete from metatipos where cod_tipovehiculos = id_tveh;												    
     delete from TIPOVEHICULOS where cod_tipovehiculos = id_tveh;
     commit work;
     end eliminar_tipovehiculos;
