@@ -329,8 +329,8 @@ CREATE OR REPLACE TRIGGER MAXCITAS
 BEFORE INSERT OR UPDATE ON CITAS
 FOR EACH ROW
 DECLARE
-   num_citas_c integer;
-   num_citas_p integer;
+   numcitasc integer;
+   numcitasp integer;
 BEGIN 
  if(:new.id_conces <> null) then
         select count(*) into numcitasc from Citas where (:new.fecha = fecha and :new.hora = hora and :new.id_conces=id_conces);
