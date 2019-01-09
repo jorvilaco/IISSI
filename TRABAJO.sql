@@ -157,7 +157,7 @@ Create table EMPLEADOS(
     usuario varchar2 (10)not null,
     contraseña varchar2(24) not null,
     dni varchar2 (9) not null,
-    id_conces number(10) not null, 
+    id_conces number(10), 
     FOREIGN KEY (id_conces) REFERENCES CONCESIONARIOS, 
     UNIQUE (usuario));
 
