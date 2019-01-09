@@ -168,7 +168,7 @@ Create table METAVEHICULOS(
    metaTitulo varchar2(70) not null,
    metaDescripcion varchar2(140) not null,
    urlAmigable varchar2(40) not null,
-   FOREIGN KEY (id_veh) REFERENCES Vehiculos
+   FOREIGN KEY (id_veh) REFERENCES Vehiculos,
    UNIQUE (id_veh));
 
 --Creación Tabla MetaTipos
