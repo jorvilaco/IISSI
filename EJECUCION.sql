@@ -70,13 +70,13 @@ BEGIN
  
   PRUEBAS_TIPOVEHICULOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TIPOVEHICULOS (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-01/Insert-"Tipovehiculos=TVEH1"                           /Commit  --> ','Urbano','Un vehículo urbano es aquel que tiene...',8000,true);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-01/Insert-"Tipovehiculos=TVEH1"                           /Commit  --> ','Berlina','Un vehículo berlina es aquel que tiene...',8000,true);
   w_cod:= seq_tipovehiculos.currval-1;
-  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-02/Insert-"Tipovehiculos=TVEH2"                           /Commit  -->' ,'Industrial', 'Un vehículo industrial es aquel que tiene...',10000,true);
-  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-03/Insert-"Tipovehiculos=TVEH3"                           /Commit  -->' ,'Berlina', 'Un vehículo berlina es aquel que tiene...',5500,true);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-02/Insert-"Tipovehiculos=TVEH2"                           /Commit  -->' ,'Urbano', 'Un coche urbano es aquel que tiene...',20000,true);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-03/Insert-"Tipovehiculos=TVEH3"                           /Commit  -->' ,'Industrial', 'Un coche industrial es aquel que tiene...',30000,true);
   PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-04/Insert-"Tipovehiculos= nombre null"                    /Rollback-->',null ,'Un vehículo industrial es aquel que tiene...',10500, false);
-  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-05/Insert-"Tipovehiculos= decripcion null"                /Rollback-->' ,'Industrial' , null,10500, false);
-  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-06/Insert-"Tipovehiculos=maxima null"                     /Commit  -->' ,'Industrial', 'Un vehículo industrial es aquel que tiene...', null ,false);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-05/Insert-"Tipovehiculos= decripcion null"                /Rollback-->' ,'Utilitario' , null,10500, false);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-06/Insert-"Tipovehiculos=maxima null"                     /Rollback  -->' ,'Utilitario', 'Un vehículo industrial es aquel que tiene...', null ,false);
   PRUEBAS_TIPOVEHICULOS.ACTUALIZAR('Tveh-07/Update-"Tipovehiculos=TVEH1"                         /Commit-->',w_cod,'Mixto','Un vehículo mixto es aquel que tiene...',7599,true);
   PRUEBAS_TIPOVEHICULOS.ELIMINAR('Tveh-08/Delete-"Tipovehiculos=TVEH1"                           /Commit-->',w_cod,true);
 
@@ -141,7 +141,7 @@ BEGIN
   PRUEBAS_VEHICULOS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Vehiculos (CÓdigo Prueba/AcciÓn/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-01/Insert-"Vehiculos=Prueba"                          /Commit  --> ','2286JBK',TO_DATE(SYSDATE),
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,true);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,w_cod,true);
   cod_veh := seq_vehiculos.currval-1;
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-02/Insert-"Vehiculos=V1"                              /Commit  --> ','2356JBK',TO_DATE(SYSDATE),
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,null,true);
