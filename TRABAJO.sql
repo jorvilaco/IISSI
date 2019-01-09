@@ -332,7 +332,7 @@ DECLARE
    numcitasc integer;
    numcitasp integer;
 BEGIN 
-   if(:new.id_conces <> null) then
+   if :new.id_conces is not null  then
         select count(*) into numcitasc from Citas where (:new.fecha = fecha and :new.hora = hora and :new.id_conces=id_conces);
         select nocitas into numcitasp from Concesionarios where :new.id_conces = id_conces;
 
@@ -344,14 +344,14 @@ end;
 /
 
 CREATE OR REPLACE TRIGGER MAXVEHIENCONS
-BEFORE INSERT OR UPDATE ON VEHICULOS
+BEFORE INSERT ON VEHICULOS
 FOR EACH ROW
 DECLARE
    num_vehiculos integer;
 BEGIN 
-    if(:new.id_conces <> null) then
+    if :new.id_conces is not null then
          select count(*) into num_vehiculos from vehiculos where :new.id_conces=id_conces;
-		 if(num_vehiculos >= 1000 ) then 
+		 if(num_vehiculos >= 3/*1000 es el valor real ponemos 3 para probarlo  */ ) then 
             RAISE_APPLICATION_ERROR(-20502,num_vehiculos|| 'Máximo de vehiculos permitidos en un concesionario');
         end if;
     end if;
