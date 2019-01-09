@@ -335,9 +335,9 @@ BEGIN
   cod_metaveh:= seq_metavehiculos.currval-1;
   PRUEBAS_METAVEHICULOS.INSERTAR('MeT-02/Insert-"Metavehiculos = M2"                              /Commit -->','citroën  ocasion  de 2018 en  sevilla terry ocasion  ','citroen c3 ocasion  ','ocasiojbvnurl',4,true);
   PRUEBAS_METAVEHICULOS.INSERTAR('MeT-03/Insert-"Metavehiculos = Id vehículo duplicado"           /Commit -->','honda  ocasion en  sevilla  ','honda civic ocasion en conceionario terryocasion  ','ocasioncivicurl',3,false);
-  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-04/Insert-"Metavehiculos= metatitulo null"                  /Rollback-->',null ,'honda civic ocasion en conceionario terryocasion ','ocasioncivicurl', 6 ,false);
-  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= metadescripcion null"             /Rollback-->','honda  ocasion en  ttesevilla' ,null ,'ocasionerecivicurl',7 ,false);
-  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= urlamigable null"                 /Rollback-->','honda  ocasion en  ttesevilla' ,'honda civic ojghghfdvdcasion en conceionario terryocasion' , 'ocasiojbvnurl',8,false);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-04/Insert-"Metavehiculos= metatitulo null"                  /Rollback-->',null ,'honda civic ocasion en conceionario terryocasion ','ocasioncivicurl',4,false);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= metadescripcion null"             /Rollback-->','honda  ocasion en  ttesevilla' ,null ,'ocasionerecivicurl',4 ,false);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= urlamigable null"                 /Rollback-->','honda  ocasion en  ttesevilla' ,'honda civic ojghghfdvdcasion en conceionario terryocasion' , 'ocasiojbvnurl',4,false);
   PRUEBAS_METAVEHICULOS.ACTUALIZAR('MeT-05/Update-"Metavehiculos=M4"                              /Commit-->',cod_metaveh,'citroën en  sevilla','citroen c3 ocasion en sevilla ','ocasionurl',true);
   PRUEBAS_METAVEHICULOS.ELIMINAR('MeT-06/Delete-"Metavehiculos=M4"                                /Commit-->',cod_metaveh,true);
   
