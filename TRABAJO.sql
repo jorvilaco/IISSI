@@ -2363,8 +2363,7 @@ CREATE OR REPLACE PACKAGE BODY PRUEBAS_METAVEHICULOS AS
 
     /* Borrar contenido de la tabla */
     DELETE FROM metavehiculos;
-    DELETE FROM vehiculos;
-    NULL;
+      NULL;
 END inicializar; 
 
 /* PRUEBA PARA LA INSERCIÓN*/
