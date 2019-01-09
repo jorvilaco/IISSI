@@ -60,6 +60,7 @@ DECLARE
   cod_empleados Integer;
   cod_metaveh Integer;
   w_cod Integer;
+  cod_metatip Integer;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
@@ -72,6 +73,7 @@ BEGIN
   PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-01/Insert-"Tipovehiculos=TVEH1"                           /Commit  --> ','Urbano','Un vehículo urbano es aquel que tiene...',8000,true);
   w_cod:= seq_tipovehiculos.currval-1;
   PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-02/Insert-"Tipovehiculos=TVEH2"                           /Commit  -->' ,'Industrial', 'Un vehículo industrial es aquel que tiene...',10000,true);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-03/Insert-"Tipovehiculos=TVEH3"                           /Commit  -->' ,'Berlina', 'Un vehículo berlina es aquel que tiene...',5500,true);
   PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-04/Insert-"Tipovehiculos= nombre null"                    /Rollback-->',null ,'Un vehículo industrial es aquel que tiene...',10500, false);
   PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-05/Insert-"Tipovehiculos= decripcion null"                /Rollback-->' ,'Industrial' , null,10500, false);
   PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-06/Insert-"Tipovehiculos=maxima null"                     /Commit  -->' ,'Industrial', 'Un vehículo industrial es aquel que tiene...', null ,false);
@@ -358,7 +360,21 @@ BEGIN
   PRUEBAS_METAVEHICULOS.ACTUALIZAR('MeT-05/Update-"Metavehiculos=M4"                              /Commit-->',cod_metaveh,'citroën en  sevilla','citroen c3 ocasion en sevilla ','ocasionurl',true);
   PRUEBAS_METAVEHICULOS.ELIMINAR('MeT-06/Delete-"Metavehiculos=M4"                                /Commit-->',cod_metaveh,true);
   
-  
+  /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA METATIPOS
+  **********************************************************************/
+ 
+  PRUEBAS_METATIPOS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de METATIPOS (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_METATIPOS.INSERTAR  ('MeT-01/Insert-"Metatipos=MET1"                              /Commit  --> ','Venta de vehículos urbanos en  sevilla','Venta de los mejores vehículos de ocasión urbanos en Sevilla ','vehiculos-ocasion-urbanos', 2 ,true);
+  cod_metatip:= seq_metatipos.currval-1;
+  PRUEBAS_METATIPOS.INSERTAR('MeT-02/Insert-"Metatipos = MET2"                              /Commit -->','Venta de vehículos industriales ','Tu vehículo industrial al mejor precio en terry ocasion  ','vehiculos-ocasion-industriales',3,true);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-03/Insert-"Metatipos = MET3"                              /Commit -->','Venta de Monovolumen en Sevilla ','Gran variadad de vehículos Monovolumen en Terry Ocasión  ','vehiculos-ocasion-monovolumen',3,false);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-04/Insert-"Metatipos= metatitulo null"                    /Rollback-->',null ,'Venta de los mejores vehículos de ocasión urbanos en Sevilla ','vehiculos-ocasion-urbanos', 4 ,false);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-05/Insert-"Metatipos= metadescripcion null"               /Rollback-->','Venta de vehículos urbanos en  sevilla' ,null ,'vehiculos-ocasion-urbanos',5 ,false);
+  PRUEBAS_METATIPOS.INSERTAR('MeT-05/Insert-"Metatipos= urlamigable null"                   /Rollback-->','Venta de vehículos urbanos en  sevilla' ,'Venta de los mejores vehículos de ocasión urbanos en Sevilla' , null, 6, false);
+  PRUEBAS_METATIPOS.ACTUALIZAR('MeT-05/Update-"Metatipos=MET1"                              /Commit-->',cod_metatip,'Monovolumen en Sevilla','Monovolumen al mejor precio en Terry Ocasión tu concesionario de confianza ','vehiculos-ocasion-monovolumen',true);
+  PRUEBAS_METATIPOS.ELIMINAR('MeT-06/Delete-"Metatipos=MET1"                                /Commit-->',cod_metatip,true);
   END;
   /
    
