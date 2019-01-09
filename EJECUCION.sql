@@ -147,7 +147,7 @@ BEGIN
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,w_cod+1,true);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-03/Insert-"Vehiculos=V2"                              /Commit  --> ','2386JBK',TO_DATE(SYSDATE),
   'Citroen C3 HDI Blanco','Retrovisor exterior ......',9040,1,2,w_cod+2,true);
-  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-03/Insert-"Trigger Vehiculo>2 asignado mismo conc"    /Rollback--> ','2386JBK',TO_DATE(SYSDATE),
+  PRUEBAS_VEHICULOS.INSERTAR  ('Veh-03/Insert-"Trigger Vehiculo>3 asignado mismo conc"    /Rollback--> ','2386JBM',TO_DATE(SYSDATE),
   'Citroen C3 HDI Blanco','Retrovisor exterior ......',9040,1,2,w_cod+2,false);
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-04/Insert/"Vehiculos.MatriculoDuplicada=2356JBK"      /Rollback--> ','2356JBK',TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,w_cod+1,false);
@@ -164,7 +164,7 @@ BEGIN
   PRUEBAS_VEHICULOS.INSERTAR  ('Veh-09/Insert/"Trigger Precio Maximo>20000"               /Rollback--> ','2355JBK',TO_DATE(SYSDATE), 
   'Citroen C3 HDI Negro','Retrovisor exterior ......',20100,1,2,w_cod+1,false);
   PRUEBAS_VEHICULOS.ACTUALIZAR('Veh-10/Update/"Vehiculos=2356JBM"                         /Commit  --> ',cod_veh,'2356JBM',TO_DATE(SYSDATE),
-  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,2,w_cod+1,true);
+  'Citroen C3 HDI Negro','Retrovisor exterior ......',10040,1,3,w_cod+1,true);
   PRUEBAS_VEHICULOS.ELIMINAR  ('Veh-11/Delete/"Vehiculos=Prueba"                          /Commit  --> ',cod_veh,true);
   
   
