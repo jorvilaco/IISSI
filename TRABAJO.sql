@@ -331,6 +331,7 @@ FOR EACH ROW
 DECLARE
    numcitasc integer;
    numcitasp integer;
+   PRAGMA AUTONOMOUS_TRANSACTION;
 BEGIN 
    if :new.id_conces is not null  then
         select count(*) into numcitasc from Citas where (:new.fecha = fecha and :new.hora = hora and :new.id_conces=id_conces);
@@ -344,10 +345,11 @@ end;
 /
 
 CREATE OR REPLACE TRIGGER MAXVEHIENCONS
-BEFORE INSERT ON VEHICULOS
+BEFORE INSERT or UPDATE ON VEHICULOS
 FOR EACH ROW
 DECLARE
    num_vehiculos integer;
+   PRAGMA AUTONOMOUS_TRANSACTION;
 BEGIN 
     if :new.id_conces is not null then
          select count(*) into num_vehiculos from vehiculos where :new.id_conces=id_conces;
