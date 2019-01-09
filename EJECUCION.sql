@@ -59,10 +59,24 @@ DECLARE
   prueba_conces2 Integer;
   cod_empleados Integer;
   cod_metaveh Integer;
+  w_cod Integer;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
-
+/*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA TIPOVEHICULOS
+  **********************************************************************/
+ 
+  PRUEBAS_TIPOVEHICULOS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de TIPOVEHICULOS (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-01/Insert-"Tipovehiculos=TVEH1"                           /Commit  --> ','Urbano','Un vehículo urbano es aquel que tiene...',8000,true);
+  w_cod:= seq_tipovehiculos.currval-1;
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-02/Insert-"Tipovehiculos=TVEH2"                           /Commit  -->' ,'Industrial', 'Un vehículo industrial es aquel que tiene...',10000,true);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-04/Insert-"Tipovehiculos= nombre null"                    /Rollback-->',null ,'Un vehículo industrial es aquel que tiene...',10500, false);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-05/Insert-"Tipovehiculos= decripcion null"                /Rollback-->' ,'Industrial' , null,10500, false);
+  PRUEBAS_TIPOVEHICULOS.INSERTAR('Tveh-06/Insert-"Tipovehiculos=maxima null"                     /Commit  -->' ,'Industrial', 'Un vehículo industrial es aquel que tiene...', null ,false);
+  PRUEBAS_TIPOVEHICULOS.ACTUALIZAR('Tveh-07/Update-"Tipovehiculos=TVEH1"                         /Commit-->',w_cod,'Mixto','Un vehículo mixto es aquel que tiene...',7599,true);
+  PRUEBAS_TIPOVEHICULOS.ELIMINAR('Tveh-08/Delete-"Tipovehiculos=TVEH1"                           /Commit-->',w_cod,true);
 
  /*********************************************************************
         PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CONCESIONARIOS
