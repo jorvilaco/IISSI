@@ -178,8 +178,8 @@ Create table METATIPOS(
    metaTitulo varchar2(70) not null,
    metaDescripcion varchar2(140) not null,
    urlAmigable varchar2(40) not null,
-   FOREIGN KEY (id_tveh) REFERENCES TipoVehiculos
- );
+   FOREIGN KEY (id_tveh) REFERENCES TipoVehiculos,
+   UNIQUE (id_tveh));
 
 
 
