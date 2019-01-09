@@ -85,12 +85,11 @@ BEGIN
   **********************************************************************/
   
   
-  PRUEBAS_CONCESIONARIO.INICIALIZAR;
+   PRUEBAS_CONCESIONARIO.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Concesionario (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-01/insert-"Concesionario= prueba"                   /Commit-->','Con1','calle2',756493499,'prueba2@prueba1',11,true);
   cod_conces := seq_concesionario.currval-1;
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C1"                       /Commit-->','Con2','calle3',756493496,'prueba2@prueba2',10,true);
-  PRUEBAS_CONCESIONARIO.INSERTAR('Con-03/insert-"Concesionario= C2"                       /Commit-->','Con3','calle4',756493497,'prueba3@rueba3',9,true);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C1"                       /Commit-->','Viuda de Terry','calle Álava',967345678,'pruebacon@gmail.com',2,true);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-04/insert-"Concesionario= nombre null"              /Rollback-->',null,'calle3',756493496,'prueba2@prueba2',10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-05/insert-"Concesionario= calle null"               /Rollback-->','Con3',null,756493496,'prueba2@prueba2',10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-06/insert-"Concesionario= telef null"               /Rollback-->','Con3','calle3',null,'prueba2@prueba2',10,false);
@@ -281,18 +280,16 @@ BEGIN
         PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA CLIENTES
   **********************************************************************/
   
-  PRUEBAS_CLIENTE.INICIALIZAR;
+ PRUEBAS_CLIENTE.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de CLIENTES (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_CLIENTE.INSERTAR  ('Cli-01/Insert-"Clientes=Prueba"                           /Commit  --> ','nanana@batman.com','66606660w',
-  'Juan',666666666,999999999,TO_DATE('12/12/2012'),true);
+  PRUEBAS_CLIENTE.INSERTAR  ('Cli-01/Insert-"Clientes=Prueba"                           /Commit  --> ','pruebain@gmail.com','66606660w',
+  'Juan',999999999,666666666,TO_DATE('12/12/2012'),true);
   COD_CLI := seq_cliente.currval-1;
-  PRUEBAS_CLIENTE.INSERTAR('Cli-02/Insert-"Clientes = C2"                               /Commit -->','nonono@batman.com','66606660T',
-  'Ju@n',666606666,999909999,TO_DATE('12/3/2012'),true);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-03/Insert-"Clientes = C3"                               /Commit -->','nununu@batman.com','66608660T',
-  'Ju@n',666606666,999909999,TO_DATE('12/3/2012'),true);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-04/Insert-"Clientes= email duplicado"                   /Rollback-->','nonono@batman.com','66606760T','Ju@n',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-02/Insert-"Clientes = C2"                               /Commit -->','prueba@gmail.com','23456789Z',
+  'Roberto',986346798,686346798,TO_DATE('26/4/1998'),true);
+  PRUEBAS_CLIENTE.INSERTAR('Cli-04/Insert-"Clientes= email duplicado"                   /Rollback-->','prueba@gmail.com','66606760T','Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
-  PRUEBAS_CLIENTE.INSERTAR('Cli-05/insert-"Clientes= dni duplicado"                     /Rollback-->','nonono@tman.com','66606660T','Ju@n',
+  PRUEBAS_CLIENTE.INSERTAR('Cli-05/insert-"Clientes= dni duplicado"                     /Rollback-->','nonono@tman.com','23456789Z','Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
    PRUEBAS_CLIENTE.INSERTAR('Cli-06/insert-"Clientes= email null"                       /Rollback-->',null,'66609660T','Ju@n',
   666606666,999909999,TO_DATE('12/2/2012'),false);
@@ -306,7 +303,7 @@ BEGIN
   675644327,null,TO_DATE('12/2/2012'),false); 
   PRUEBAS_CLIENTE.INSERTAR('Cli-011/insert-"Clientes= fecha null"                        /Rollback-->','no4@tman.com','12345673W','joan',
   675644327,999909999,null,false);
-  PRUEBAS_CLIENTE.ACTUALIZAR('Cli-012/Update-"Clientes= Cliente 1"                       /Commit-->',cod_cli,'naasdasdasdnana@btman.com','68607660w',
+  PRUEBAS_CLIENTE.ACTUALIZAR('Cli-012/Update-"Clientes= Cliente 1"                       /Commit-->',cod_cli,'actualizacion@btman.com','68607660w',
   'Juan',666666666,999999999,TO_DATE('12/12/2012'),true);
   PRUEBAS_CLIENTE.ELIMINAR('Cli-013/Delete-"Clientes= Cliente 1"                         /Commit-->',cod_cli,true);
   
@@ -319,13 +316,13 @@ BEGIN
   
   PRUEBAS_CITAS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Citas (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('9/1/2019'),12,2,3,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('9/1/2019'),12,2,2,true);
   cod_cit := seq_citas.currval-1;
-  PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('12/12/2018'),10,2,3,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('26/11/2018'),16,2,2,true);
   PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                              /Rollback-->',null,10,null,null,false);
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora null"                               /Rollback-->',TO_DATE('12/12/2020'),null,null,null,false);
   PRUEBAS_CITAS.INSERTAR('Cit-04/insert-"Cita= Hora diferente de 10,12,16,18"           /Rollback-->',TO_DATE('12/12/2020'),11,null,null,false);
-  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                      /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,2,3,true);
+  PRUEBAS_CITAS.ACTUALIZAR('Cit-04/update-"Cita=prueba actualizar"                      /Commit-->',cod_cit,TO_DATE('12/12/2002'),10,2,2,true);
   PRUEBAS_CITAS.ELIMINAR('Cit-05/Delete-"Cita=prueba delete"                            /Commit-->', cod_cit,true);
  
   /*********************************************************************
