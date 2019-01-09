@@ -90,6 +90,7 @@ BEGIN
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-01/insert-"Concesionario= prueba"                   /Commit-->','Con1','calle2',756493499,'prueba2@prueba1',11,true);
   cod_conces := seq_concesionario.currval-1;
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C1"                       /Commit-->','Viuda de Terry','calle Álava',967345678,'pruebacon@gmail.com',2,true);
+  PRUEBAS_CONCESIONARIO.INSERTAR('Con-02/insert-"Concesionario= C2"                       /Commit-->','Prueba','Calle Prueba',967345678,'pruebacon@gmail.com',2,true);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-04/insert-"Concesionario= nombre null"              /Rollback-->',null,'calle3',756493496,'prueba2@prueba2',10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-05/insert-"Concesionario= calle null"               /Rollback-->','Con3',null,756493496,'prueba2@prueba2',10,false);
   PRUEBAS_CONCESIONARIO.INSERTAR('Con-06/insert-"Concesionario= telef null"               /Rollback-->','Con3','calle3',null,'prueba2@prueba2',10,false);
