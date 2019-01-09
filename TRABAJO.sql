@@ -332,13 +332,14 @@ DECLARE
    num_citas_c integer;
    num_citas_p integer;
 BEGIN 
-   select count(*) into num_citas_c from Citas where (:new.fecha = fecha and :new.hora = hora and :new.id_conces=id_conces);
-   select nocitas into num_citas_p from Concesionarios where :new.id_conces = id_conces;
+ if(:new.id_conces <> null) then
+        select count(*) into numcitasc from Citas where (:new.fecha = fecha and :new.hora = hora and :new.id_conces=id_conces);
+        select nocitas into numcitasp from Concesionarios where :new.id_conces = id_conces;
 
-if(num_citas_c >= num_citas_p ) then 
-RAISE_APPLICATION_ERROR(-20501,num_citas_c|| 'Máximo de citas permitidas completado');
-end if;
-   
+      if(numcitasc >= numcitasp ) then 
+      RAISE_APPLICATION_ERROR(-20501,numcitasc|| 'Máximo de citas permitidas completado');
+      end if;
+   end if;
 end;
 /
 
