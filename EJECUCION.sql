@@ -58,6 +58,7 @@ DECLARE
   prueba_conces Integer;
   prueba_conces2 Integer;
   cod_empleados Integer;
+  cod_metaveh Integer;
   CR_LF CHAR(2) := CHR(13)||CHR(10); 
 BEGIN
 
@@ -295,7 +296,7 @@ BEGIN
   
   PRUEBAS_CITAS.INICIALIZAR;
   DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de Citas (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
-  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('12/12/2020'),12,2,3,true);
+  PRUEBAS_CITAS.INSERTAR('Cit-01/insert-"Cita = prueba"                                 /Commit-->',TO_DATE('01/09/2019'),12,2,3,true);
   cod_cit := seq_citas.currval-1;
   PRUEBAS_CITAS.INSERTAR('Cit-02/insert-"Cita = C1"                                     /Commit-->',TO_DATE('12/12/2018'),10,2,3,true);
   PRUEBAS_CITAS.INSERTAR('Cit-03/insert-"Cita= fecha null"                              /Rollback-->',null,10,null,null,false);
@@ -322,6 +323,25 @@ BEGIN
   PRUEBAS_EMPLEADOS.INSERTAR('Emp-08/Insert-"Empleados= id_conces null"                 /Rollback-->','María Martínez ','Jefa de Ventas ','marimar','mmz1889', '01724748R', null ,false);
   PRUEBAS_EMPLEADOS.ACTUALIZAR('Emp-09/Update-"Empleados=E1"                            /Commit-->',cod_empleados,'Manuel Marín','Jefe de Administración ','manumr','manu100385', '32096400Y',true);
   PRUEBAS_EMPLEADOS.ELIMINAR('Emp-10/Delete-"Empleados=E1"                              /Commit-->',cod_empleados,true);
+  
+  
+   /*********************************************************************
+        PRUEBAS DE LAS OPERACIONES SOBRE LA TABLA METAVEHICULOS
+  **********************************************************************/
+ 
+   PRUEBAS_METAVEHICULOS.INICIALIZAR;
+  DBMS_OUTPUT.PUT_LINE(CR_LF||'Pruebas sobre tabla de METAVEHICULOS (Código Prueba/Acción/T�tulo Prueba/Punto de Sincronismo esperado-->Resultado!)'||CR_LF);
+  PRUEBAS_METAVEHICULOS.INSERTAR  ('MeT-01/Insert-"Metavehiculos=M1"                              /Commit  --> ','citroën en  sevilla','citroen c3 ocasion en sevilla ','ocasionurl', 3,true);
+  cod_metaveh:= seq_metavehiculos.currval-1;
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-02/Insert-"Metavehiculos = M2"                              /Commit -->','citroën  ocasion  de 2018 en  sevilla terry ocasion  ','citroen c3 ocasion  ','ocasiojbvnurl',4,true);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-03/Insert-"Metavehiculos = Id vehículo duplicado"           /Commit -->','honda  ocasion en  sevilla  ','honda civic ocasion en conceionario terryocasion  ','ocasioncivicurl',3,false);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-04/Insert-"Metavehiculos= metatitulo null"                  /Rollback-->',null ,'honda civic ocasion en conceionario terryocasion ','ocasioncivicurl', 6 ,false);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= metadescripcion null"             /Rollback-->','honda  ocasion en  ttesevilla' ,null ,'ocasionerecivicurl',7 ,false);
+  PRUEBAS_METAVEHICULOS.INSERTAR('MeT-05/Insert-"Metavehiculos= urlamigable null"                 /Rollback-->','honda  ocasion en  ttesevilla' ,'honda civic ojghghfdvdcasion en conceionario terryocasion' , 'ocasiojbvnurl',8,false);
+  PRUEBAS_METAVEHICULOS.ACTUALIZAR('MeT-05/Update-"Metavehiculos=M4"                              /Commit-->',cod_metaveh,'citroën en  sevilla','citroen c3 ocasion en sevilla ','ocasionurl',true);
+  PRUEBAS_METAVEHICULOS.ELIMINAR('MeT-06/Delete-"Metavehiculos=M4"                                /Commit-->',cod_metaveh,true);
+  
+  
   END;
   /
    
