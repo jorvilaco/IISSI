@@ -973,7 +973,7 @@ END ASSERT_EQUALS;
   
   begin
     open rf_cur for
-        select * from vehiculosvendidos where fechaalta<fechafin and fechaalta>fechaini order by matricula;
+        select * from vehiculosvendidos where fechaventa<fechafin and fechaventa>fechaini order by matricula;
     return rf_cur;
   
   end obtener_veh_vend_fechas;
