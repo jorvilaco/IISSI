@@ -381,9 +381,9 @@ BEGIN
   /
    
   
-  --Prueba Muestra los coches vendidos entre el 20 de Diciembre de 2017 y 20 de Enero de 2018 Devuelve(ID:1 e ID:2)
+  --Prueba Muestra los coches vendidos entre el 20 de Diciembre de 2017 y 20 de Enero de 2019 Devuelve(ID:1 e ID:2)
   
-  select obtener_veh_vend_fechas(TO_DATE('2017-12-20', 'YYYY-MM-DD'),TO_DATE('2018-12-20', 'YYYY-MM-DD'))
+  select obtener_veh_vend_fechas(TO_DATE('2017-12-20', 'YYYY-MM-DD'),TO_DATE('2019-12-20', 'YYYY-MM-DD'))
   from dual;
   
   /* RF-4.7:Información número de vehículos en concesionario */
