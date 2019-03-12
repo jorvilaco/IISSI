@@ -610,6 +610,7 @@ END;
     delete from propiedadesvehiculos where cod_veh = id_veh;
     delete from descuentos where cod_veh = id_veh;
     delete from fotovehiculos where cod_veh = id_veh;
+    delete from metavehiculos where cod_veh = id_veh;
     delete from vehiculos where cod_veh = id_veh;
     commit work;
     end eliminar_vehiculos;
