@@ -402,11 +402,10 @@ END;
     --PROCEDURES INSERTAR, ACTUALIZAR Y BORRAR TIPO PROPIEDADES
     create or replace procedure insertar_tipo_propiedades 
     (t_pro in tipopropiedades.nombre%type)is
-    cod_tpro INTEGER;
-    begin 
-    insert into tipopropiedades values (seq_tipopropiedades.currval,t_pro);
-    cod_tpro := seq_tipopropiedades.nextval;
     
+    begin 
+    insert into tipopropiedades values (seq_tipopropiedades.nextval,t_pro);
+        
      EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
@@ -436,11 +435,11 @@ END;
    create or replace procedure insertar_tipovehiculos(
    w_nombre in TIPOVEHICULOS.nombre%TYPE,
    w_descripcion in TIPOVEHICULOS.descripcion%TYPE,
-   w_precio_maximo in TIPOVEHICULOS.precio_maximo%TYPE) is cod_tipovehiculos Integer;
+   w_precio_maximo in TIPOVEHICULOS.precio_maximo%TYPE) is
    begin
    insert into TIPOVEHICULOS (id_tveh, nombre, descripcion, precio_maximo) 
-   values(seq_tipovehiculos.currval, w_nombre, w_descripcion, w_precio_maximo);
-   cod_tipovehiculos := seq_tipovehiculos.nextval;
+   values(seq_tipovehiculos.nextval, w_nombre, w_descripcion, w_precio_maximo);
+   
    EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
@@ -472,10 +471,9 @@ END;
     create or replace procedure insertar_financiacion 
     (nombre_fin in financiaciones.nombre%type,
     maxima_fin in financiaciones.nombre%type)is
-    cod_fin INTEGER;
     begin 
-    insert into financiaciones values (seq_financiaciones.currval,nombre_fin,maxima_fin);
-    cod_fin := seq_financiaciones.nextval;
+    insert into financiaciones values (seq_financiaciones.nextval,nombre_fin,maxima_fin);
+    cod_fin := ;
     EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
@@ -505,10 +503,8 @@ END;
     create or replace procedure insertar_financiacion 
     (nombre_fin in financiaciones.nombre%type,
     maxima_fin in financiaciones.nombre%type)is
-    cod_fin INTEGER;
-    begin 
-    insert into financiaciones values (seq_financiaciones.currval,nombre_fin,maxima_fin);
-    cod_fin := seq_financiaciones.nextval;
+     begin 
+    insert into financiaciones values (seq_financiaciones.nextval,nombre_fin,maxima_fin);
     EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
@@ -539,10 +535,9 @@ END;
     create or replace procedure insertar_propiedad
     (nombre_pro in propiedades.nombre%type,
     cod_tpro in propiedades.id_tpro%type)is
-    cod_pro INTEGER;
     begin 
-    insert into propiedades values (seq_propiedades.currval, cod_tpro, nombre_pro);
-    cod_pro := seq_propiedades.nextval;
+    insert into propiedades values (seq_propiedades.nextval, cod_tpro, nombre_pro);
+  
     EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
@@ -581,9 +576,9 @@ END;
     cod_veh Integer;
     begin 
     insert into vehiculos(id_veh,matricula,fechaalta,nombre,descripcion,precio,disponible,id_conces,id_tveh) 
-    values (seq_vehiculos.currval,matricula_vhe,fecha_alta_vhe,nombre_vhe,descripcion_vhe,precio_vhe,disponible_vhe,id_conces_vhe,id_tveh_vhe);
+    values (seq_vehiculos.nextval,matricula_vhe,fecha_alta_vhe,nombre_vhe,descripcion_vhe,precio_vhe,disponible_vhe,id_conces_vhe,id_tveh_vhe);
     
-    cod_veh := seq_vehiculos.nextval;
+  
     
     EXCEPTION
         WHEN OTHERS THEN
@@ -650,11 +645,9 @@ END;
     create or replace procedure insertar_foto_vehiculo
     (cod_veh in fotovehiculos.id_veh%type,
     valor_posicion in fotovehiculos.posicion%type)is
-    cod_ft Integer;
-    begin 
+     begin 
     insert 
-    into fotovehiculos(id_ft,id_veh,posicion) values (seq_fotovehiculos.currval,cod_veh,valor_posicion);
-    cod_ft := seq_fotovehiculos.nextval;
+    into fotovehiculos(id_ft,id_veh,posicion) values (seq_fotovehiculos.nextval,cod_veh,valor_posicion);
     end insertar_foto_vehiculo;
     /
     
@@ -719,11 +712,10 @@ END;
     telef_cli in CLIENTES.telef%type,
     movil_cli in CLIENTES.movil%type,
     FechAlta_cli in CLIENTES.FechAlta%type) is
-    cod_cli INTEGER;
     begin
     insert into CLIENTES(id_cli,email,dni,nombre,telef,movil,FechAlta) 
-    values (seq_cliente.currval,email_cli, dni_cli, nombre_cli, telef_cli, movil_cli,FechAlta_cli);
-    cod_cli := seq_cliente.nextval;
+    values (seq_cliente.nextval,email_cli, dni_cli, nombre_cli, telef_cli, movil_cli,FechAlta_cli);
+
     EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
@@ -760,12 +752,11 @@ END;
    telef_con in CONCESIONARIOS.telef%type,
    email_con in CONCESIONARIOS.email%type,
    NoCitas_con in CONCESIONARIOS.NoCitas%type) is
-   cod_conces INTEGER;
+
    begin
    insert into CONCESIONARIOS(id_conces,Nombre,Direccion,Telef,Email,NoCitas)
-   values (seq_concesionario.currval,nombre_con,direccion_con,telef_con,email_con,NoCitas_con);
-   
-   cod_conces  := seq_concesionario.nextval;
+   values (seq_concesionario.nextval,nombre_con,direccion_con,telef_con,email_con,NoCitas_con);
+
    
    EXCEPTION
         WHEN OTHERS THEN
@@ -806,11 +797,11 @@ END;
    hora_cit in CITAS.hora%type,
    id_cli_cit in CITAS.id_cli%type,
    id_conces_cit in CITAS.id_conces%type) is
-   cod_cit INTEGER;
+
    begin
    insert into CITAS (id_cit,fecha, hora, id_cli, id_conces) 
-   values(seq_citas.currval,fecha_cit,hora_cit,id_cli_cit,id_conces_cit);
-   cod_cit := seq_citas.nextval;
+   values(seq_citas.nextval,fecha_cit,hora_cit,id_cli_cit,id_conces_cit);
+
    
    EXCEPTION
         WHEN OTHERS THEN
@@ -843,11 +834,11 @@ END;
    w_contraseña in EMPLEADOS.contraseña%TYPE,
    w_dni in EMPLEADOS.dni%TYPE,
    w_id_conces in EMPLEADOS.id_conces%TYPE) is
-   cod_empleados Integer;
+
    begin
    insert into EMPLEADOS (id_empleado, nombre, rol, usuario, contraseña, dni, id_conces) 
-   values(seq_empleados.currval, w_nombre, w_rol, w_usuario, w_contraseña, w_dni, w_id_conces);
-   cod_empleados := seq_empleados.nextval;
+   values(seq_empleados.nextval, w_nombre, w_rol, w_usuario, w_contraseña, w_dni, w_id_conces);
+
    EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
@@ -880,11 +871,11 @@ END;
     w_metatit in METAVEHICULOS.metatitulo%TYPE,
     w_metadesc in METAVEHICULOS.metadescripcion%TYPE,
     w_urlamig in METAVEHICULOS.urlamigable%TYPE,
-    w_id_veh in METAVEHICULOS.id_veh%TYPE)is cod_metaveh Integer; 
+    w_id_veh in METAVEHICULOS.id_veh%TYPE)is  
     begin
     insert into METAVEHICULOS (id_metavehiculo, metatitulo, metadescripcion, urlamigable, id_veh) 
-    values(seq_metavehiculos.currval, w_metatit, w_metadesc, w_urlamig, w_id_veh);
-    cod_metaveh := seq_metavehiculos.nextval;
+    values(seq_metavehiculos.nextval, w_metatit, w_metadesc, w_urlamig, w_id_veh);
+
     
     EXCEPTION
         WHEN OTHERS THEN
@@ -917,12 +908,12 @@ END;
     w_metatit in METATIPOS.metatitulo%TYPE,
     w_metadesc in METATIPOS.metadescripcion%TYPE,
     w_urlamig in METATIPOS.urlamigable%TYPE,
-    w_id_tveh in METATIPOS.id_tveh%TYPE) is cod_metatip Integer;
+    w_id_tveh in METATIPOS.id_tveh%TYPE) is 
     begin
     
     insert into METATIPOS (id_metatipo,id_tveh,metatitulo, metadescripcion, urlamigable) 
-    values(seq_metatipos.currval,w_id_tveh,w_metatit, w_metadesc, w_urlamig);
-    cod_metatip := seq_metatipos.nextval;
+    values(seq_metatipos.nextval,w_id_tveh,w_metatit, w_metadesc, w_urlamig);
+   
     
     EXCEPTION
         WHEN OTHERS THEN
