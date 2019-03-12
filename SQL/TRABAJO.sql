@@ -353,7 +353,7 @@ DECLARE
 BEGIN 
     if :new.id_conces is not null then
          select count(*) into num_vehiculos from vehiculos where :new.id_conces=id_conces;
-		 if(num_vehiculos >= 3/*1000 es el valor real ponemos 3 para probarlo  */ ) then 
+		 if(num_vehiculos >= 5000/*1000 es el valor real ponemos 3 para probarlo  */ ) then 
             RAISE_APPLICATION_ERROR(-20502,num_vehiculos|| 'Máximo de vehiculos permitidos en un concesionario');
         end if;
     end if;
