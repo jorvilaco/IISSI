@@ -473,7 +473,6 @@ END;
     maxima_fin in financiaciones.nombre%type)is
     begin 
     insert into financiaciones values (seq_financiaciones.nextval,nombre_fin,maxima_fin);
-    cod_fin := ;
     EXCEPTION
         WHEN OTHERS THEN
         ROLLBACK work;
