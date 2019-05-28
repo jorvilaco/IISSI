@@ -51,4 +51,6 @@ insertar_foto_vehiculo(2,6);
 insertar_foto_vehiculo(3,1);
 insertar_foto_vehiculo(4,1);
 insertar_foto_vehiculo(5,1);
+insertar_propiedad('Seat',5);
+commit;
 end;
